@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/</link>
+    <description>Recent content in Tags on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Aug 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo</title>
+      <link>https://imprld01.github.io/blogg/tags/hugo/</link>
+      <pubDate>Mon, 16 Aug 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Installation</title>
+      <link>https://imprld01.github.io/blogg/tags/installation/</link>
+      <pubDate>Mon, 16 Aug 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/installation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GUI</title>
+      <link>https://imprld01.github.io/blogg/tags/gui/</link>
+      <pubDate>Sun, 01 Oct 2017 22:37:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/gui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Java</title>
+      <link>https://imprld01.github.io/blogg/tags/java/</link>
+      <pubDate>Sun, 01 Oct 2017 22:37:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JavaFX</title>
+      <link>https://imprld01.github.io/blogg/tags/javafx/</link>
+      <pubDate>Sun, 01 Oct 2017 22:37:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/javafx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IDE</title>
+      <link>https://imprld01.github.io/blogg/tags/ide/</link>
+      <pubDate>Sun, 01 Oct 2017 17:23:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/ide/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://imprld01.github.io/blogg/tags/python/</link>
+      <pubDate>Thu, 17 Aug 2017 22:13:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/python/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="現在開始Windows軟體開發：安裝NetBeans IDE" />
+    <meta property="og:title" content="現在開始Windows軟體開發：安裝NetBeans IDE" />
+    <meta property="twitter:title" content="現在開始Windows軟體開發：安裝NetBeans IDE" />
+    
+
+    
+    <meta name="description" content="NetBeans是一款由Oracle公司開發的集成開發環境(Integrated Development Environment, IDE)。IDE能夠輔助開發者軟體的開發，IDE中內建相關語言的函式庫、除錯器、編譯器、直譯器與程式碼編輯器等子工具">
+    <meta property="og:description" content="NetBeans是一款由Oracle公司開發的集成開發環境(Integrated Development Environment, IDE)。IDE能夠輔助開發者軟體的開發，IDE中內建相關語言的函式庫、除錯器、編譯器、直譯器與程式碼編輯器等子工具" />
+    <meta property="twitter:description" content="NetBeans是一款由Oracle公司開發的集成開發環境(Integrated Development Environment, IDE)。IDE能夠輔助開發者軟體的開發，IDE中內建相關語言的函式庫、除錯器、編譯器、直譯器與程式碼編輯器等子工具" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>現在開始Windows軟體開發：安裝NetBeans IDE – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2017/10/01/netbeans_ide_installation/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2021/01/31/11/37/cube-5966612_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/java' title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/ide' title="IDE">
+                            IDE
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/installation' title="Installation">
+                            Installation
+                        </a>
+                        
+                    </div>
+                    <h1>現在開始Windows軟體開發：安裝NetBeans IDE</h1>
+                    <h2 class="subheading">NetBeans IDE Installation on Wondows</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Sunday, October 1, 2017
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#簡介">簡介</a></li>
+    <li><a href="#下載準備">下載準備</a></li>
+    <li><a href="#安裝流程">安裝流程</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="簡介">簡介</h3>
+<p>NetBeans是一款由Oracle公司開發的集成開發環境(Integrated Development Environment, IDE)。
+IDE能夠輔助開發者軟體的開發，IDE中內建相關語言的函式庫、除錯器、編譯器、直譯器與程式碼編輯器等子工具。
+使用IDE的好處在於開發者無須自行安裝多項輔助開發的工具，
+可以節省開發者配置開發環境的麻煩，IDE提供的圖形化介面也能提供開發者較直覺的功能使用。
+本篇將引導讀者安裝用來撰寫Java的IDE－NetBeans，當然NetBeans也支援多項語言的開發，包含C/C++、Python與PHP等程式語言。</p>
+<p>本篇的重點將告訴讀者如何安裝NetBeans IDE：</p>
+<h3 id="下載準備">下載準備</h3>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">NetBeans IDE</a></li>
+</ol>
+</blockquote>
+<h3 id="安裝流程">安裝流程</h3>
+<h4 id="step1">Step1</h4>
+<p>前往Oracle官方網站，點選NetBeansw的DOWNLOAD前往下載安裝執行檔的網站。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/1.JPG" alt="">
+
+</p>
+<h4 id="step2">Step2</h4>
+<p>確認並同意License後，選擇下載與系統環境相符的安裝執行檔，小編的環境Windows x64，所以選擇jdk-8u141-nb-8_2-windows-x64.exe。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/2.JPG" alt="">
+
+</p>
+<h4 id="step3">Step3</h4>
+<p>找到電腦中下載完成的安裝執行檔，雙點擊該安裝執行檔。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/3.JPG" alt="">
+
+</p>
+<h4 id="step4">Step4</h4>
+<p>點擊Next開始設定安裝配置。電腦中如果之前沒有安裝過<a href="https://imprld01.github.io/blogg/2017/10/01/java_development_kit_8_installation/">Java Developmet Kit(JDK)</a>，
+NetBeans安裝檔中事實上也包含JDK的安裝，而小編的電腦中已經安裝過JDK了，所以安裝程式顯示在小編的電腦上有偵測到JDK。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/4.JPG" alt="">
+
+</p>
+<h4 id="step5">Step5</h4>
+<p>選擇並確認JDK的安裝路徑(預設路徑即可)後，點選Next開始執行安裝。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/5.JPG" alt="">
+
+</p>
+<h4 id="step6">Step6</h4>
+<p>接著確認所有安裝配置的設定後，點擊Install開始安裝。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/6.JPG" alt="">
+
+</p>
+<h4 id="step7">Step7</h4>
+<p>等待程式安裝完成。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/7.JPG" alt="">
+
+</p>
+<h4 id="step8">Step8</h4>
+<p>安裝完成後點擊Finish，之後便可以開始使用NetBeans開發Java程式了。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-NetBeans/8.JPG" alt="">
+
+</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2017/10/01/eclipse_ide_installation/' data-toggle="tooltip" data-placement="top" title="現在開始Windows軟體開發：安裝Eclipse IDE for Java">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href='/blogg/2017/10/01/java_runtime_environment_8_installation/' data-toggle="tooltip" data-placement="top" title="現在開始Windows軟體開發：安裝Java Runtime Environment(JRE) 8">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "swb2319" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2021 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>

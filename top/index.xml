@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tops on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/top/</link>
+    <description>Recent content in Tops on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://imprld01.github.io/blogg/top/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>https://imprld01.github.io/blogg/top/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/top/about/</guid>
+      <description>Bo-Wun, a software engineer, is interested in artificial intelligence and software engineering.
+Actually, writing something valuable is another interest for Bo-Wun.
+This is a place to post some notes, good articles, and some experience.
+Feel free to connect Bo-Wun via github or send him an email.
+Of course, you can also comment below direclty :)
+Hope this website can bring you the energy of progress.
+Last, never give up, because we have much more potential than we imagined !</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://imprld01.github.io/blogg/top/books/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/top/books/</guid>
+      <description>Bookmark BOOK A</description>
+    </item>
+    
+  </channel>
+</rss>

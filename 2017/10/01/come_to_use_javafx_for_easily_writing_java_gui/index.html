@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="快來使用JavaFX輕鬆撰寫Java GUI" />
+    <meta property="og:title" content="快來使用JavaFX輕鬆撰寫Java GUI" />
+    <meta property="twitter:title" content="快來使用JavaFX輕鬆撰寫Java GUI" />
+    
+
+    
+    <meta name="description" content="電腦的普及起源於電腦的方便使用。現在使用電腦十分容易，只要按一下開機鍵就可以開始登入電腦，想要打開任何軟體只要點擊兩下就可以，回顧過去，曾經的電腦可是要輸入指令才能運作">
+    <meta property="og:description" content="電腦的普及起源於電腦的方便使用。現在使用電腦十分容易，只要按一下開機鍵就可以開始登入電腦，想要打開任何軟體只要點擊兩下就可以，回顧過去，曾經的電腦可是要輸入指令才能運作" />
+    <meta property="twitter:description" content="電腦的普及起源於電腦的方便使用。現在使用電腦十分容易，只要按一下開機鍵就可以開始登入電腦，想要打開任何軟體只要點擊兩下就可以，回顧過去，曾經的電腦可是要輸入指令才能運作" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>快來使用JavaFX輕鬆撰寫Java GUI – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2017/10/01/come_to_use_javafx_for_easily_writing_java_gui/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2020/04/27/02/04/building-blocks-5097836_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/java' title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/gui' title="GUI">
+                            GUI
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/javafx' title="JavaFX">
+                            JavaFX
+                        </a>
+                        
+                    </div>
+                    <h1>快來使用JavaFX輕鬆撰寫Java GUI</h1>
+                    <h2 class="subheading">Come to use JavaFX for easily writing Java GUI</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Sunday, October 1, 2017
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#簡介">簡介</a></li>
+    <li><a href="#在eclipse上開發java-awtswing環境安裝">在Eclipse上開發Java AWT/Swing：環境安裝</a></li>
+    <li><a href="#在eclipse上開發java-awtswing初次使用">在Eclipse上開發Java AWT/Swing：初次使用</a></li>
+    <li><a href="#在netbeans上開始使用javafx環境安裝">在NetBeans上開始使用JavaFX：環境安裝</a></li>
+    <li><a href="#在netbeans上開始使用javafx初次使用">在NetBeans上開始使用JavaFX：初次使用</a></li>
+    <li><a href="#在eclipse上開始使用javafx環境安裝">在Eclipse上開始使用JavaFX：環境安裝</a></li>
+    <li><a href="#在eclipse上開始使用javafx初次使用">在Eclipse上開始使用JavaFX：初次使用</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="簡介">簡介</h3>
+<p>
+  <img src="https://upload.wikimedia.org/wikipedia/en/c/cc/JavaFX_Logo.png" alt="">
+
+
+<a href="https://en.wikipedia.org/wiki/File:JavaFX_Logo.png">來源</a> 由 Wikipedia</p>
+<p>電腦的普及起源於電腦的方便使用。現在使用電腦十分容易，只要按一下開機鍵就可以開始登入電腦，
+想要打開任何軟體只要點擊兩下就可以，回顧過去，曾經的電腦可是要輸入指令才能運作的，
+有使用過PTT的讀者應該就能體會現今電腦的圖形化介面實在是十分友善。而寫程式不是只要將問題解答出來就好，
+一個完美的資訊工作者應該要能兼顧解決問題的程式能力以及運用方法將結果呈現出來的能力，
+像是你可以撰寫一個APP呈現結果，或者撰寫一個網站，亦或是撰寫一個視窗程式，
+這些方式皆是十分有效的表現方式，比起呈現複雜的文字或者程式碼，人們對於圖形的接受度還是比較高。
+目前許多語言都有一些套件可以撰寫圖形化介面，而圖形化介面實際上也是一門學問，
+其中牽扯到使用者介面(User Interface, UI)以及使用者經驗(User Experience, UX)。</p>
+<blockquote>
+<p>圖形化(Graphical)：</p>
+<ol>
+<li>使用者介面(User Interface)：使用者接觸產品的部分，例如外觀(設計者專注於風格呈現)</li>
+<li>使用者經驗(User Experience)：使用者使用產品的感受，例如互動(設計者專注於流程體驗)</li>
+</ol>
+</blockquote>
+<p>
+  <img src="https://cdn.pixabay.com/photo/2015/05/28/14/38/ux-787980_960_720.jpg" alt="">
+
+
+<a href="https://pixabay.com/zh/photos/ux-design-webdesign-app-mobile-787980/">來源</a> 由 Firmbee, pixabay.com</p>
+<p>說到Java的視窗程式，無非就是使用Java AWT/Swing來開發視窗程式，
+但是令人頭痛的是Java所提供的介面圖型並不好看，而且還要直接用撰寫程式碼的方式來開發，
+光是要建構一個計算機的GUI就要耗上大半的開發時間，如果要微調或者更改設計，
+就又要花大半的時間埋首於一堆程式碼中。
+幸好Eclipse上有插件可以提供開發者使用拖拉的方式迅速完成GUI並產出相關的程式碼，
+這樣便能方便開發者將精力放在解決困難的問題上，但是千萬別放棄使用Java開發視窗程式的念頭，
+因為後來Oracle開發出更好使用的GUI套件－JavaFX。
+JavaFX其實早在2008年就出現了，只是它並未內建在Java中，後來2014年Oracle公司發佈Java 8之後，
+JavaFX不再作為獨立的JavaFX SDK，而是直接內建在Java Runtime Environment(JRE)與Java Development Kit(JDK)中，
+與傳統的AWT/Swing比較，JavaFX提供更多更好的工具與函式庫幫助開發者開發視窗程式，而且其程式效能更加快速、圖形更具現代感。</p>
+<blockquote>
+<p>系統實作守則－MVC(Model-View-Controller)：</p>
+<ol>
+<li>邏輯的部分(Model)：系統中處理的核心</li>
+<li>顯示的部分(View)：系統中的使用者介面</li>
+<li>協調的部分(Controller)：系統中負責轉介資料與處理核心</li>
+</ol>
+</blockquote>
+<p>本篇的重點不在如何設計UI或UX，而是將重點放在設計階段之後的實作，
+所以後續將會介紹使用Java建構一個視窗程式的基本概念。不過在實際介紹之前，
+小編希望帶給各位系統實作的原則－MVC(Model-View-Controller)模式，
+這是軟體工程(Software Engineering)中目前十分受歡迎並被廣泛接受的架構。
+其中的Model注重於處理系統中解決問題的邏輯與演算法，
+View則注重於呈現系統中的使用者介面並接收使用者的資訊，
+而Controller則是負責協調介於兩者之間的工作分配。</p>
+<p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/MVC-Process.svg/436px-MVC-Process.svg.png" alt="">
+
+
+<a href="https://commons.wikimedia.org/wiki/File:MVC-Process.svg">來源</a> 由 Wikipedia</p>
+<p>舉例來說，使用者在網頁的表單(View)上輸入帳號與密碼(Data)，
+依照網頁表單指定的方式將使用者輸入的帳號與密碼(Data)傳送至後台的程式(Controller)處理，
+後台的程式(Controller)為了完成審核帳號與密碼的工作會呼叫其他程式(Model)來幫忙，
+例如呼叫資料庫連結的程式碼、查詢帳號與密碼的程式碼、審核帳號與密碼的程式碼等，
+最後由這些多個其他程式(Models)完成工作後，再由後台的程式(Controller)將結果傳回至網頁(View)上呈現。</p>
+<p>MVC的概念就好比是現實職場上，客戶、經理與員工的角色與職責分配。
+MVC的重點在於將系統中不同層面的工作區分開來，
+目的在於建構具有系統性的系統架構，好處在於方便後續的維護與管理，
+乃至於新相關程式碼的變更，
+當然這樣的原則也能幫助開發者開發時能有清晰的架構與思維撰寫相對應的程式碼，
+在團隊的分工合作上也是具有相當大的助益。</p>
+<p>首先，我們先來回顧一下過去要如何使用Eclipse加速Java AWT/Swing的開發吧。</p>
+<h3 id="在eclipse上開發java-awtswing環境安裝">在Eclipse上開發Java AWT/Swing：環境安裝</h3>
+<h4 id="下載準備">下載準備</h4>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java Runtime Environment(JRE)</a></li>
+<li><a href="http://www.eclipse.org/downloads/eclipse-packages/">Eclipse IDE for Java</a></li>
+<li><a href="http://www.eclipse.org/windowbuilder/download.php">WindowBuilder</a></li>
+</ol>
+</blockquote>
+<h5 id="step1">Step1</h5>
+<p>安裝Eclipse之前需要先行安裝JRE，讀者可以參考<a href="https://imprld01.github.io/blogg/2017/10/01/java_runtime_environment_8_installation/">此篇</a></p>
+<h5 id="step2">Step2</h5>
+<p>接著安裝Eclipse，安裝Eclipse的流程讀者可以參考<a href="https://imprld01.github.io/blogg/2017/10/01/eclipse_ide_installation/">此篇</a></p>
+<h5 id="step3">Step3</h5>
+<p>至<a href="http://www.eclipse.org/windowbuilder/download.php">WindowBuilder</a>的官方網站上，選擇符合版本的Eclipse，
+並在其下載連結上點擊右鍵，事先複製下載網址，該網址會在後續步驟中用到。
+例如，這裡的Eclipse版本為4.7，所以這裡便複製該列Release Version的link，
+由於該連結不存在，所以這裡就複製了Integration Version的link。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-1.JPG" alt="">
+
+</p>
+<h5 id="step4">Step4</h5>
+<p>開啟Eclipse IDE，點選Help&gt;Install New Software。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-2.JPG" alt="">
+
+</p>
+<h5 id="step5">Step5</h5>
+<p>點選右邊的Add。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-3.JPG" alt="">
+
+</p>
+<h5 id="step6">Step6</h5>
+<p>在Name欄位上填寫WindowBuilder，在Location欄位貼上步驟3複製下來的網址，然後按下OK。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-4.JPG" alt="">
+
+</p>
+<h5 id="step7">Step7</h5>
+<p>將中間列出的所有套件勾選後按下Next。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-5.JPG" alt="">
+
+</p>
+<h5 id="step8">Step8</h5>
+<p>確認所有即將安中的套件後按下Next。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-6.JPG" alt="">
+
+</p>
+<h5 id="step9">Step9</h5>
+<p>選擇接受同意書內容後按下Finish。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-7.JPG" alt="">
+
+</p>
+<h5 id="step10">Step10</h5>
+<p>等待安裝程序完成，最後點選Yes重新啟動Eclipse，WindowBuilder便安裝完成。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/1-8.JPG" alt="">
+
+</p>
+<h3 id="在eclipse上開發java-awtswing初次使用">在Eclipse上開發Java AWT/Swing：初次使用</h3>
+<h4 id="下載準備-1">下載準備</h4>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java Runtime Environment(JRE)</a></li>
+<li><a href="http://www.eclipse.org/downloads/eclipse-packages/">Eclipse IDE for Java</a></li>
+<li><a href="http://www.eclipse.org/windowbuilder/download.php">WindowBuilder</a></li>
+</ol>
+</blockquote>
+<h5 id="step1-1">Step1</h5>
+<p>開啟Eclipse。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-1.JPG" alt="">
+
+</p>
+<h5 id="step2-1">Step2</h5>
+<p>新增一個新的Java專案。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-2.JPG" alt="">
+
+</p>
+<h5 id="step3-1">Step3</h5>
+<p>為專案命名，小編命名的習慣是每個單詞首字大寫並使用減號隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-3.JPG" alt="">
+
+</p>
+<h5 id="step4-1">Step4</h5>
+<p>在專案中點擊右鍵，選擇New&gt;Other。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-4.JPG" alt="">
+
+</p>
+<h5 id="step5-1">Step5</h5>
+<p>在專案中新增WindowBuilder&gt;Swing Designer&gt;Application Window。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-5.JPG" alt="">
+
+</p>
+<h5 id="step6-1">Step6</h5>
+<p>為應用程式命名，小編命名的習慣是每個單詞首字大寫並不用任何字元隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-6.JPG" alt="">
+
+</p>
+<h5 id="step7-1">Step7</h5>
+<p>可以見到基礎的程式碼已經產生。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-7.JPG" alt="">
+
+</p>
+<h5 id="step8-1">Step8</h5>
+<p>轉換至Design模式後，可以見到對應的圖形化結果。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-8.JPG" alt="">
+
+</p>
+<h5 id="step9-1">Step9</h5>
+<p>接下來開發者可以依照需求進行拖曳與配置。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-9.JPG" alt="">
+
+</p>
+<h5 id="step10-1">Step10</h5>
+<p>拖曳之後，轉換回Source模式，可以發現對應的程式碼也被產生出來。讀者可以依照需求自行配置，乃至於撰寫相對應的核心程式。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/2-10.JPG" alt="">
+
+</p>
+<h3 id="在netbeans上開始使用javafx環境安裝">在NetBeans上開始使用JavaFX：環境安裝</h3>
+<h4 id="下載準備-2">下載準備</h4>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">NetBeans IDE</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html">JavaFX Scene Builder 2.0</a></li>
+</ol>
+</blockquote>
+<h5 id="step1-2">Step1</h5>
+<p>首先安裝NetBeans，安裝NetBeans的流程讀者可以參考<a href="https://imprld01.github.io/blogg/2017/10/01/netbeans_ide_installation/">此篇</a>。</p>
+<h5 id="step2-2">Step2</h5>
+<p>接著至官方網站，選擇下載與系統環境相符的安裝執行檔，小編的環境是Windows x64，所以選擇javafx-scenebuilder-2_0-windows.msi。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/3-1.JPG" alt="">
+
+</p>
+<h5 id="step3-2">Step3</h5>
+<p>找到電腦中下載完成的安裝執行檔，雙點擊該安裝執行檔。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/3-2.JPG" alt="">
+
+</p>
+<h5 id="step4-2">Step4</h5>
+<p>點擊下一步開始設定安裝配置。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/3-3.JPG" alt="">
+
+</p>
+<h5 id="step5-2">Step5</h5>
+<p>選擇並確認JavaFX Scene Builder的安裝路徑(預設路徑即可)後，點選安裝來啟動安裝程式。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/3-4.JPG" alt="">
+
+</p>
+<h5 id="step6-2">Step6</h5>
+<p>等待安裝完成後，最後按下完成結束安裝，JavaFX Scene Builder便安裝完成。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/3-5.JPG" alt="">
+
+</p>
+<h3 id="在netbeans上開始使用javafx初次使用">在NetBeans上開始使用JavaFX：初次使用</h3>
+<h4 id="下載準備-3">下載準備</h4>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">NetBeans IDE</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html">JavaFX Scene Builder 2.0</a></li>
+</ol>
+</blockquote>
+<h5 id="step1-3">Step1</h5>
+<p>開啟NetBeans。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/4-1.JPG" alt="">
+
+</p>
+<h5 id="step5-3">Step5</h5>
+<p>新增專案。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/4-2.JPG" alt="">
+
+</p>
+<h5 id="step5-4">Step5</h5>
+<p>選擇新增JavaFX FXML Application。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/4-3.JPG" alt="">
+
+</p>
+<h5 id="step5-5">Step5</h5>
+<p>為應用程式命名，同時這也會式專案的名稱，小編命名的習慣是每個單詞首字大寫並不用任何字元隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/4-4.JPG" alt="">
+
+</p>
+<h5 id="step5-6">Step5</h5>
+<p>可以見到基礎的程式碼已經產生。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/4-5.JPG" alt="">
+
+</p>
+<h5 id="step5-7">Step5</h5>
+<p>雙點擊FXML檔案便可以透過JavaFX Scene Builder開啟應用程式的圖形化介面，開發者可以隨需求進行拖曳與版面配置。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/4-6.JPG" alt="">
+
+</p>
+<h3 id="在eclipse上開始使用javafx環境安裝">在Eclipse上開始使用JavaFX：環境安裝</h3>
+<h4 id="下載準備-4">下載準備</h4>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java Runtime Environment(JRE)</a></li>
+<li><a href="http://www.eclipse.org/downloads/eclipse-packages/">Eclipse IDE for Java</a></li>
+<li><a href="http://www.eclipse.org/efxclipse/install.html">e(fx)clipse</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html">JavaFX Scene Builder 2.0</a></li>
+</ol>
+</blockquote>
+<h5 id="step1-4">Step1</h5>
+<p>安裝Eclipse之前需要先行安裝JRE，讀者可以參考<a href="/2017/10/01/java_runtime_environment_8_installation/">此篇</a></p>
+<h5 id="step2-3">Step2</h5>
+<p>接著安裝Eclipse，安裝Eclipse的流程讀者可以參考<a href="/2017/10/01/eclipse_ide_installation/">此篇</a>。</p>
+<h5 id="step3-3">Step3</h5>
+<p>複製此段網址：<a href="http://download.eclipse.org/efxclipse/updates-released/2.4.0/site">http://download.eclipse.org/efxclipse/updates-released/2.4.0/site</a>
+，該網址會在後續步驟中用到，其版本可於<a href="http://www.eclipse.org/efxclipse/install.html">e(fx)clipse官方網站</a>查得。</p>
+<h5 id="step4-3">Step4</h5>
+<p>開啟Eclipse IDE，點選Help&gt;Install New Software。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-1.JPG" alt="">
+
+</p>
+<h5 id="step5-8">Step5</h5>
+<p>點選右邊的Add。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-2.JPG" alt="">
+
+</p>
+<h5 id="step6-3">Step6</h5>
+<p>在Name欄位上填寫e(fx)clispe，在Location欄位貼上第3步驟複製下來的網址，最後按下OK。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-3.JPG" alt="">
+
+</p>
+<h5 id="step7-2">Step7</h5>
+<p>將中間列出的所有套件勾選後按下Next。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-4.JPG" alt="">
+
+</p>
+<h5 id="step8-2">Step8</h5>
+<p>確認所有即將安中的套件後按下Next。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-5.JPG" alt="">
+
+</p>
+<h5 id="step9-2">Step9</h5>
+<p>選擇接受同意書內容後按下Finish。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-6.JPG" alt="">
+
+</p>
+<h5 id="step10-2">Step10</h5>
+<p>等待安裝程序完成。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-7.JPG" alt="">
+
+</p>
+<h5 id="step11">Step11</h5>
+<p>安裝完成後，點選Yes重新啟動Eclipse。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/5-8.JPG" alt="">
+
+</p>
+<h3 id="在eclipse上開始使用javafx初次使用">在Eclipse上開始使用JavaFX：初次使用</h3>
+<h4 id="下載準備-5">下載準備</h4>
+<blockquote>
+<ol>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">Java Runtime Environment(JRE)</a></li>
+<li><a href="http://www.eclipse.org/downloads/eclipse-packages/">Eclipse IDE for Java</a></li>
+<li><a href="http://www.eclipse.org/efxclipse/install.html">e(fx)clipse</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-info-2157684.html">JavaFX Scene Builder 2.0</a></li>
+</ol>
+</blockquote>
+<h5 id="step1-5">Step1</h5>
+<p>開啟Eclipse IDE。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-1.JPG" alt="">
+
+</p>
+<h5 id="step2-4">Step2</h5>
+<p>新增一個新的Java專案。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-2.JPG" alt="">
+
+</p>
+<h5 id="step3-4">Step3</h5>
+<p>為專案命名，小編命名的習慣是每個單詞首字大寫並使用減號隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-3.JPG" alt="">
+
+</p>
+<h5 id="step4-4">Step4</h5>
+<p>在專案中點擊右鍵，選擇New&gt;Other。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-4.JPG" alt="">
+
+</p>
+<h5 id="step5-9">Step5</h5>
+<p>選擇New FXML Document，新增應用程式的使用者介面，這個檔案在MVC模式中扮演的是View。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-5.JPG" alt="">
+
+</p>
+<h5 id="step6-4">Step6</h5>
+<p>為FXML檔案命名，小編命名的習慣是每個單詞首字大寫並不用任何字元隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-6.JPG" alt="">
+
+</p>
+<h5 id="step7-3">Step7</h5>
+<p>在專案中點擊右鍵，選擇New&gt;Other，並選擇JavaFX Main Class，新增應用程式的起始進入點。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-7.JPG" alt="">
+
+</p>
+<h5 id="step8-3">Step8</h5>
+<p>為檔案命名，小編命名的習慣是每個單詞首字大寫並不用任何字元隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-8.JPG" alt="">
+
+</p>
+<h5 id="step9-3">Step9</h5>
+<p>在Main Class中，可以發現類別繼承Application類別，
+我們要做的是覆蓋父類別的start函式。
+我們要告訴程式起始應載入的使用者介面，並將其顯示。</p>
+<p>程式碼如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Parent root <span style="color:#ff79c6">=</span> FXMLLoader<span style="color:#ff79c6">.</span><span style="color:#50fa7b">load</span><span style="color:#ff79c6">(</span>getClass<span style="color:#ff79c6">().</span><span style="color:#50fa7b">getResource</span><span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;MainPage.fxml&#34;</span><span style="color:#ff79c6">));</span>
+
+Scene scene <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Scene<span style="color:#ff79c6">(</span>root<span style="color:#ff79c6">);</span>
+
+primaryStage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">setScene</span><span style="color:#ff79c6">(</span>scene<span style="color:#ff79c6">);</span>
+primaryStage<span style="color:#ff79c6">.</span><span style="color:#50fa7b">show</span><span style="color:#ff79c6">();</span>
+</code></pre></div><p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-9.JPG" alt="">
+
+</p>
+<h5 id="step10-3">Step10</h5>
+<p>在FXML檔案上點擊右鍵，選擇Open with SceneBuilder，可以透過JavaFX Scene Builder開啟應用程式的圖形化介面。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-10.JPG" alt="">
+
+</p>
+<h5 id="step11-1">Step11</h5>
+<p>開發者可以透過JavaFX Scene Builder隨需求進行拖曳與版面配置。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-11.JPG" alt="">
+
+</p>
+<h5 id="step12">Step12</h5>
+<p>小編拖曳AnchorPane為使用者介面的基底。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-12.JPG" alt="">
+
+</p>
+<h5 id="step13">Step13</h5>
+<p>接著，小編拖曳一個按鈕在使用者介面上，並將此介面存檔。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-13.JPG" alt="">
+
+</p>
+<h5 id="step14">Step14</h5>
+<p>配置完使用者介面後，我們可以看到原本的FXML檔案自動產生一些程式碼了。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-14.JPG" alt="">
+
+</p>
+<h5 id="step15">Step15</h5>
+<p>接著，我們可以再按下右鍵新增Java Class。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-15.JPG" alt="">
+
+</p>
+<h5 id="step16">Step16</h5>
+<p>為類別命名，小編命名的習慣是每個單詞首字大寫並不用任何字元隔開。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-16.JPG" alt="">
+
+</p>
+<h5 id="step17">Step17</h5>
+<p>接著，在這個類別上實作Initializable類別，這個類別扮演的是MVC模式中的Controller，開發者可以在該類別中實作事件處理函式。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-17.JPG" alt="">
+
+</p>
+<h5 id="step18">Step18</h5>
+<p>基本上的應用程式架構便建立完成，讀者可以直接運行應用程式，後續讀者可以再依需求建立需要的類別最為MVC模式中的Model。</p>
+<p>
+  <img src="https://imprld01.github.io/blog/assets/img/20171001-JavaFX/6-18.JPG" alt="">
+
+</p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2017/10/01/java_runtime_environment_8_installation/' data-toggle="tooltip" data-placement="top" title="現在開始Windows軟體開發：安裝Java Runtime Environment(JRE) 8">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href='/blogg/2021/08/16/note_of_hugo_for_me/' data-toggle="tooltip" data-placement="top" title="給自己的Hugo筆記">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "swb2319" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2021 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>

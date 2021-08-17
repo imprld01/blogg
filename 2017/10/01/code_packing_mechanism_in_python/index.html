@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="關於Python的包裝機制" />
+    <meta property="og:title" content="關於Python的包裝機制" />
+    <meta property="twitter:title" content="關於Python的包裝機制" />
+    
+
+    
+    <meta name="description" content="要寫Python很容易，只要安裝好環境之後，直接打上程式碼就可以立即得到執行結果，例如打上2&#43;5，Python就會立即顯示7。不過，如果想要使用Python撰寫有規模的程式，應該還要學習Python函式、類別、模組與套件的寫法">
+    <meta property="og:description" content="要寫Python很容易，只要安裝好環境之後，直接打上程式碼就可以立即得到執行結果，例如打上2&#43;5，Python就會立即顯示7。不過，如果想要使用Python撰寫有規模的程式，應該還要學習Python函式、類別、模組與套件的寫法" />
+    <meta property="twitter:description" content="要寫Python很容易，只要安裝好環境之後，直接打上程式碼就可以立即得到執行結果，例如打上2&#43;5，Python就會立即顯示7。不過，如果想要使用Python撰寫有規模的程式，應該還要學習Python函式、類別、模組與套件的寫法" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>關於Python的包裝機制 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2017/10/01/code_packing_mechanism_in_python/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2015/12/09/15/51/code-1084923_960_720.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/python' title="Python">
+                            Python
+                        </a>
+                        
+                    </div>
+                    <h1>關於Python的包裝機制</h1>
+                    <h2 class="subheading">Code Packing Mechanism in Python</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Thursday, August 17, 2017
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#簡介">簡介</a></li>
+    <li><a href="#構築程式的思考重點">構築程式的思考重點</a></li>
+    <li><a href="#python的封裝機制">Python的封裝機制</a></li>
+    <li><a href="#參考資料">參考資料</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="簡介">簡介</h3>
+<p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/486px-Python_logo_and_wordmark.svg.png" alt="">
+
+
+<a href="https://commons.wikimedia.org/w/index.php?curid=34991637">來源</a> 由 <a href="http://www.python.org">www.python.org</a> - <a href="https://www.python.org/community/logos/">Python</a>,
+<a href="http://www.gnu.org/licenses/gpl.html">GPL</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=34991637">Wikipedia</a></p>
+<p>要寫Python很容易，只要安裝好環境之後，在terminal啟動python，直接打上程式碼就能得到執行結果，例如輸入2+5，Python就會顯示7。
+不過，如果想要使用Python撰寫有規模的程式，應該還要學習Python的函式、類別、模組與套件的寫法，才能設計出容易維護的程式碼。</p>
+<p>本篇預設讀者已經有些程式基礎，所以有關於Python程式語法與一般程式基礎的部分會較少談到。
+會寫這篇主要是紀錄一下如何將一般C/C++的程式設計架構引入Python中，
+畢竟以Python作為首次接觸的程式語言來說，程式設計架構其實是較為不重要的，
+屬於直譯式語言的Python，與其他編譯式語言不同，能夠輕易跳脫編譯式語言嚴謹的框架，
+但是也因此如此，Python的程式碼寫起來可能會更為冗長，這也與寫程式的習慣與喜好有關。</p>
+<p>組織性是程式撰寫十分重要的原則之一，一份雜亂無章的程式碼，與一份組織良好的程式碼相比，
+一份組織良好程式碼的易讀性、易用性與重用性會更高一些，
+程式碼應該讓提供閱讀的人(包括自己與未來的自己)一目了然，甚至能減少一些撰寫軟體設計文件的功夫。</p>
+<h3 id="構築程式的思考重點">構築程式的思考重點</h3>
+<blockquote>
+<ol>
+<li>軟體架構設計：物件導向設計(Object-Oriented)與設計模式(Design Pattern)</li>
+<li>程式組織方式：封裝(Encapsulate)、分離(Separate)與重構(Refactoring)</li>
+</ol>
+</blockquote>
+<h3 id="python的封裝機制">Python的封裝機制</h3>
+<p>本篇介紹Python程式碼的封裝機制包括：</p>
+<ol>
+<li>套件(Package)</li>
+<li>模組(Module)</li>
+<li>類別(Class)</li>
+<li>函式(Function)</li>
+</ol>
+<h4 id="函式function">函式(Function)</h4>
+<blockquote>
+<p>函式能使程式碼較為簡潔、具可讀性，並能達到重用的目的。</p>
+</blockquote>
+<p>有過程式經驗的人會發現函式的重要性，在撰寫過程經常會出現相同邏輯的程式碼，
+而之間的差異只是變數數值不相同，這時候就會使用函式達到重用性，
+意思是只要寫一次程式碼(函式)，如果之後又需要使用到相同邏輯的程式碼時，
+只要引入該函數，呼叫先前的程式碼(函式)並且輸入所需要的引數即可。例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">avg1 <span style="color:#ff79c6">=</span> (x <span style="color:#ff79c6">+</span> y) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">2</span>
+avg2 <span style="color:#ff79c6">=</span> (<span style="color:#bd93f9">5</span> <span style="color:#ff79c6">+</span> <span style="color:#bd93f9">9</span>) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">2</span>
+</code></pre></div><p>從上面的範例可以明顯看到兩段相似邏輯的程式碼，這兩段程式碼可能散落在不同的程式中，
+或者在同個程式中出現許多次，這時候我們就可以考慮將該程式碼封裝成一個函式。
+這是個簡單的例子，可能讀者感受不到函式的重要性，但我們可以進一步擴展情境，
+如果該程式邏輯變得更加複雜、長度變得更長，可以想像得到，相似且龐大的程式碼將混雜在程式碼中，
+這會使程式碼難以維護、降低可讀性。以下我們將該程式碼封裝：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">calAvg</span>(input1, input2):
+    <span style="color:#ff79c6">return</span> (input1 <span style="color:#ff79c6">+</span> input2) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">2</span>
+</code></pre></div><p>接著，我們就可以將相似的程式碼替換為函式，如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	avg1 <span style="color:#ff79c6">=</span> calAvg(x, y)
+	avg2 <span style="color:#ff79c6">=</span> calAvg(<span style="color:#bd93f9">5</span>, <span style="color:#bd93f9">9</span>)
+</code></pre></div><p>這次我們看看另一個範例，這次我們試著將函式變得稍微複雜：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">myAvg</span>(<span style="color:#ff79c6">*</span>inputs):
+		<span style="color:#8be9fd;font-style:italic">sum</span> <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+		<span style="color:#ff79c6">for</span> <span style="color:#8be9fd;font-style:italic">input</span> <span style="color:#ff79c6">in</span> inputs:
+			<span style="color:#8be9fd;font-style:italic">sum</span> <span style="color:#ff79c6">+=</span> <span style="color:#8be9fd;font-style:italic">input</span>
+		<span style="color:#ff79c6">return</span> <span style="color:#8be9fd;font-style:italic">sum</span> <span style="color:#ff79c6">/</span> <span style="color:#8be9fd;font-style:italic">len</span>(inputs)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	avg1 <span style="color:#ff79c6">=</span> myAvg(<span style="color:#bd93f9">10</span>, <span style="color:#bd93f9">20</span>, <span style="color:#bd93f9">30</span>)
+	avg2 <span style="color:#ff79c6">=</span> myAvg(<span style="color:#bd93f9">30</span>, <span style="color:#bd93f9">20</span>, <span style="color:#bd93f9">60</span>, <span style="color:#bd93f9">10</span>, <span style="color:#bd93f9">30</span>)
+</code></pre></div><p>透過上例，讀者應該可以明顯感受到函式的作用！
+函式可以幫助我們獲得較簡潔的程式碼，函式的使用還有釐清邏輯的功用，
+我們可以透過函式的名稱清楚的理解該段程式碼的目的，
+否則我們需要細讀程式碼才能了解其目的，
+所以善用函式封裝程式碼會是將來撰寫大型程式的好幫手。</p>
+<p>最後，順便介紹方便的匿名函式機制。
+事實上，函式名稱本身也是個變數，變數裡儲存的是該函式的記憶體位址，
+所以可以如以下的程式碼般將calAvg的數值存入avgFunc1變數中，
+而匿名函式的語法lambda則是如字面上所說可以創造一個沒有名稱的函式。
+讀者可能會疑惑這個匿名函式究竟能運用於何處？從上面的例子來看，
+匿名函式較不具有一般函式的重用性，它並無法被重複使用在其他的程式上，
+唯一可以使它稍微具有重用性的情況只有如下面的例子所示，
+將匿名函式的記憶體位址存在一個有名稱的變數中，再來使用該函式，
+但這並不能顯示匿名函式存在的原因。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	avgFunc1 <span style="color:#ff79c6">=</span> calAvg
+	avgFunc2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">lambda</span> input1, input2: (input1 <span style="color:#ff79c6">+</span> input2) <span style="color:#ff79c6">/</span> <span style="color:#bd93f9">2</span>
+	avg3 <span style="color:#ff79c6">=</span> avgFunc1(<span style="color:#bd93f9">5</span>, <span style="color:#bd93f9">9</span>)
+	avg4 <span style="color:#ff79c6">=</span> avgFunc2(<span style="color:#bd93f9">5</span>, <span style="color:#bd93f9">9</span>)
+	avg5 <span style="color:#ff79c6">=</span> avgFunc2(<span style="color:#bd93f9">8</span>, <span style="color:#bd93f9">12</span>)
+</code></pre></div><p>從上面的例子，我們可以發現匿名函式似乎並不是那麼有用。
+其實，它本來就沒有被設計於實現重用性，而是用來滿足快速的、暫時性的函式需求。
+可以試想當前程式固定需要一個函式，而該函式基本上不會再於其他程式中被使用，
+此時就可以採用匿名函式。讀者可能會有疑問：「既然如此，何須再以函式包裝呢」。
+沒錯，這裡唯一能給出的理由就是「使用函式包裝可以增加可讀性」，
+但是為何要使用匿名函式呢？</p>
+<p>以下例子可以給讀者一個解答：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	theList <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">5</span>, <span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">7</span>, <span style="color:#bd93f9">9</span>]
+	<span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#8be9fd;font-style:italic">list</span>(<span style="color:#8be9fd;font-style:italic">map</span>(<span style="color:#ff79c6">lambda</span> x: x <span style="color:#ff79c6">**</span> <span style="color:#bd93f9">2</span>, theList)))
+</code></pre></div><p>map是Python提供的函式，該函式的輸入包含一個函式，用來作為map的篩選機制，
+這樣的函式設計可以增加map函式的靈活性，
+每次使用map函式時都可以動態輸入固定的篩選規則。
+不過需要注意的是，濫用匿名函式會降低程式碼的可讀性，使用時應該釐清時機。</p>
+<h4 id="類別class">類別(Class)</h4>
+<blockquote>
+<p>類別能讓開發者容易使用相關的程式碼，使程式碼更具可讀性與重用性。</p>
+</blockquote>
+<p>沒錯，類別也出現在Python裡，這讓Python變得更為靈活，
+開發時講求物件導向設計的開發者也能夠使用Python盡興開發。
+物件導向程式設計並不是本篇的重點，所以這部份的概念不會提到太多，
+有興趣的讀者可以找找其他相關文章。使用函式進行封裝是個好主意，
+不過龐大數量的函式對於開發者而言，在使用上也是一大挑戰。
+你可以想想如何在圖書館中找到多本你真正需要的書？
+除非你是真正熟悉需要的那些書名，不然只能慢慢搜尋，
+函式就像是圖書館裡的書籍，如果沒有分門別類的管理，
+臨時需要的時候或許直接自己實作要比在成千上萬的函式海裡搜尋要快(?!)，
+所以如果能將函式依照相關度進行分類管理與包裝，
+這將能大大提升程式碼的易用性、重用性與可讀性。</p>
+<p>下例是將有關數學運算的函式放置於同一個類別。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MathLib</span>:
+		
+        <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">sum2</span>(self, a, b):
+			<span style="color:#ff79c6">return</span> a <span style="color:#ff79c6">+</span> b
+        
+		<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">sub2</span>(self, a, b):
+			<span style="color:#ff79c6">return</span> a <span style="color:#ff79c6">-</span> b
+</code></pre></div><p>我們再來看另一個例子，例中是將音樂盒狀態包裝成一個類別，
+相關的變數與函式皆被放在類別中，
+我們只要新增該類別的(一個或多個)物件就能夠輕鬆管理(一個或多個)音樂盒的狀態，這是類別的優點。
+在物件導向程式設計原則中有許多類別的封裝建議，
+這裡提供的類別範例主要是用來說明Python中類別的實作方式，並不一定符合恰當的物件導向設計原則。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MusicBoxStatus</span>:
+        
+		<span style="color:#ff79c6">def</span> __init__(self, random):
+			self<span style="color:#ff79c6">.</span>random <span style="color:#ff79c6">=</span> random
+			self<span style="color:#ff79c6">.</span>number <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+        
+		<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">add</span>(self):
+			self<span style="color:#ff79c6">.</span>number <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+        
+		<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">setPlayMode</span>(self, random):
+			self<span style="color:#ff79c6">.</span>random <span style="color:#ff79c6">=</span> random
+        
+		<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">getNumber</span>(self):
+			<span style="color:#ff79c6">return</span> self<span style="color:#ff79c6">.</span>number
+        
+		<span style="color:#ff79c6">def</span> __str__(self):
+			<span style="color:#ff79c6">return</span> <span style="color:#8be9fd;font-style:italic">str</span>(self<span style="color:#ff79c6">.</span>number) <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39; songs inside the musicbox.&#39;</span>
+</code></pre></div><h4 id="模組module">模組(Module)</h4>
+<blockquote>
+<p>區分函式與類別的機制。</p>
+</blockquote>
+<p>介紹完函式與類別，讀者應該已經能撰寫出不錯的程式碼了，
+但是這麼多的函式與類別如何有效的管理呢？
+這時就可以再往上一層，使用模組的概念來進行封裝。
+事實上，各位讀者已經在不知不覺中建立模組了，
+因為只要建立一個Python檔案(.py)就是建立了一個模組，
+依照Python檔案的檔名視為模組的名稱，
+例如：新增一個myModule.py的檔案後，同時也是在建立一個名叫myModule的模組。
+模組的概念能有效的管理函式與類別，提供開發者將相關的類別與函式放在同個模組中，
+就如同當初將相關的函式與變數放在同個類別一樣，
+同時模組也能將開發者自己的函式與類別與其他程式開發者撰寫的同版型(prototype)函式與同名稱類別區隔開，
+打個比方，就好比用班級來區分同名的學生，如5班的小張與7班的小張。
+將Python與Java作比較，Java並沒有模組的概念，Java只採用套件而沒有嚴格引入模組的概念，
+因為實際上等等要介紹的套件同樣也具有相同的作用。
+因此Java一個檔案(.class)只能放置一個類別，而Python一個檔案(.py)則能放置多個類別與函式。</p>
+<h4 id="套件package">套件(Package)</h4>
+<blockquote>
+<p>區分函式、類別與模組的機制。</p>
+</blockquote>
+<p>情況是這樣的，現在手邊有許多Python檔案(.py)或者說是有許多模組，我們還可以再往外建立一層套件。建立套件的方法十分簡單，只要建立一個資料夾將所有想要歸類為相同套件的模組放在裡面即可，這與建立模組相似，資料夾的名稱就是套件的名。不過事實上，單純的資料夾不可能隨便讓Python辨識為套件，所以還要額外在資料夾內放入__init__.py的空白檔案，當然這個檔案內也可以撰寫一些套件初始化的程式，但如果沒有特別需要，只要將該空白檔案放置好即可。與模組相同，套件能將開發者自己的函式、類別及模組與其他程式開發者撰寫的同版型(prototype)函式與同名稱類別、模組區隔開。套件再往上一層會是什麼？如果沒有在更上一層，要如何將自己的套件與其他開發者的套件區隔開呢？這是套件與模組不同的地方，套件的名稱可以作多層級的定義！一般開發者會將識別自身的名稱作為套件的名稱，例如Google公司開發的數學運算套件名稱可以設作com.google.math，以此為原則，微軟公司開發的數學運算套件名稱則設作com.microsoft.math。</p>
+<h4 id="importimport-asfrom-importdel">import、import as、from import、del</h4>
+<blockquote>
+<p>引入寫好的函式、類別、模組與套件到程式裡。</p>
+</blockquote>
+<p>最後，我們要來介紹一下如何引入已經寫好的函式、類別、模組與套件。
+沒錯，已經寫好的函式、類別、模組與套件是需要被引入後才能使用的！
+基礎語法是import package.module，只要遵循這樣的原則再作沿伸就十分容易了。</p>
+<p>這裡我們可以從四個面向去思考：</p>
+<ol>
+<li>可以引入特定套件嗎？</li>
+<li>可以引入特定模組嗎？</li>
+<li>可以引入特定類別嗎？</li>
+<li>可以引入特定函式嗎？</li>
+</ol>
+<p>答案是肯定的：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">import</span> package.module
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">from</span> package.module <span style="color:#ff79c6">import</span> class<span style="color:#ff79c6">/</span>function	
+</code></pre></div><p>引入的程式庫我們可以賦予一個新的變數名稱，方便後續程式呼叫。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">import</span> package.module <span style="color:#ff79c6">as</span> rename
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">	<span style="color:#ff79c6">from</span> package.module <span style="color:#ff79c6">import</span> class<span style="color:#ff79c6">/</span>function <span style="color:#ff79c6">as</span> rename
+</code></pre></div><h3 id="參考資料">參考資料</h3>
+<ol>
+<li><a href="http://www.codedata.com.tw/python/python-tutorial-the-2nd-class-3-function-module-class-package">Python Tutorial 第二堂（3）函式、模組、類別與套件</a> from <a href="http://www.codedata.com.tw/">CodeData</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href='/blogg/2017/10/01/java_development_kit_8_installation/' data-toggle="tooltip" data-placement="top" title="現在開始Windows軟體開發：安裝Java Developmet Kit(JDK) 8">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "swb2319" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2021 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>

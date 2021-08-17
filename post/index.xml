@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/post/</link>
+    <description>Recent content in Posts on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Aug 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>給自己的Hugo筆記</title>
+      <link>https://imprld01.github.io/blogg/2021/08/16/note_of_hugo_for_me/</link>
+      <pubDate>Mon, 16 Aug 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2021/08/16/note_of_hugo_for_me/</guid>
+      <description>下載準備 Hugo Release Page Git(Optional) 後續套用樣板的時候，一般都使用git指令，在這個時候會用到git，當然也可以徒手下載成壓縮檔，再放到對應的位置上。 安裝流程 在</description>
+    </item>
+    
+    <item>
+      <title>快來使用JavaFX輕鬆撰寫Java GUI</title>
+      <link>https://imprld01.github.io/blogg/2017/10/01/come_to_use_javafx_for_easily_writing_java_gui/</link>
+      <pubDate>Sun, 01 Oct 2017 22:37:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2017/10/01/come_to_use_javafx_for_easily_writing_java_gui/</guid>
+      <description>簡介 來源 由 Wikipedia 電腦的普及起源於電腦的方便使用。現在使用電腦十分容易，只要按一下開機鍵就可以開始登入電腦， 想要打開任何軟體只要點擊兩下就可以，回</description>
+    </item>
+    
+    <item>
+      <title>現在開始Windows軟體開發：安裝Java Runtime Environment(JRE) 8</title>
+      <link>https://imprld01.github.io/blogg/2017/10/01/java_runtime_environment_8_installation/</link>
+      <pubDate>Sun, 01 Oct 2017 18:02:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2017/10/01/java_runtime_environment_8_installation/</guid>
+      <description>簡介 由Java撰寫的任何程式都需要運行在具有Java虛擬環境的電腦上，這也是Java的跨平台性質的來由，所以在運行任何Java程式之前都必須</description>
+    </item>
+    
+    <item>
+      <title>現在開始Windows軟體開發：安裝NetBeans IDE</title>
+      <link>https://imprld01.github.io/blogg/2017/10/01/netbeans_ide_installation/</link>
+      <pubDate>Sun, 01 Oct 2017 17:23:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2017/10/01/netbeans_ide_installation/</guid>
+      <description>簡介 NetBeans是一款由Oracle公司開發的集成開發環境(Integrated Development Environment, IDE)。 IDE能夠輔助開發者軟體的開發，IDE中內</description>
+    </item>
+    
+    <item>
+      <title>現在開始Windows軟體開發：安裝Eclipse IDE for Java</title>
+      <link>https://imprld01.github.io/blogg/2017/10/01/eclipse_ide_installation/</link>
+      <pubDate>Sun, 01 Oct 2017 16:51:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2017/10/01/eclipse_ide_installation/</guid>
+      <description>簡介 Eclipse是一款為多數人使用的集成開發環境(Integrated Development Environment, IDE)。 IDE能夠輔助開發者軟體的開發，IDE中內建相關語言的</description>
+    </item>
+    
+    <item>
+      <title>現在開始Windows軟體開發：安裝Java Developmet Kit(JDK) 8</title>
+      <link>https://imprld01.github.io/blogg/2017/10/01/java_development_kit_8_installation/</link>
+      <pubDate>Sun, 01 Oct 2017 12:19:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2017/10/01/java_development_kit_8_installation/</guid>
+      <description>簡介 由Java撰寫的任何程式都需要運行在具有Java虛擬環境的電腦上，這也是Java的跨平台性質的來由， 所以在運行任何Java程式之前都必須</description>
+    </item>
+    
+    <item>
+      <title>關於Python的包裝機制</title>
+      <link>https://imprld01.github.io/blogg/2017/10/01/code_packing_mechanism_in_python/</link>
+      <pubDate>Thu, 17 Aug 2017 22:13:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2017/10/01/code_packing_mechanism_in_python/</guid>
+      <description>簡介 來源 由 www.python.org - Python, GPL, Wikipedia 要寫Python很容易，只要安裝好環境之後，在terminal啟動python，直接打上程式碼就能得到執行結果，例如輸入</description>
+    </item>
+    
+  </channel>
+</rss>

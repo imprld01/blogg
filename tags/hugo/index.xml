@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/hugo/</link>
+    <description>Recent content in Hugo on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Aug 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>給自己的Hugo筆記</title>
+      <link>https://imprld01.github.io/blogg/2021/08/16/note_of_hugo_for_me/</link>
+      <pubDate>Mon, 16 Aug 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2021/08/16/note_of_hugo_for_me/</guid>
+      <description>下載準備 Hugo Release Page Git(Optional) 後續套用樣板的時候，一般都使用git指令，在這個時候會用到git，當然也可以徒手下載成壓縮檔，再放到對應的位置上。 安裝流程 在</description>
+    </item>
+    
+  </channel>
+</rss>
