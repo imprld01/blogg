@@ -264,7 +264,7 @@ y <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>f
         self<span style="color:#ff79c6">.</span>relu2 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>ReLU(inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">True</span>)
         self<span style="color:#ff79c6">.</span>quant <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>QuantStub()
         self<span style="color:#ff79c6">.</span>deqnt <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>DeQuantStub()
-                self<span style="color:#ff79c6">.</span>ffadd <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>FloatFunctional()
+        self<span style="color:#ff79c6">.</span>ffadd <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>FloatFunctional()
     <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">forward</span>(self, x):
         x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>quant(x)
         <span style="color:#6272a4">#</span>
