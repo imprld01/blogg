@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="Pytorch筆記: Quantization Aware Training (QAT)" />
+    <meta property="og:title" content="Pytorch筆記: Quantization Aware Training (QAT)" />
+    <meta property="twitter:title" content="Pytorch筆記: Quantization Aware Training (QAT)" />
+    
+
+    
+    <meta name="description" content="pytorch作quantize運算有兩種backend選擇，分別為fbgemm以及qnnpack，分別對應x86和ARM">
+    <meta property="og:description" content="pytorch作quantize運算有兩種backend選擇，分別為fbgemm以及qnnpack，分別對應x86和ARM" />
+    <meta property="twitter:description" content="pytorch作quantize運算有兩種backend選擇，分別為fbgemm以及qnnpack，分別對應x86和ARM" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>Pytorch筆記: Quantization Aware Training (QAT) – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2021/08/16/note_of_quantization_aware_training_in_pytorch/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2021/02/28/13/50/cup-oil-6057256_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/pytorch' title="Pytorch">
+                            Pytorch
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/quantization' title="Quantization">
+                            Quantization
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/deep-learning' title="Deep Learning">
+                            Deep Learning
+                        </a>
+                        
+                    </div>
+                    <h1>Pytorch筆記: Quantization Aware Training (QAT)</h1>
+                    <h2 class="subheading">Note of Quantization Aware Training (QAT) in Pytorch</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Friday, December 10, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#natively-supported-backends">Natively Supported Backends</a></li>
+    <li><a href="#procedure-of-qat">Procedure of QAT</a></li>
+    <li><a href="#good-tool-to-convert-a-quantized-torch-model-to-a-quantized-tflite-model">Good Tool to Convert A Quantized Torch Model to A Quantized TFLite Model</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="natively-supported-backends">Natively Supported Backends</h3>
+<!-- raw HTML omitted -->
+<p>pytorch作quantize運算有兩種backend選擇，分別為 <code>fbgemm</code> 以及 <code>qnnpack</code>，分別對應x86和ARM：</p>
+<ul>
+<li>
+<p>x86 CPUs with AVX2 support or higher (w/o AVX2 some ops have inefficient implementations)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4"># set the qconfig for QAT</span>
+qconfig <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>get_default_qat_qconfig(<span style="color:#f1fa8c">&#39;fbgemm&#39;</span>)
+<span style="color:#6272a4"># set the qengine to control weight packing</span>
+torch<span style="color:#ff79c6">.</span>backends<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>engine <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;fbgemm&#39;</span>
+</code></pre></div></li>
+<li>
+<p>ARM CPUs (typically found in mobile/embedded devices)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4"># set the qconfig for QAT</span>
+qconfig <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>get_default_qat_qconfig(<span style="color:#f1fa8c">&#39;qnnpack&#39;</span>)
+<span style="color:#6272a4"># set the qengine to control weight packing</span>
+torch<span style="color:#ff79c6">.</span>backends<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>engine <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;qnnpack&#39;</span>
+</code></pre></div></li>
+</ul>
+<h3 id="procedure-of-qat">Procedure of QAT</h3>
+<ol>
+<li>
+<p>手動將<code>add</code>、<code>mul</code>、<code>cat</code>等op換成torch.nn.quantized.FloatFunctional裡面的op</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">self<span style="color:#ff79c6">.</span>fadd <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>FloatFunctional()
+
+<span style="color:#6272a4">#y = x + b</span>
+y <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>fadd<span style="color:#ff79c6">.</span>add(x, b)
+</code></pre></div></li>
+<li>
+<p>產生QNN，在開頭與結尾加入<code>QuantStub</code>和<code>DeQuantStub</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MyNN</span>(nn<span style="color:#ff79c6">.</span>Module):
+    <span style="color:#ff79c6">def</span> __init__(self):
+        <span style="color:#8be9fd;font-style:italic">super</span>(MyNN, self)<span style="color:#ff79c6">.</span>__init__()
+        self<span style="color:#ff79c6">.</span>conv1 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>Conv2d(<span style="color:#bd93f9">64</span>, <span style="color:#bd93f9">64</span>, kernel_size<span style="color:#ff79c6">=</span><span style="color:#bd93f9">3</span>, stride<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>, padding<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+        self<span style="color:#ff79c6">.</span>bn1 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>BatchNorm2d(<span style="color:#bd93f9">64</span>)
+        self<span style="color:#ff79c6">.</span>relu1 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>ReLU(inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">True</span>)
+        self<span style="color:#ff79c6">.</span>conv2 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>Conv2d(<span style="color:#bd93f9">64</span>, <span style="color:#bd93f9">64</span>, kernel_size<span style="color:#ff79c6">=</span><span style="color:#bd93f9">3</span>, stride<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>, padding<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+        self<span style="color:#ff79c6">.</span>bn2 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>BatchNorm2d(<span style="color:#bd93f9">64</span>)
+        self<span style="color:#ff79c6">.</span>relu2 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>ReLU(inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">True</span>)
+        self<span style="color:#ff79c6">.</span>quant <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>QuantStub()
+        self<span style="color:#ff79c6">.</span>deqnt <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>DeQuantStub()
+                self<span style="color:#ff79c6">.</span>ffadd <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>FloatFunctional()
+    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">forward</span>(self, x):
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>quant(x)
+        <span style="color:#6272a4">#</span>
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>conv1(x)
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>bn1(x)
+        a <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>relu1(x)
+        <span style="color:#6272a4">#</span>
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>conv2(x)
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>bn2(x)
+        b <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>relu2(x)
+        <span style="color:#6272a4">#</span>
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>ffadd<span style="color:#ff79c6">.</span>add(a, b)
+        <span style="color:#6272a4">#</span>
+        x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>deqnt(x)
+        <span style="color:#ff79c6">return</span> x
+
+<span style="color:#6272a4"># create nn</span>
+mynn<span style="color:#ff79c6">=</span> MyNN()
+</code></pre></div></li>
+<li>
+<p>設定QAT參數：engine</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">torch<span style="color:#ff79c6">.</span>backends<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>engine <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;qnnpack&#39;</span>
+</code></pre></div></li>
+<li>
+<p>設定要fuse的部分</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fuse_list <span style="color:#ff79c6">=</span> [[<span style="color:#f1fa8c">&#39;conv1&#39;</span>, <span style="color:#f1fa8c">&#39;bn1&#39;</span>, <span style="color:#f1fa8c">&#39;relu1&#39;</span>],
+             [<span style="color:#f1fa8c">&#39;conv2&#39;</span>, <span style="color:#f1fa8c">&#39;bn2&#39;</span>, <span style="color:#f1fa8c">&#39;relu2&#39;</span>]]
+mynn <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>fuse_modules(mynn, fuse_list, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
+</code></pre></div></li>
+<li>
+<p>設定QAT參數：qconfig</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">qcfg <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>get_default_qat_qconfig(<span style="color:#f1fa8c">&#39;qnnpack&#39;</span>)
+<span style="color:#ff79c6">if</span> USE_UINT8:
+    qact <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>FakeQuantize<span style="color:#ff79c6">.</span>with_args(observer<span style="color:#ff79c6">=</span>torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>MovingAverageMinMaxObserver,
+                                                     quant_min<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>, quant_max<span style="color:#ff79c6">=</span><span style="color:#bd93f9">255</span>, dtype<span style="color:#ff79c6">=</span>torch<span style="color:#ff79c6">.</span>quint8,
+                                                     qscheme<span style="color:#ff79c6">=</span>torch<span style="color:#ff79c6">.</span>per_tensor_affine, reduce_range<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
+    qcfg <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>QConfig(activation<span style="color:#ff79c6">=</span>qact, weight<span style="color:#ff79c6">=</span>qcfg<span style="color:#ff79c6">.</span>weight)
+
+mynn<span style="color:#ff79c6">.</span>qconfig <span style="color:#ff79c6">=</span> qcfg
+</code></pre></div></li>
+<li>
+<p>套用設定好的qconfig與observer，這時候可以打印出來與原始NN比較看看。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mynn <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>prepare_qat(mynn, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
+<span style="color:#8be9fd;font-style:italic">print</span>(mynn)
+</code></pre></div><!-- raw HTML omitted -->
+</li>
+<li>
+<p>最後就可以開始training，結束之後會透過convert將model轉為quantized model</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_train_loops(mynn)
+
+torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>convert(mynn, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
+<span style="color:#8be9fd;font-style:italic">print</span>(mynn)
+</code></pre></div></li>
+</ol>
+<h3 id="good-tool-to-convert-a-quantized-torch-model-to-a-quantized-tflite-model">Good Tool to Convert A Quantized Torch Model to A Quantized TFLite Model</h3>
+<p><a href="https://github.com/alibaba/TinyNeuralNetwork/tree/35b3a7be47ce635815dd45e40f4124ac49747ee4">GitHub - alibaba/TinyNeuralNetwork at 35b3a7be47ce635815dd45e40f4124ac49747ee4</a></p>
+<h3 id="reference">Reference</h3>
+<ol>
+<li>
+<p><a href="https://bobondemon.github.io/2020/10/03/Quantization-%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">Quantization 的那些事</a></p>
+</li>
+<li>
+<p><a href="https://pytorch.org/docs/stable/quantization.html">Quantization - PyTorch 1.10.0 documentation</a></p>
+</li>
+<li>
+<p><a href="https://pytorch.org/tutorials/advanced/static_quantization_tutorial.html#quantization-aware-training">(beta) Static Quantization with Eager Mode in PyTorch - PyTorch Tutorials 1.10.0+cu102 documentation</a></p>
+</li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2021/08/16/note_of_hugo_for_me/' data-toggle="tooltip" data-placement="top" title="給自己的Hugo筆記">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "swb2319" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2021 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>

@@ -3,24 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://imprld01.github.io/blogg/categories/</loc>
-    <lastmod>2021-08-16T21:00:00+00:00</lastmod>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/deep-learning/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/post/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/pytorch/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2021/08/16/note_of_quantization_aware_training_in_pytorch/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/quantization/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/</loc>
+    <lastmod>2021-12-10T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/hugo/</loc>
     <lastmod>2021-08-16T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/installation/</loc>
-    <lastmod>2021-08-16T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/post/</loc>
-    <lastmod>2021-08-16T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/</loc>
-    <lastmod>2021-08-16T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
-    <lastmod>2021-08-16T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/</loc>
     <lastmod>2021-08-16T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/2021/08/16/note_of_hugo_for_me/</loc>

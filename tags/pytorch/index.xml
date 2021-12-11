@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pytorch on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/pytorch/</link>
+    <description>Recent content in Pytorch on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 10 Dec 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/pytorch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pytorch筆記: Quantization Aware Training (QAT)</title>
+      <link>https://imprld01.github.io/blogg/2021/08/16/note_of_quantization_aware_training_in_pytorch/</link>
+      <pubDate>Fri, 10 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2021/08/16/note_of_quantization_aware_training_in_pytorch/</guid>
+      <description>Natively Supported Backends pytorch作quantize運算有兩種backend選擇，分別為 fbgemm 以及 qnnpack，分別對應x86和ARM： x86 CPUs with AVX2 support or higher (w/o AVX2 some</description>
+    </item>
+    
+  </channel>
+</rss>
