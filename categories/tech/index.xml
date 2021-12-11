@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 10 Dec 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/categories/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pytorch筆記: Quantization Aware Training (QAT)</title>
-      <link>https://imprld01.github.io/blogg/2021/08/16/note_of_quantization_aware_training_in_pytorch/</link>
+      <link>https://imprld01.github.io/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/</link>
       <pubDate>Fri, 10 Dec 2021 21:00:00 +0000</pubDate>
       
-      <guid>https://imprld01.github.io/blogg/2021/08/16/note_of_quantization_aware_training_in_pytorch/</guid>
+      <guid>https://imprld01.github.io/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/</guid>
       <description>Natively Supported Backends pytorch作quantize運算有兩種backend選擇，分別為 fbgemm 以及 qnnpack，分別對應x86和ARM： x86 CPUs with AVX2 support or higher (w/o AVX2 some</description>
     </item>
     
