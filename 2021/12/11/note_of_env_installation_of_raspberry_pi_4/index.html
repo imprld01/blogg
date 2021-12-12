@@ -15,15 +15,15 @@
     
 
     
-    <meta name="title" content="" />
-    <meta property="og:title" content="" />
-    <meta property="twitter:title" content="" />
+    <meta name="title" content="Raspberry Pi 4 的環境安裝" />
+    <meta property="og:title" content="Raspberry Pi 4 的環境安裝" />
+    <meta property="twitter:title" content="Raspberry Pi 4 的環境安裝" />
     
 
     
-    <meta name="description" content="御風翱翔 知識漫遊 Wandering through Knowledge">
-    <meta property="og:description" content="御風翱翔 知識漫遊 Wandering through Knowledge" />
-    <meta property="twitter:description" content="御風翱翔 知識漫遊 Wandering through Knowledge" />
+    <meta name="description" content="相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體 Raspberry Pi Imager">
+    <meta property="og:description" content="相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體 Raspberry Pi Imager" />
+    <meta property="twitter:description" content="相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體 Raspberry Pi Imager" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="blog, knowledge">
     <link rel="shortcut icon" href="/blogg/img/o.ico">
 
-    <title>Tops – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+    <title>Raspberry Pi 4 的環境安裝 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
 
-    <link rel="canonical" href="/blogg/blogg/top/">
+    <link rel="canonical" href="/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/">
 
     <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
 
@@ -150,14 +150,45 @@
 
 
 
-<header class="intro-header" style="background-image: url('/blogg/img/home-bg-2.jpg')">
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2021/02/28/13/50/cup-oil-6057256_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>御風翱翔 知識漫遊 </h1>
-                    
-		    <span class="subheading">Wandering through Knowledge</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/raspberry-pi' title="Raspberry Pi">
+                            Raspberry Pi
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/installation' title="Installation">
+                            Installation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/embedded-system' title="Embedded System">
+                            Embedded System
+                        </a>
+                        
+                    </div>
+                    <h1>Raspberry Pi 4 的環境安裝</h1>
+                    <h2 class="subheading">Note of Environment Installation of Raspberry Pi 4</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Saturday, December 11, 2021
+                        
+                        
+                        
+                    </span>
                 </div>
             </div>
         </div>
@@ -170,13 +201,120 @@
 <article>
     <div class="container">
         <div class="row">
+
             
             <div class="
-                col-lg-8 col-lg-offset-2
+                col-lg-11 col-lg-offset-1
                 col-md-10 col-md-offset-1
                 post-container">
 
-         	
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#事前準備">事前準備</a></li>
+    <li><a href="#環境安裝步驟">環境安裝步驟</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="事前準備">事前準備</h3>
+<ol>
+<li>microSD Card</li>
+<li>Raspberry Pi</li>
+<li>Power Supply</li>
+<li><a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a></li>
+<li>Case (Optional)</li>
+<li>Case Fan (Optional)</li>
+<li>SD Adapter (Optional)</li>
+<li>HDMI Cable (Optional)</li>
+</ol>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled.png" alt="">
+
+</p>
+<!-- raw HTML omitted -->
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%201.png" alt="">
+
+</p>
+<!-- raw HTML omitted -->
+<h3 id="環境安裝步驟">環境安裝步驟</h3>
+<ol>
+<li>
+<p>開啟Raspberry Pi Imager之後，需要選擇作業系統跟安裝位置，首先按下CHOOSE OS。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%202.png" alt="">
+
+</p>
+</li>
+<li>
+<p>這裡提供許多相容的作業系統供選擇，一般選擇第一個推薦就可以了。</p>
+<blockquote>
+</blockquote>
+<ul>
+<li>Raspberry Pi OS (32-bit)：基本安裝、可視化桌面</li>
+<li>Raspberry Pi OS Lite (32-bit)：基本安裝、無可視化桌面</li>
+<li>Raspberry Pi OS Full (32-bit)：基本安裝、可視化桌面、其他套件和應用程式</li>
+</ul>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%203.png" alt="">
+
+</p>
+<p>這裡我們選擇最完整的環境安裝，點選上圖的Raspberr Pi OS (other)，選擇Raspberry Pi OS Full (32-bit)。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%204.png" alt="">
+
+</p>
+<p>下面還有其他額外的功能，例如將microSD卡格式化。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%205.png" alt="">
+
+</p>
+</li>
+<li>
+<p>選好作業系統之後，按下CHOOSE STORAGE選擇安裝位置。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%206.png" alt="">
+
+</p>
+</li>
+<li>
+<p>點選想安裝的microSD卡，這裡只有偵測到一組microSD Card。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%207.png" alt="">
+
+</p>
+</li>
+<li>
+<p>選擇完畢後，點選WEITE、YES，這步驟會將microSD卡格式化並安裝Raspberry Pi OS。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%208.png" alt="">
+
+</p>
+</li>
+<li>
+<p>等待安裝結束就大功告成，重新開機之後就能進行樹莓派開發。</p>
+</li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/' data-toggle="tooltip" data-placement="top" title="Pytorch筆記: Quantization Aware Training (QAT)">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
                 
 <div id="disqus-comment"></div>
 
@@ -204,62 +342,7 @@
 
             </div>
             
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/blogg/tags/ide" title="ide">
-                        ide
-                        </a>
-                        
-                        
-                        
-                        <a href="/blogg/tags/installation" title="installation">
-                        installation
-                        </a>
-                        
-                        
-                        
-                        <a href="/blogg/tags/java" title="java">
-                        java
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                    </div>
-                </section>
-                
-
-                
-                
-            </div>
+            
         </div>
     </div>
 </article>

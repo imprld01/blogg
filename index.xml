@@ -6,7 +6,16 @@
     <description>Recent content on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 10 Dec 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Dec 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Raspberry Pi 4 的環境安裝</title>
+      <link>https://imprld01.github.io/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/</link>
+      <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/</guid>
+      <description>事前準備 microSD Card Raspberry Pi Power Supply Raspberry Pi Imager Case (Optional) Case Fan (Optional) SD Adapter (Optional) HDMI Cable (Optional) 環境安裝步驟 開啟Raspberry Pi Imager之後，需要選擇作業系統跟安裝位置，首先按下C</description>
+    </item>
+    
     <item>
       <title>Pytorch筆記: Quantization Aware Training (QAT)</title>
       <link>https://imprld01.github.io/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/</link>

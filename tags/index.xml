@@ -6,7 +6,34 @@
     <description>Recent content in Tags on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 10 Dec 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Dec 2021 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Embedded System</title>
+      <link>https://imprld01.github.io/blogg/tags/embedded-system/</link>
+      <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/embedded-system/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Installation</title>
+      <link>https://imprld01.github.io/blogg/tags/installation/</link>
+      <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/installation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Raspberry Pi</title>
+      <link>https://imprld01.github.io/blogg/tags/raspberry-pi/</link>
+      <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/raspberry-pi/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Deep Learning</title>
       <link>https://imprld01.github.io/blogg/tags/deep-learning/</link>
@@ -40,15 +67,6 @@
       <pubDate>Mon, 16 Aug 2021 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/hugo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Installation</title>
-      <link>https://imprld01.github.io/blogg/tags/installation/</link>
-      <pubDate>Mon, 16 Aug 2021 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/installation/</guid>
       <description></description>
     </item>
     
