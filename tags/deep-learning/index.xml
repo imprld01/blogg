@@ -13,7 +13,7 @@
       <pubDate>Fri, 10 Dec 2021 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/</guid>
-      <description>Natively Supported Backends pytorch作quantize運算有兩種backend選擇，分別為 fbgemm 以及 qnnpack，分別對應x86和ARM： x86 CPUs with AVX2 support or higher (w/o AVX2 some</description>
+      <description>Natively Supported Backends Content From Pytorch Official Website: When preparing a quantized model, it is necessary to ensure that qconfig and the engine used for quantized computations match the backend on which the model will be executed. The qconfig controls the type of observers used during the quantization passes. The qengine controls whether fbgemm or qnnpack specific packing function is used when packing weights for linear and convolution functions and</description>
     </item>
     
   </channel>

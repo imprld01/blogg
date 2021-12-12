@@ -224,7 +224,10 @@
                 <hr>
                 
                 <h3 id="natively-supported-backends">Natively Supported Backends</h3>
-<!-- raw HTML omitted -->
+<blockquote>
+<p><strong>Content From Pytorch Official Website:</strong>
+When preparing a quantized model, it is necessary to ensure that qconfig and the engine used for quantized computations match the backend on which the model will be executed. The qconfig controls the type of observers used during the quantization passes. The qengine controls whether fbgemm or qnnpack specific packing function is used when packing weights for linear and convolution functions and modules.</p>
+</blockquote>
 <p>pytorch作quantize運算有兩種backend選擇，分別為 <code>fbgemm</code> 以及 <code>qnnpack</code>，分別對應x86和ARM：</p>
 <ul>
 <li>
@@ -309,7 +312,9 @@ mynn<span style="color:#ff79c6">.</span>qconfig <span style="color:#ff79c6">=</s
 <p>套用設定好的qconfig與observer，這時候可以打印出來與原始NN比較看看。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mynn <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>prepare_qat(mynn, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
 <span style="color:#8be9fd;font-style:italic">print</span>(mynn)
-</code></pre></div><!-- raw HTML omitted -->
+</code></pre></div><blockquote>
+<p>值得注意的是inplace參數設定，曾經遇過設定為True，結果第7步驟作convert時產生問題，很大一部分原因在inplace可能會為了節省memory而不保留之前的運算結果，在模型結構上也相對應有可能會被合併簡化，如果convert的相容性沒有處理到這樣的案例，就會產生問題。</p>
+</blockquote>
 </li>
 <li>
 <p>最後就可以開始training，結束之後會透過convert將model轉為quantized model</p>

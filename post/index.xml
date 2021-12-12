@@ -13,7 +13,7 @@
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/</guid>
-      <description>事前準備 microSD Card Raspberry Pi Power Supply Raspberry Pi Imager Case (Optional) Case Fan (Optional) SD Adapter (Optional) HDMI Cable (Optional) 環境安裝步驟 開啟Raspberry Pi Imager之後，需要選擇作業系統跟安裝位置，首先按下C</description>
+      <description>事前準備 microSD Card Raspberry Pi Power Supply Raspberry Pi Imager Case (Optional) Case Fan (Optional) SD Adapter (Optional) HDMI Cable (Optional) 相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體： 環境安裝步驟 開</description>
     </item>
     
     <item>
@@ -22,7 +22,7 @@
       <pubDate>Fri, 10 Dec 2021 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/</guid>
-      <description>Natively Supported Backends pytorch作quantize運算有兩種backend選擇，分別為 fbgemm 以及 qnnpack，分別對應x86和ARM： x86 CPUs with AVX2 support or higher (w/o AVX2 some</description>
+      <description>Natively Supported Backends Content From Pytorch Official Website: When preparing a quantized model, it is necessary to ensure that qconfig and the engine used for quantized computations match the backend on which the model will be executed. The qconfig controls the type of observers used during the quantization passes. The qengine controls whether fbgemm or qnnpack specific packing function is used when packing weights for linear and convolution functions and</description>
     </item>
     
     <item>
