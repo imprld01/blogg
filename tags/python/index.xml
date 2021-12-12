@@ -6,7 +6,16 @@
     <description>Recent content in Python on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Aug 2017 22:13:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Dec 2021 22:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>從頭開始模組化開發Pyhton的程式架構</title>
+      <link>https://imprld01.github.io/blogg/2021/12/11/simple_prototype_for_me_to_develop_from_scratch_in_python/</link>
+      <pubDate>Sat, 11 Dec 2021 22:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2021/12/11/simple_prototype_for_me_to_develop_from_scratch_in_python/</guid>
+      <description>這裡主要運用python中模組化的功能，將python code分門別類擺放，最後在最外層透過shell script或是python scrip</description>
+    </item>
+    
     <item>
       <title>關於Python的包裝機制</title>
       <link>https://imprld01.github.io/blogg/2017/10/01/code_packing_mechanism_in_python/</link>

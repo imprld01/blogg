@@ -3,7 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://imprld01.github.io/blogg/categories/</loc>
-    <lastmod>2021-12-11T21:00:00+00:00</lastmod>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/module/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/post/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/prototype/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/python/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2021/12/11/simple_prototype_for_me_to_develop_from_scratch_in_python/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/</loc>
+    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/embedded-system/</loc>
     <lastmod>2021-12-11T21:00:00+00:00</lastmod>
@@ -11,22 +35,10 @@
     <loc>https://imprld01.github.io/blogg/tags/installation/</loc>
     <lastmod>2021-12-11T21:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://imprld01.github.io/blogg/post/</loc>
-    <lastmod>2021-12-11T21:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://imprld01.github.io/blogg/tags/raspberry-pi/</loc>
     <lastmod>2021-12-11T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/</loc>
-    <lastmod>2021-12-11T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/</loc>
-    <lastmod>2021-12-11T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
-    <lastmod>2021-12-11T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/</loc>
     <lastmod>2021-12-11T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/deep-learning/</loc>
@@ -73,9 +85,6 @@
   </url><url>
     <loc>https://imprld01.github.io/blogg/2017/10/01/java_development_kit_8_installation/</loc>
     <lastmod>2017-10-01T12:19:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/python/</loc>
-    <lastmod>2017-08-17T22:13:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/2017/10/01/code_packing_mechanism_in_python/</loc>
     <lastmod>2017-08-17T22:13:00+00:00</lastmod>

@@ -15,15 +15,15 @@
     
 
     
-    <meta name="title" content="Raspberry Pi 4 的環境安裝" />
-    <meta property="og:title" content="Raspberry Pi 4 的環境安裝" />
-    <meta property="twitter:title" content="Raspberry Pi 4 的環境安裝" />
+    <meta name="title" content="從頭開始模組化開發Pyhton的程式架構" />
+    <meta property="og:title" content="從頭開始模組化開發Pyhton的程式架構" />
+    <meta property="twitter:title" content="從頭開始模組化開發Pyhton的程式架構" />
     
 
     
-    <meta name="description" content="相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體 Raspberry Pi Imager">
-    <meta property="og:description" content="相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體 Raspberry Pi Imager" />
-    <meta property="twitter:description" content="相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體 Raspberry Pi Imager" />
+    <meta name="description" content="這裡主要運用python中模組化的功能，將python code分門別類擺放，最後在最外層透過shell script或是python script來呼叫模組功能。">
+    <meta property="og:description" content="這裡主要運用python中模組化的功能，將python code分門別類擺放，最後在最外層透過shell script或是python script來呼叫模組功能。" />
+    <meta property="twitter:description" content="這裡主要運用python中模組化的功能，將python code分門別類擺放，最後在最外層透過shell script或是python script來呼叫模組功能。" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="blog, knowledge">
     <link rel="shortcut icon" href="/blogg/img/o.ico">
 
-    <title>Raspberry Pi 4 的環境安裝 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+    <title>從頭開始模組化開發Pyhton的程式架構 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
 
-    <link rel="canonical" href="/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/">
+    <link rel="canonical" href="/blogg/2021/12/11/simple_prototype_for_me_to_develop_from_scratch_in_python/">
 
     <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
 
@@ -153,7 +153,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('https://cdn.pixabay.com/photo/2020/02/02/08/56/berry-4812400_960_720.jpg')
+        background-image: url('https://cdn.pixabay.com/photo/2017/07/26/22/39/sand-2543424_960_720.jpg')
     }
 </style>
 <header class="intro-header">
@@ -163,21 +163,21 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href='/blogg/tags/raspberry-pi' title="Raspberry Pi">
-                            Raspberry Pi
+                        <a class="tag" href='/blogg/tags/python' title="Python">
+                            Python
                         </a>
                         
-                        <a class="tag" href='/blogg/tags/installation' title="Installation">
-                            Installation
+                        <a class="tag" href='/blogg/tags/prototype' title="Prototype">
+                            Prototype
                         </a>
                         
-                        <a class="tag" href='/blogg/tags/embedded-system' title="Embedded System">
-                            Embedded System
+                        <a class="tag" href='/blogg/tags/module' title="Module">
+                            Module
                         </a>
                         
                     </div>
-                    <h1>Raspberry Pi 4 的環境安裝</h1>
-                    <h2 class="subheading">Note of Environment Installation of Raspberry Pi 4</h2>
+                    <h1>從頭開始模組化開發Pyhton的程式架構</h1>
+                    <h2 class="subheading">Simple Prototype for Me to Develop from Scratch in Python</h2>
                     <span class="meta">
                         Posted by 
                         
@@ -216,91 +216,102 @@
                 <nav id="TableOfContents">
   <ul>
     <li><a href="#事前準備">事前準備</a></li>
-    <li><a href="#環境安裝步驟">環境安裝步驟</a></li>
+    <li><a href="#資料夾結構">資料夾結構</a></li>
+    <li><a href="#程式碼範例">程式碼範例</a></li>
+    <li><a href="#如何使用">如何使用</a></li>
   </ul>
 </nav>
                 <hr>
                 
-                <h3 id="事前準備">事前準備</h3>
+                <p>這裡主要運用python中模組化的功能，將python code分門別類擺放，最後在最外層透過shell script或是python script來呼叫模組功能。</p>
+<h3 id="事前準備">事前準備</h3>
 <ol>
-<li>microSD Card</li>
-<li>Raspberry Pi</li>
-<li>Power Supply</li>
-<li><a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a></li>
-<li>Case (Optional)</li>
-<li>Case Fan (Optional)</li>
-<li>SD Adapter (Optional)</li>
-<li>HDMI Cable (Optional)</li>
+<li>Python3</li>
 </ol>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled.png" alt="">
+<h3 id="資料夾結構">資料夾結構</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Project/
+    run.sh
+    setup.sh
+    config.json
+    src/
+        __init__.py
+        utilize/
+            math.py
+        execute/
+            calculate.py
+</code></pre></div><h3 id="程式碼範例">程式碼範例</h3>
+<p>math.py</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">myadd</span>(a, b):
+    <span style="color:#ff79c6">return</span> <span style="color:#8be9fd;font-style:italic">float</span>(a)<span style="color:#ff79c6">+</span><span style="color:#8be9fd;font-style:italic">float</span>(b)
 
-</p>
-<blockquote>
-<p>相較於傳統安裝樹梅派環境的方式，Raspberry Pi 提供另一個便捷的安裝軟體：
+<span style="color:#6272a4"># simple test case</span>
+<span style="color:#ff79c6">if</span> __name__ <span style="color:#ff79c6">==</span> <span style="color:#f1fa8c">&#39;__main__&#39;</span>:
+    <span style="color:#ff79c6">assert</span> <span style="color:#bd93f9">15.</span><span style="color:#ff79c6">==</span>myadd(<span style="color:#bd93f9">5</span>, <span style="color:#bd93f9">10</span>)
+    <span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;calcuation is correct!&#39;</span>)
+</code></pre></div><p>calculate.py</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">import</span> os
+<span style="color:#ff79c6">import</span> json
+<span style="color:#ff79c6">import</span> click
+<span style="color:#ff79c6">import</span> numpy <span style="color:#ff79c6">as</span> np
 
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%201.png" alt="">
+<span style="color:#ff79c6">from</span> tqdm <span style="color:#ff79c6">import</span> tqdm <span style="color:#6272a4"># tqdm is unused in this example</span>
+<span style="color:#ff79c6">from</span> ..utilize <span style="color:#ff79c6">import</span> math
 
-</p>
-</blockquote>
-<h3 id="環境安裝步驟">環境安裝步驟</h3>
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">load_settings</span>(cfile<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;configs.json&#39;</span>):
+
+    <span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(cfile) <span style="color:#ff79c6">as</span> f:
+        configs <span style="color:#ff79c6">=</span> json<span style="color:#ff79c6">.</span>load(f)
+
+    <span style="color:#ff79c6">return</span> configs
+
+@click<span style="color:#ff79c6">.</span>command()
+@click<span style="color:#ff79c6">.</span>option(<span style="color:#f1fa8c">&#39;--configs&#39;</span>, default<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;configs.json&#39;</span>, help<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;JSON file for configs&#39;</span>)
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">calculate</span>(configs):
+
+    configs <span style="color:#ff79c6">=</span> load_settings(configs)
+
+    result <span style="color:#ff79c6">=</span> math<span style="color:#ff79c6">.</span>myadd(configs[<span style="color:#f1fa8c">&#39;param4&#39;</span>][<span style="color:#f1fa8c">&#39;SKey1&#39;</span>],
+                        configs[<span style="color:#f1fa8c">&#39;param4&#39;</span>][<span style="color:#f1fa8c">&#39;SKey2&#39;</span>])
+    <span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#34;result:&#34;</span>, result)
+
+<span style="color:#ff79c6">if</span> __name__ <span style="color:#ff79c6">==</span> <span style="color:#f1fa8c">&#39;__main__&#39;</span>:
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> os<span style="color:#ff79c6">.</span>path<span style="color:#ff79c6">.</span>exists(<span style="color:#f1fa8c">&#39;result/&#39;</span>): os<span style="color:#ff79c6">.</span>makedirs(<span style="color:#f1fa8c">&#39;result/&#39;</span>)
+    calculate()
+</code></pre></div><p>config.json</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#ff79c6">&#34;param1&#34;</span>: <span style="color:#f1fa8c">&#34;I am a String.&#34;</span>,
+    <span style="color:#ff79c6">&#34;param2&#34;</span>: <span style="color:#bd93f9">666</span>,
+    <span style="color:#ff79c6">&#34;param3&#34;</span>: [<span style="color:#f1fa8c">&#34;Hello&#34;</span>, <span style="color:#f1fa8c">&#34;World&#34;</span>],
+    <span style="color:#ff79c6">&#34;param4&#34;</span>: {<span style="color:#ff79c6">&#34;SKey1&#34;</span>:<span style="color:#bd93f9">7.0</span>, <span style="color:#ff79c6">&#34;SKey2&#34;</span>:<span style="color:#bd93f9">6.0</span>},
+    <span style="color:#ff79c6">&#34;param5&#34;</span>: <span style="color:#ff79c6">true</span>
+}
+</code></pre></div><p>run.sh</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">python3 -m src.execute.calculate --configs<span style="color:#ff79c6">=</span>./configs.json
+</code></pre></div><p>setup.sh</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">pip install tqdm
+pip install click
+</code></pre></div><h3 id="如何使用">如何使用</h3>
 <ol>
 <li>
-<p>開啟Raspberry Pi Imager之後，需要選擇作業系統跟安裝位置，首先按下CHOOSE OS。</p>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%202.png" alt="">
-
-</p>
-</li>
+<p>可以將套件安裝等設定寫成 shell script 方便自己或他人快速設定環境</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bash setup.sh
+</code></pre></div></li>
 <li>
-<p>這裡提供許多相容的作業系統供選擇，一般選擇第一個推薦就可以了。</p>
-<blockquote>
-<p>OS版本可選列表：</p>
-<ul>
-<li>Raspberry Pi OS (32-bit)：基本安裝、可視化桌面</li>
-<li>Raspberry Pi OS Lite (32-bit)：基本安裝、無可視化桌面</li>
-<li>Raspberry Pi OS Full (32-bit)：基本安裝、可視化桌面、其他套件和應用程式</li>
-</ul>
-</blockquote>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%203.png" alt="">
-
-</p>
-<p>這裡我們選擇最完整的環境安裝，點選上圖的Raspberr Pi OS (other)，選擇Raspberry Pi OS Full (32-bit)。</p>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%204.png" alt="">
-
-</p>
-<p>下面還有其他額外的功能，例如將microSD卡格式化。</p>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%205.png" alt="">
-
-</p>
-</li>
+<p>簡單作功能測試，可以透過python內建的<code>assert</code>語法來實現</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">cd</span> src/utilize/
+python3 math.py
+</code></pre></div></li>
 <li>
-<p>選好作業系統之後，按下CHOOSE STORAGE選擇安裝位置。</p>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%206.png" alt="">
-
-</p>
-</li>
+<p>只從最外層 shell script 開始自己的開發</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bash run.sh
+</code></pre></div></li>
 <li>
-<p>點選想安裝的microSD卡，這裡只有偵測到一組microSD Card。</p>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%207.png" alt="">
-
-</p>
-</li>
-<li>
-<p>選擇完畢後，點選WEITE、YES，這步驟會將microSD卡格式化並安裝Raspberry Pi OS。</p>
-<p>
-  <img src="https://imprld01.github.io/blogg/img/20211211-pi4-env-install/Untitled%208.png" alt="">
-
-</p>
-</li>
-<li>
-<p>等待安裝結束就大功告成，重新開機之後就能進行樹莓派開發。</p>
-</li>
+<p>透過 configs.json 讓參數設定井然有序，除了JSON資料格式，也有其他許多資料格式可以使用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#ff79c6">&#34;batch_size&#34;</span>: <span style="color:#bd93f9">1</span>,
+    <span style="color:#ff79c6">&#34;train_epoch&#34;</span>: <span style="color:#bd93f9">2</span>
+}
+</code></pre></div></li>
 </ol>
 
 
@@ -310,15 +321,10 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href='/blogg/2021/12/10/note_of_quantization_aware_training_in_pytorch/' data-toggle="tooltip" data-placement="top" title="Pytorch筆記: Quantization Aware Training (QAT)">&larr;
+                        <a href='/blogg/2021/12/11/note_of_env_installation_of_raspberry_pi_4/' data-toggle="tooltip" data-placement="top" title="Raspberry Pi 4 的環境安裝">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href='/blogg/2021/12/11/simple_prototype_for_me_to_develop_from_scratch_in_python/' data-toggle="tooltip" data-placement="top" title="從頭開始模組化開發Pyhton的程式架構">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
