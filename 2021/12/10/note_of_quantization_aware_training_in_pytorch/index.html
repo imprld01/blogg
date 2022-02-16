@@ -248,7 +248,7 @@ torch<span style="color:#ff79c6">.</span>backends<span style="color:#ff79c6">.</
 <h3 id="procedure-of-qat">Procedure of QAT</h3>
 <ol>
 <li>
-<p>手動將<code>add</code>、<code>mul</code>、<code>cat</code>等op換成torch.nn.quantized.FloatFunctional裡面的op</p>
+<p>手動將<code>add</code>、<code>mul</code>、<code>cat</code>等op換成torch.nn.quantized.FloatFunctional裡面的op。這個步驟主要用來適應TinyNeuralNetwork套件，否則一般Pytorch的QAT並不需要。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">self<span style="color:#ff79c6">.</span>fadd <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>FloatFunctional()
 
 <span style="color:#6272a4">#y = x + b</span>
@@ -257,6 +257,7 @@ y <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>f
 <li>
 <p>產生QNN，在開頭與結尾加入<code>QuantStub</code>和<code>DeQuantStub</code>。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MyNN</span>(nn<span style="color:#ff79c6">.</span>Module):
+
     <span style="color:#ff79c6">def</span> __init__(self):
         <span style="color:#8be9fd;font-style:italic">super</span>(MyNN, self)<span style="color:#ff79c6">.</span>__init__()
         self<span style="color:#ff79c6">.</span>conv1 <span style="color:#ff79c6">=</span> nn<span style="color:#ff79c6">.</span>Conv2d(<span style="color:#bd93f9">64</span>, <span style="color:#bd93f9">64</span>, kernel_size<span style="color:#ff79c6">=</span><span style="color:#bd93f9">3</span>, stride<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>, padding<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
@@ -268,6 +269,7 @@ y <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>f
         self<span style="color:#ff79c6">.</span>quant <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>QuantStub()
         self<span style="color:#ff79c6">.</span>deqnt <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>DeQuantStub()
         self<span style="color:#ff79c6">.</span>ffadd <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>nn<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>FloatFunctional()
+
     <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">forward</span>(self, x):
         x <span style="color:#ff79c6">=</span> self<span style="color:#ff79c6">.</span>quant(x)
         <span style="color:#6272a4">#</span>
@@ -298,9 +300,9 @@ mynn<span style="color:#ff79c6">=</span> MyNN()
 mynn <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>fuse_modules(mynn, fuse_list, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
 </code></pre></div></li>
 <li>
-<p>設定QAT參數：qconfig</p>
+<p>設定QAT參數：qconfig。若要特別量化成Affine Asymmetric的UINT8，可參考下面<code>if</code>中的範例。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">qcfg <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>get_default_qat_qconfig(<span style="color:#f1fa8c">&#39;qnnpack&#39;</span>)
-<span style="color:#ff79c6">if</span> USE_UINT8:
+<span style="color:#ff79c6">if</span> <span style="color:#ff79c6">True</span><span style="color:#ff79c6">==</span>USE_UINT8:
     qact <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>FakeQuantize<span style="color:#ff79c6">.</span>with_args(observer<span style="color:#ff79c6">=</span>torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>MovingAverageMinMaxObserver,
                                                      quant_min<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>, quant_max<span style="color:#ff79c6">=</span><span style="color:#bd93f9">255</span>, dtype<span style="color:#ff79c6">=</span>torch<span style="color:#ff79c6">.</span>quint8,
                                                      qscheme<span style="color:#ff79c6">=</span>torch<span style="color:#ff79c6">.</span>per_tensor_affine, reduce_range<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
@@ -309,7 +311,7 @@ mynn <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</sp
 mynn<span style="color:#ff79c6">.</span>qconfig <span style="color:#ff79c6">=</span> qcfg
 </code></pre></div></li>
 <li>
-<p>套用設定好的qconfig與observer，這時候可以打印出來與原始NN比較看看。</p>
+<p>套用設定好的qconfig與observer，這時候可以打印出來與原始NN比較看看。這一步主要是插入訓練用的量化運算子 (fake-quantization)。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mynn <span style="color:#ff79c6">=</span> torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>prepare_qat(mynn, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
 <span style="color:#8be9fd;font-style:italic">print</span>(mynn)
 </code></pre></div><blockquote>
@@ -317,7 +319,7 @@ mynn<span style="color:#ff79c6">.</span>qconfig <span style="color:#ff79c6">=</s
 </blockquote>
 </li>
 <li>
-<p>最後就可以開始training，結束之後會透過convert將model轉為quantized model</p>
+<p>最後就可以開始training，結束之後會透過convert將model轉為quantized model。這一步主要是生成最終的量化模型，基礎上是將一些訓練時才需要的資料去除，例如qconfig。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">my_train_loops(mynn)
 
 torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>convert(mynn, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
@@ -325,8 +327,19 @@ torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6"
 </code></pre></div></li>
 </ol>
 <h3 id="good-tool-to-convert-a-quantized-torch-model-to-a-quantized-tflite-model">Good Tool to Convert A Quantized Torch Model to A Quantized TFLite Model</h3>
+<p>這個套件是將Pytroch繁複的QAT設定步驟，透過程式自動化應用QAT的工具，省去自行修改程式碼的功夫，如果將這個工具的底層攤開來其實也就是如上步驟而已。</p>
 <p><a href="https://github.com/alibaba/TinyNeuralNetwork">GitHub - alibaba/TinyNeuralNetwork</a></p>
-<h3 id="reference">Reference</h3>
+<p>這個工具還提供了能將Pytorch QAT Model轉成tflite格式的功能，有利於佈署至Edge Device上：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">with</span> torch<span style="color:#ff79c6">.</span>no_grad():
+    qmodel <span style="color:#ff79c6">=</span> copy<span style="color:#ff79c6">.</span>deepcopy(mynn)
+    torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6">.</span>convert(qmodel, inplace<span style="color:#ff79c6">=</span><span style="color:#ff79c6">False</span>)
+    <span style="color:#6272a4">#</span>
+    torch<span style="color:#ff79c6">.</span>backends<span style="color:#ff79c6">.</span>quantized<span style="color:#ff79c6">.</span>engine <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;qnnpack&#39;</span>
+    converter <span style="color:#ff79c6">=</span> TFLiteConverter(qmodel<span style="color:#ff79c6">.</span>module,
+                                torch<span style="color:#ff79c6">.</span>randn(<span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">64</span>, nn_h, nn_w,
+                                tflite_path<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;qmodel.tflite&#34;</span>)
+    converter<span style="color:#ff79c6">.</span>convert()
+</code></pre></div><h3 id="reference">Reference</h3>
 <ol>
 <li>
 <p><a href="https://bobondemon.github.io/2020/10/03/Quantization-%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">Quantization 的那些事</a></p>
@@ -464,7 +477,7 @@ torch<span style="color:#ff79c6">.</span>quantization<span style="color:#ff79c6"
                     <br>
 					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
 					<br>
-					2021 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
                     <br>
 					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
                 </p>
