@@ -257,24 +257,24 @@
                 
                 <h3 id="dft與dtft的差異">DFT與DTFT的差異</h3>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled.png" alt="">
 
 </p>
 <p>DTFT是無限長不可數信號的傅立葉表示方式 (由FT延伸而來，無限長，如上圖左下所示，左上為FT)，公式如下：</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%201.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%201.png" alt="">
 
 </p>
 <p>DFT是無限長可數信號的傅立葉表示方式 (由DTFT延伸而來，對DTFT取樣，如上圖右下所示，加速運算衍生FFT)，公式如下：</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%202.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%202.png" alt="">
 
 </p>
 <ul>
 <li>
 <p>補充DTFT與DFT的表示：</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%203.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%203.png" alt="">
 
 </p>
 </li>
@@ -284,35 +284,35 @@
 <li>
 <p>FT演進史：</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%204.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%204.png" alt="">
 
 </p>
 </li>
 </ul>
 <h3 id="從complex-form頻譜回推大小與相位-the-meaning-of-complex-form-of-dft">從Complex Form頻譜回推大小與相位 (The Meaning of Complex Form of DFT)</h3>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%205.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%205.png" alt="">
 
 </p>
 <p>根據complex number的理論，要取得複數的大小會套用歐幾里得公式：將實部與虛部個別平方相加開根號。而取得複數的相位則是透過向量角度的取法：透過實部與虛部的長度反求對應的角度。</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%206.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%206.png" alt="">
 
 </p>
 <p>關於相位的解釋可以回想sin波所對應的相位變化，就能比較容易理解相位可以視為「波」的另一種形式表示法。這種表示方式是將一個數字能量拆開成實部與虛部，對應到複數空間就能看出相位的變化，透過實部與虛部的計算也能反推回原始波的能量大小或變化。</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Unfasor.gif" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Unfasor.gif" alt="">
 
 </p>
 <h3 id="從sliding-window的角度拆解stftistft的運算過程">從Sliding Window的角度拆解STFT/ISTFT的運算過程</h3>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/image.jpg" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/image.jpg" alt="">
 
 </p>
 <p>要注意的是，<code>conv</code>這個運算代表一組傅立葉轉換，用<code>conv</code>想表示其實這裡頭還隱含著另一個Sliding Window，裡頭的looping結束之後才會得到圖片中的綠色結果。</p>
 <p>Convolution的概念可以參考以下：</p>
 <p>
-  <img src="https://imprld01.github.io/blog/assets/img/20220205-note-dft/Untitled%207.png" alt="">
+  <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%207.png" alt="">
 
 </p>
 <h3 id="reference">Reference</h3>
