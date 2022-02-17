@@ -221,16 +221,22 @@
                 <header>
                     <h3>目錄</h3>
                 </header>
-                <nav id="TableOfContents"></nav>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#讀寫權限">讀寫權限</a></li>
+    <li><a href="#使用adb或com-port">使用ADB或COM Port</a></li>
+  </ul>
+</nav>
                 <hr>
                 
                 <p>對於Android裝置內建程式開發者而言，在開發時如果要更改內建的程式，一般會透過重新安裝 updated image 來測試程式功能，但重複燒入新的 image 做測試不但費時也費力。</p>
 <p>
-  <img src="https://github.com/imprld01/blogg/tree/master/img/20220122-android-dev-board/Untitled.jpeg" alt="">
+  <img src="https://imprld01.github.io/blog/assets/img/20220122-android-dev-board/Untitled.jpeg" alt="">
 
 </p>
 <p>事實上，Android平台提供方便的debug工具，能夠讓開發者方便上傳、下載Android平台上的檔案。</p>
 <p>依照平台性質需要關閉一些 Android 的保護功能，再設定目標資料夾的讀寫權限，好讓讀寫功能可以運作，下面分為三個步驟，可依照需求作為參考：</p>
+<h3 id="讀寫權限">讀寫權限</h3>
 <ul>
 <li>
 <p>提前關閉 SELinux <a href="">SELinux</a>  、並關閉 AVB 功能 <a href="">Android Verified Boot (AVB)</a></p>
@@ -239,8 +245,10 @@
 <p>查詢開發板特定資料夾的讀寫權限，rw 表示可讀寫 (read-write)，ro 表示僅可讀 (read-only)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mount
 </code></pre></div></li>
-<li>
-<p>從遠端透過 ADB PULL 與 ADB PUSH 的方式替換檔案，分為兩個小步驟：</p>
+</ul>
+<h3 id="使用adb或com-port">使用ADB或COM Port</h3>
+<ul>
+<li>從遠端透過 ADB PULL 與 ADB PUSH 的方式替換檔案，分為兩個小步驟：
 <ol>
 <li>
 <p>更改特定資料夾的權限為 rw (可讀寫)，下面有兩種方式可以選擇：</p>
