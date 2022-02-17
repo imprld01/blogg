@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GoogleTest on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/googletest/</link>
+    <description>Recent content in GoogleTest on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Feb 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/googletest/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GoogleTest筆記：安裝與執行</title>
+      <link>https://imprld01.github.io/blogg/2022/02/15/note_of_googletest_for_installation_and_execution/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/02/15/note_of_googletest_for_installation_and_execution/</guid>
+      <description>為系統安裝GoogleTest 執行以下shell script，會將GoogleTest的原始碼下載下來，並且透過make將GoogleTes</description>
+    </item>
+    
+  </channel>
+</rss>

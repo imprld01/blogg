@@ -6,7 +6,313 @@
     <description>Recent content in Tags on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Dec 2021 22:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Feb 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Execution</title>
+      <link>https://imprld01.github.io/blogg/tags/execution/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/execution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GoogleTest</title>
+      <link>https://imprld01.github.io/blogg/tags/googletest/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/googletest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Installation</title>
+      <link>https://imprld01.github.io/blogg/tags/installation/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/installation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TDD</title>
+      <link>https://imprld01.github.io/blogg/tags/tdd/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/tdd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Turtorial</title>
+      <link>https://imprld01.github.io/blogg/tags/turtorial/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/turtorial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unit Testing</title>
+      <link>https://imprld01.github.io/blogg/tags/unit-testing/</link>
+      <pubDate>Tue, 15 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/unit-testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Complex</title>
+      <link>https://imprld01.github.io/blogg/tags/complex/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/complex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Convolution</title>
+      <link>https://imprld01.github.io/blogg/tags/convolution/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/convolution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DFT</title>
+      <link>https://imprld01.github.io/blogg/tags/dft/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/dft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Discrete Fourier Transform</title>
+      <link>https://imprld01.github.io/blogg/tags/discrete-fourier-transform/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/discrete-fourier-transform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DTFT</title>
+      <link>https://imprld01.github.io/blogg/tags/dtft/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/dtft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FFT</title>
+      <link>https://imprld01.github.io/blogg/tags/fft/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/fft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fourier Transform</title>
+      <link>https://imprld01.github.io/blogg/tags/fourier-transform/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/fourier-transform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FT</title>
+      <link>https://imprld01.github.io/blogg/tags/ft/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/ft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ISTFT</title>
+      <link>https://imprld01.github.io/blogg/tags/istft/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/istft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Phase</title>
+      <link>https://imprld01.github.io/blogg/tags/phase/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/phase/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>STFT</title>
+      <link>https://imprld01.github.io/blogg/tags/stft/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/stft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Transfer</title>
+      <link>https://imprld01.github.io/blogg/tags/data-transfer/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/data-transfer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Device</title>
+      <link>https://imprld01.github.io/blogg/tags/device/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/device/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FTP</title>
+      <link>https://imprld01.github.io/blogg/tags/ftp/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/ftp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://imprld01.github.io/blogg/tags/linux/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rsync</title>
+      <link>https://imprld01.github.io/blogg/tags/rsync/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/rsync/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SFTP</title>
+      <link>https://imprld01.github.io/blogg/tags/sftp/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/sftp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ADB</title>
+      <link>https://imprld01.github.io/blogg/tags/adb/</link>
+      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/adb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ADB Pull</title>
+      <link>https://imprld01.github.io/blogg/tags/adb-pull/</link>
+      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/adb-pull/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ADB Push</title>
+      <link>https://imprld01.github.io/blogg/tags/adb-push/</link>
+      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/adb-push/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Android</title>
+      <link>https://imprld01.github.io/blogg/tags/android/</link>
+      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Development Board</title>
+      <link>https://imprld01.github.io/blogg/tags/development-board/</link>
+      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/development-board/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Management</title>
+      <link>https://imprld01.github.io/blogg/tags/management/</link>
+      <pubDate>Sat, 08 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/management/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Terminal</title>
+      <link>https://imprld01.github.io/blogg/tags/terminal/</link>
+      <pubDate>Sat, 08 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/terminal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tmux</title>
+      <link>https://imprld01.github.io/blogg/tags/tmux/</link>
+      <pubDate>Sat, 08 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/tmux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tool</title>
+      <link>https://imprld01.github.io/blogg/tags/tool/</link>
+      <pubDate>Sat, 08 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/tool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hard Disk</title>
+      <link>https://imprld01.github.io/blogg/tags/hard-disk/</link>
+      <pubDate>Sat, 25 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/hard-disk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mount</title>
+      <link>https://imprld01.github.io/blogg/tags/mount/</link>
+      <pubDate>Sat, 25 Dec 2021 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/mount/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Module</title>
       <link>https://imprld01.github.io/blogg/tags/module/</link>
@@ -40,15 +346,6 @@
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/embedded-system/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Installation</title>
-      <link>https://imprld01.github.io/blogg/tags/installation/</link>
-      <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/installation/</guid>
       <description></description>
     </item>
     

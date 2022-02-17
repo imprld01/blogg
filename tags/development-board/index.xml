@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Development Board on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/development-board/</link>
+    <description>Recent content in Development Board on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 22 Jan 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/development-board/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>更新Android開發板內部檔案的方法</title>
+      <link>https://imprld01.github.io/blogg/2022/01/22/note_of_updating_files_on_android_development_board/</link>
+      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/01/22/note_of_updating_files_on_android_development_board/</guid>
+      <description>對於Android裝置內建程式開發者而言，在開發時如果要更改內建的程式，一般會透過重新安裝 updated image 來測試程式功能，但重複燒入新的 image 做測試不但費時</description>
+    </item>
+    
+  </channel>
+</rss>

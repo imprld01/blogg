@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>FT on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/ft/</link>
+    <description>Recent content in FT on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Feb 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/ft/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>給自己的筆記：傅立葉轉換</title>
+      <link>https://imprld01.github.io/blogg/2022/02/05/note_of_discrete_fourier_transform/</link>
+      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/02/05/note_of_discrete_fourier_transform/</guid>
+      <description>DFT與DTFT的差異 DTFT是無限長不可數信號的傅立葉表示方式 (由FT延伸而來，無限長，如上圖左下所示，左上為FT)，公式如下： DFT是無</description>
+    </item>
+    
+  </channel>
+</rss>

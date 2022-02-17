@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tmux on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/tmux/</link>
+    <description>Recent content in Tmux on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 08 Jan 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/tmux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tmux筆記：終端機工作管理工具</title>
+      <link>https://imprld01.github.io/blogg/2022/01/08/note_of_terminal_management_tool_for_tmux/</link>
+      <pubDate>Sat, 08 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/01/08/note_of_terminal_management_tool_for_tmux/</guid>
+      <description>基本概念 在 terminal 新增session，進去 session 會有一個 window，也可再新增其他 window，而每個 window 可以切分出多個 pane (分割視窗)： 一切都從See</description>
+    </item>
+    
+  </channel>
+</rss>

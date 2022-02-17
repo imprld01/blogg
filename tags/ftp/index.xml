@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>FTP on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/ftp/</link>
+    <description>Recent content in FTP on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 29 Jan 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/ftp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用SFTP和Rsync讓Linux平台互傳資料</title>
+      <link>https://imprld01.github.io/blogg/2022/01/29/data_transfer_between_linux_devices_by_sftp_and_rsync/</link>
+      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/01/29/data_transfer_between_linux_devices_by_sftp_and_rsync/</guid>
+      <description>SFTP 連接遠端 指令樣板：sftp USER@REMOTE_ADDR[:PATH] 若遠端伺服器定義了port，則可以使用-P參數：sftp -P PORT USER@REMOTE_ADDR[:PATH] sftp user@192.111.222.333 上傳檔案 mput -R ./TARGET_DIR mput ./LOCAL_FILE_NAME.txt 下載檔案 get /PATH/REMOTE_FILE_NAME.txt 連接SFTP後</description>
+    </item>
+    
+  </channel>
+</rss>

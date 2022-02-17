@@ -3,12 +3,141 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://imprld01.github.io/blogg/categories/</loc>
-    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/module/</loc>
-    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
+    <loc>https://imprld01.github.io/blogg/tags/execution/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/googletest/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/02/15/note_of_googletest_for_installation_and_execution/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/installation/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/post/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/tdd/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/turtorial/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/unit-testing/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/</loc>
+    <lastmod>2022-02-15T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/complex/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/convolution/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/dft/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/discrete-fourier-transform/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/dtft/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/fft/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/fourier-transform/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/ft/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/istft/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/phase/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/stft/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/02/05/note_of_discrete_fourier_transform/</loc>
+    <lastmod>2022-02-05T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/data-transfer/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/device/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/ftp/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/linux/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/rsync/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/sftp/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/01/29/data_transfer_between_linux_devices_by_sftp_and_rsync/</loc>
+    <lastmod>2022-01-29T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/adb/</loc>
+    <lastmod>2022-01-22T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/adb-pull/</loc>
+    <lastmod>2022-01-22T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/adb-push/</loc>
+    <lastmod>2022-01-22T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/android/</loc>
+    <lastmod>2022-01-22T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/development-board/</loc>
+    <lastmod>2022-01-22T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/01/22/note_of_updating_files_on_android_development_board/</loc>
+    <lastmod>2022-01-22T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/management/</loc>
+    <lastmod>2022-01-08T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/terminal/</loc>
+    <lastmod>2022-01-08T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/tmux/</loc>
+    <lastmod>2022-01-08T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/01/08/note_of_terminal_management_tool_for_tmux/</loc>
+    <lastmod>2022-01-08T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/tool/</loc>
+    <lastmod>2022-01-08T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/hard-disk/</loc>
+    <lastmod>2021-12-25T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/mount/</loc>
+    <lastmod>2021-12-25T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2021/12/25/note_of_mount_for_me/</loc>
+    <lastmod>2021-12-25T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/module/</loc>
     <lastmod>2021-12-11T22:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/prototype/</loc>
@@ -17,22 +146,10 @@
     <loc>https://imprld01.github.io/blogg/tags/python/</loc>
     <lastmod>2021-12-11T22:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/</loc>
-    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
-    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://imprld01.github.io/blogg/2021/12/11/simple_prototype_for_me_to_develop_from_scratch_in_python/</loc>
     <lastmod>2021-12-11T22:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://imprld01.github.io/blogg/</loc>
-    <lastmod>2021-12-11T22:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://imprld01.github.io/blogg/tags/embedded-system/</loc>
-    <lastmod>2021-12-11T21:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/installation/</loc>
     <lastmod>2021-12-11T21:00:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/raspberry-pi/</loc>

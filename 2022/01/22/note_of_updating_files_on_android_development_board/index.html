@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="更新Android開發板內部檔案的方法" />
+    <meta property="og:title" content="更新Android開發板內部檔案的方法" />
+    <meta property="twitter:title" content="更新Android開發板內部檔案的方法" />
+    
+
+    
+    <meta name="description" content="對於Android裝置內建程式開發者而言，在開發時如果要更改內建的程式，一般會透過重新安裝updated image來測試程式功能，但重複燒入新的image做測試不但費時也費力">
+    <meta property="og:description" content="對於Android裝置內建程式開發者而言，在開發時如果要更改內建的程式，一般會透過重新安裝updated image來測試程式功能，但重複燒入新的image做測試不但費時也費力" />
+    <meta property="twitter:description" content="對於Android裝置內建程式開發者而言，在開發時如果要更改內建的程式，一般會透過重新安裝updated image來測試程式功能，但重複燒入新的image做測試不但費時也費力" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>更新Android開發板內部檔案的方法 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2022/01/22/note_of_updating_files_on_android_development_board/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2021/03/01/15/37/microcontroller-6060047_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/adb' title="ADB">
+                            ADB
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/adb-push' title="ADB Push">
+                            ADB Push
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/adb-pull' title="ADB Pull">
+                            ADB Pull
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/android' title="Android">
+                            Android
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/development-board' title="Development Board">
+                            Development Board
+                        </a>
+                        
+                    </div>
+                    <h1>更新Android開發板內部檔案的方法</h1>
+                    <h2 class="subheading">Note of Updating Files on Android Development Board</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Saturday, January 22, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents"></nav>
+                <hr>
+                
+                <p>對於Android裝置內建程式開發者而言，在開發時如果要更改內建的程式，一般會透過重新安裝 updated image 來測試程式功能，但重複燒入新的 image 做測試不但費時也費力。</p>
+<p>
+  <img src="https://github.com/imprld01/blogg/tree/master/img/20220122-android-dev-board/Untitled.jpeg" alt="">
+
+</p>
+<p>事實上，Android平台提供方便的debug工具，能夠讓開發者方便上傳、下載Android平台上的檔案。</p>
+<p>依照平台性質需要關閉一些 Android 的保護功能，再設定目標資料夾的讀寫權限，好讓讀寫功能可以運作，下面分為三個步驟，可依照需求作為參考：</p>
+<ul>
+<li>
+<p>提前關閉 SELinux <a href="">SELinux</a>  、並關閉 AVB 功能 <a href="">Android Verified Boot (AVB)</a></p>
+</li>
+<li>
+<p>查詢開發板特定資料夾的讀寫權限，rw 表示可讀寫 (read-write)，ro 表示僅可讀 (read-only)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mount
+</code></pre></div></li>
+<li>
+<p>從遠端透過 ADB PULL 與 ADB PUSH 的方式替換檔案，分為兩個小步驟：</p>
+<ol>
+<li>
+<p>更改特定資料夾的權限為 rw (可讀寫)，下面有兩種方式可以選擇：</p>
+<ol>
+<li>
+<p>方式一：從 UART 下指令，remount 特定資料夾權限為 rw (可讀寫)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">su
+mount –o rw,remount /vendor
+</code></pre></div></li>
+<li>
+<p>方式二：透過 ADB 從遠端下指令，remount 特定資料夾權限為 rw (可讀寫)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">adb connect TARGET_IP_ADDRESS:5555
+adb shell
+su
+mount –o rw -o remount /vendor
+<span style="color:#8be9fd;font-style:italic">exit</span>
+</code></pre></div></li>
+</ol>
+</li>
+<li>
+<p>替換目標檔案，下面有兩種方式可以選擇：</p>
+<ol>
+<li>
+<p>方式一：從 USB 複製，替換目標檔案</p>
+<ul>
+<li>
+<p>從 UART 下指令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">su
+<span style="color:#8be9fd;font-style:italic">cd</span> /vendor/lib
+cp /mnt/media_rw/YOUR_USB_ID/libapp.so .
+</code></pre></div></li>
+<li>
+<p>從 ADB 下指令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">adb connect TARGET_IP_ADDRESS:5555
+adb shell
+su
+<span style="color:#8be9fd;font-style:italic">cd</span> /vendor/lib
+cp /mnt/media_rw/YOUR_USB_ID/libapp.so .
+<span style="color:#8be9fd;font-style:italic">exit</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>方式二：從遠端複製，替換目標檔案</p>
+<ul>
+<li>
+<p>從 ADB 下指令：讓 adb 取得 root 權限，並 remount 後，才能改動安卓平台的檔案</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">adb connect TARGET_IP_ADDRESS:5555
+adb root
+adb remount
+adb push LOCAL_FILE_PATH ANDROID_TARGFET_FILE_PATH
+</code></pre></div><p>另外，也可以從 android 平台複製資料出來，不用透過USB傳輸：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">adb connect TARGET_IP_ADDRESS:5555
+adb root
+adb pull ANDROID_TARGFET_FILE_PATH LOCAL_FILE_PATH
+</code></pre></div></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2022/01/08/note_of_terminal_management_tool_for_tmux/' data-toggle="tooltip" data-placement="top" title="Tmux筆記：終端機工作管理工具">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href='/blogg/2022/01/29/data_transfer_between_linux_devices_by_sftp_and_rsync/' data-toggle="tooltip" data-placement="top" title="用SFTP和Rsync讓Linux平台互傳資料">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "imprld01-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>
