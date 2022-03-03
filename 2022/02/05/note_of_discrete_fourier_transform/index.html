@@ -250,6 +250,7 @@
     <li><a href="#dft與dtft的差異">DFT與DTFT的差異</a></li>
     <li><a href="#從complex-form頻譜回推大小與相位-the-meaning-of-complex-form-of-dft">從Complex Form頻譜回推大小與相位 (The Meaning of Complex Form of DFT)</a></li>
     <li><a href="#從sliding-window的角度拆解stftistft的運算過程">從Sliding Window的角度拆解STFT/ISTFT的運算過程</a></li>
+    <li><a href="#inverse-stft-istft">Inverse STFT (ISTFT)</a></li>
     <li><a href="#reference">Reference</a></li>
   </ul>
 </nav>
@@ -315,6 +316,13 @@
   <img src="https://imprld01.github.io/blogg/img/20220205-note-dft/Untitled%207.png" alt="">
 
 </p>
+<h3 id="inverse-stft-istft">Inverse STFT (ISTFT)</h3>
+<p>概念上，STFT取Short-Time作FFT，但是仔細想想看，每組Short-Time作FFT的時候 (參考上圖Conv的運作)，其實兩邊都會補0，而非全都充滿著實際訊號。所以在作ISTFT的時候也是同樣道理，Short-Time區間所還原出來的訊號，越靠近邊界的訊號，成分越不完全，但是隨著Sliding Window的小步移動，恰好補足了邊界訊號所缺失的成分，透過疊加這一系列的結果，最終能夠還原出原始訊號。</p>
+<p>或許從數學式子更能理解，但直接看圖片也是不錯的方式，下圖的解析就不錯 (圖片取自MATLAB)：</p>
+<p>
+  <img src="https://www.mathworks.com/help/signal/ref/iscola0111.png" alt="">
+
+</p>
 <h3 id="reference">Reference</h3>
 <ol>
 <li><a href="https://en.wikipedia.org/wiki/Discrete-time_Fourier_transform">Discrete-time Fourier transform - Wikipedia</a></li>
@@ -323,6 +331,7 @@
 <li><a href="http://librosa.org/doc/main/generated/librosa.stft.html">librosa.stft - librosa 0.9.1 documentation</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Complex_number">Complex_number - Wikipedia</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Convolution">Convolution - Wikipedia</a></li>
+<li><a href="https://www.mathworks.com/help/signal/ref/istft.html">istft - mathworks</a></li>
 </ol>
 
 
