@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Feb 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jun 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Arm NN 交叉編譯的筆記</title>
+      <link>https://imprld01.github.io/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/</guid>
+      <description>框架概念 (Concept of Arm NN ML Software) 支援 Post-Quantization 與 QAT Model armnn Quantizer 格式轉換 (convert to Arm NN format) armnn Converter armnn Serializer 交叉編譯 (Cross Compilation) 在ubuntu常會使用 gcc 或 g++ 指令編譯 c 程式，但是對於嵌入式系統或是</description>
+    </item>
+    
     <item>
       <title>GoogleTest筆記：安裝與執行</title>
       <link>https://imprld01.github.io/blogg/2022/02/15/note_of_googletest_for_installation_and_execution/</link>

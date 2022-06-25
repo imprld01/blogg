@@ -6,7 +6,88 @@
     <description>Recent content in Tags on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Feb 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jun 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ARM</title>
+      <link>https://imprld01.github.io/blogg/tags/arm/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/arm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ArmNN</title>
+      <link>https://imprld01.github.io/blogg/tags/armnn/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/armnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Compilation</title>
+      <link>https://imprld01.github.io/blogg/tags/compilation/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/compilation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Compile</title>
+      <link>https://imprld01.github.io/blogg/tags/compile/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/compile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Compiler</title>
+      <link>https://imprld01.github.io/blogg/tags/compiler/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/compiler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cross</title>
+      <link>https://imprld01.github.io/blogg/tags/cross/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/cross/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cross Compilsation</title>
+      <link>https://imprld01.github.io/blogg/tags/cross-compilsation/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/cross-compilsation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Deep Learning</title>
+      <link>https://imprld01.github.io/blogg/tags/deep-learning/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/deep-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NN</title>
+      <link>https://imprld01.github.io/blogg/tags/nn/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/nn/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Execution</title>
       <link>https://imprld01.github.io/blogg/tags/execution/</link>
@@ -355,15 +436,6 @@
       <pubDate>Sat, 11 Dec 2021 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/raspberry-pi/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Deep Learning</title>
-      <link>https://imprld01.github.io/blogg/tags/deep-learning/</link>
-      <pubDate>Fri, 10 Dec 2021 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/deep-learning/</guid>
       <description></description>
     </item>
     

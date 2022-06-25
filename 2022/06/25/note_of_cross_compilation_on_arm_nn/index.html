@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="Arm NN 交叉編譯的筆記" />
+    <meta property="og:title" content="Arm NN 交叉編譯的筆記" />
+    <meta property="twitter:title" content="Arm NN 交叉編譯的筆記" />
+    
+
+    
+    <meta name="description" content="在ubuntu常會使用gcc或g&#43;&#43;指令編譯程式，但是對於嵌入式系統或是開發板而言，並不能直接使用這兩個編譯器生成的執行檔，">
+    <meta property="og:description" content="在ubuntu常會使用gcc或g&#43;&#43;指令編譯程式，但是對於嵌入式系統或是開發板而言，並不能直接使用這兩個編譯器生成的執行檔，" />
+    <meta property="twitter:description" content="在ubuntu常會使用gcc或g&#43;&#43;指令編譯程式，但是對於嵌入式系統或是開發板而言，並不能直接使用這兩個編譯器生成的執行檔，" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>Arm NN 交叉編譯的筆記 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2020/08/17/18/42/mother-board-5496168_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/armnn' title="ArmNN">
+                            ArmNN
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/arm' title="ARM">
+                            ARM
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/nn' title="NN">
+                            NN
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compile' title="Compile">
+                            Compile
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compilation' title="Compilation">
+                            Compilation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compiler' title="Compiler">
+                            Compiler
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/cross-compilsation' title="Cross Compilsation">
+                            Cross Compilsation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/cross' title="Cross">
+                            Cross
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/deep-learning' title="Deep Learning">
+                            Deep Learning
+                        </a>
+                        
+                    </div>
+                    <h1>Arm NN 交叉編譯的筆記</h1>
+                    <h2 class="subheading">Note of Cross Compilation on Arm NN</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Saturday, June 25, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#框架概念-concept-of-arm-nn-ml-software">框架概念 (Concept of Arm NN ML Software)</a></li>
+    <li><a href="#交叉編譯-cross-compilation">交叉編譯 (Cross Compilation)</a></li>
+    <li><a href="#arm-nn的交叉編譯筆記-note-for-cross-compilation-on-arm-nn">Arm NN的交叉編譯筆記 (Note for Cross Compilation on Arm NN)</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="框架概念-concept-of-arm-nn-ml-software">框架概念 (Concept of Arm NN ML Software)</h3>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20220625-note-armnn/arch.png" alt="">
+
+</p>
+<ul>
+<li>
+<p>支援 Post-Quantization 與 QAT Model</p>
+<ul>
+<li><a href="https://github.com/ARM-software/armnn/tree/branches/armnn_20_02/src/armnnQuantizer">armnn Quantizer</a></li>
+</ul>
+</li>
+<li>
+<p>格式轉換 (convert to Arm NN format)</p>
+<ul>
+<li>
+<p><a href="https://github.com/ARM-software/armnn/tree/branches/armnn_20_02/src/armnnConverter">armnn Converter</a></p>
+</li>
+<li>
+<p><a href="https://github.com/ARM-software/armnn/tree/branches/armnn_20_02/src/armnnSerializer">armnn Serializer</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="交叉編譯-cross-compilation">交叉編譯 (Cross Compilation)</h3>
+<p>在ubuntu常會使用 <code>gcc</code> 或 <code>g++</code> 指令編譯 c 程式，但是對於嵌入式系統或是開發板而言，並不能直接使用這兩個編譯器生成的執行檔，這是因為底層硬體架構不同，支援的機器語言基本上也會不相同。嵌入式系統或開發板的開發商，沒意外都會提供一套工具鏈 (Toolchain)，用來編譯生成適用於該平台的執行檔。而這樣子的工具鏈其實也是由一般常見的 <code>gcc</code> 或 <code>g++</code> 指令編譯生成，所以交叉編譯器 (Cross Compiler) 顧名思義是運行在平台A，但它編譯出的程式卻是運行於平台B。</p>
+<p>簡單而言，目標平台 (Target Plateform) 如果跟編譯器運行的平台不一樣，這樣就是交叉編譯 (Cross Compilation)。</p>
+<p>
+  <img src="https://imprld01.github.io/blogg/img/20220625-note-armnn/cross_compilation.jpg" alt="">
+
+</p>
+<h3 id="arm-nn的交叉編譯筆記-note-for-cross-compilation-on-arm-nn">Arm NN的交叉編譯筆記 (Note for Cross Compilation on Arm NN)</h3>
+<ul>
+<li>
+<p>如果交叉編譯的平台不是特別平台，不用自行替換toolchain的話，可以參考官方dockerfile</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#ff79c6">FROM</span><span style="color:#f1fa8c"> ubuntu:18.04</span>
+<span style="color:#ff79c6">ENV</span> TERM linux
+<span style="color:#ff79c6">ENV</span> DEBIAN_FRONTEND noninteractive
+
+<span style="color:#6272a4"># Forward system proxy setting</span>
+<span style="color:#6272a4"># ARG proxy</span>
+<span style="color:#6272a4"># ENV http_proxy $proxy</span>
+<span style="color:#6272a4"># ENV https_proxy $proxy</span>
+
+<span style="color:#6272a4"># Basic apt update</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">DEBIAN_FRONTEND</span><span style="color:#ff79c6">=</span>noninteractive apt-get install -y --no-install-recommends locales ca-certificates <span style="color:#ff79c6">&amp;&amp;</span>  rm -rf /var/lib/apt/lists/*
+
+<span style="color:#6272a4"># Set the locale to en_US.UTF-8, because the Yocto build fails without any locale set.</span>
+<span style="color:#ff79c6">RUN</span> locale-gen en_US.UTF-8 <span style="color:#ff79c6">&amp;&amp;</span> update-locale <span style="color:#8be9fd;font-style:italic">LC_ALL</span><span style="color:#ff79c6">=</span>en_US.UTF-8 <span style="color:#8be9fd;font-style:italic">LANG</span><span style="color:#ff79c6">=</span>en_US.UTF-8
+<span style="color:#ff79c6">ENV</span> LANG en_US.UTF-8
+<span style="color:#ff79c6">ENV</span> LC_ALL en_US.UTF-8
+
+<span style="color:#6272a4"># Again, off the certificare</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;check_certificate = off&#34;</span> &gt;&gt; ~/.wgetrc
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;[global] \n\
+</span><span style="color:#f1fa8c">trusted-host = pypi.python.org \n \
+</span><span style="color:#f1fa8c">\t               pypi.org \n \
+</span><span style="color:#f1fa8c">\t              files.pythonhosted.org&#34;</span> &gt;&gt; /etc/pip.conf
+
+<span style="color:#6272a4"># Get basic packages</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    apparmor <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    aufs-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    automake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    bash-completion <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    btrfs-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    build-essential <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    createrepo <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    dpkg-sig <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iptables <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    jq <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libapparmor-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libc6-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libcap-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libsystemd-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libyaml-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mercurial <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    net-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    parallel <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    pkg-config <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-mock <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-pip <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-setuptools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-websocket <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    golang-go <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iproute2 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iputils-ping <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    vim-common <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    vim <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libtool <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    unzip <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    scons <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    autoconf <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libtool <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    build-essential <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libssl-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    g++ <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+
+<span style="color:#6272a4"># Install Cross-compiling ToolChain</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y crossbuild-essential-arm64 crossbuild-essential-armhf
+
+<span style="color:#6272a4"># Install Cmake 3.19</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget -O cmake-3.19.0.tar.gz https://cmake.org/files/v3.19/cmake-3.19.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar -xzf cmake-3.19.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/cmake-3.19.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ./bootstrap <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install
+
+<span style="color:#6272a4"># Build and install Google&#39;s Protobuf library</span>
+<span style="color:#6272a4"># Download and Extract</span>
+<span style="color:#ff79c6">RUN</span> mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/google <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget https://github.com/protocolbuffers/protobuf/releases/download/v3.12.0/protobuf-all-3.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar -zxvf protobuf-all-3.12.0.tar.gz
+
+<span style="color:#6272a4"># Build a native (x86_64) version</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google/protobuf-3.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir x86_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> x86_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build the arm64 version of the protobuf libraries</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google/protobuf-3.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir arm64_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> arm64_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span>aarch64-linux-gnu-gcc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span>aarch64-linux-gnu-g++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --host<span style="color:#ff79c6">=</span>aarch64-linux <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm64_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --with-protoc<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/bin/protoc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build the arm32 version of the protobuf libraries</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google/protobuf-3.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir arm32_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> arm32_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span>arm-linux-gnueabihf-gcc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span>arm-linux-gnueabihf-g++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --host<span style="color:#ff79c6">=</span>arm-linux <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm32_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --with-protoc<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/bin/protoc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Dep Error - Bug ARMNN</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>     python-numpy
+
+<span style="color:#6272a4"># Setup Env</span>
+<span style="color:#6272a4"># ENV PATH=$HOME/armnn-devenv/google/x86_64_pb_install/bin/:$PATH</span>
+<span style="color:#6272a4"># ENV LD_LIBRARY_PATH=$HOME/armnn-devenv/google/x86_64_pb_install/lib/:$LD_LIBRARY_PATH</span>
+
+<span style="color:#6272a4"># Download ArmNN 64-bit</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> git clone <span style="color:#f1fa8c">&#34;https://review.mlplatform.org/ml/armnn&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> armnn/ <span style="color:#ff79c6">&amp;&amp;</span> git checkout master
+
+<span style="color:#6272a4"># Download ArmNN 32-bit</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> git clone <span style="color:#f1fa8c">&#34;https://review.mlplatform.org/ml/armnn&#34;</span> armnn-32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> armnn-32/ <span style="color:#ff79c6">&amp;&amp;</span> git checkout master
+
+<span style="color:#6272a4"># Build 64-bit Compute Library</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ <span style="color:#ff79c6">&amp;&amp;</span> git clone https://review.mlplatform.org/ml/ComputeLibrary <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> ComputeLibrary <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git checkout <span style="color:#ff79c6">$(</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/armnn/scripts/get_compute_library.sh -p<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    scons <span style="color:#8be9fd;font-style:italic">Werror</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">arch</span><span style="color:#ff79c6">=</span>arm64-v8a <span style="color:#8be9fd;font-style:italic">neon</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">opencl</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">embed_kernels</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">extra_cxx_flags</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build 32-bit Compute Library</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ <span style="color:#ff79c6">&amp;&amp;</span> mkdir ComputeLibrary_32 <span style="color:#ff79c6">&amp;&amp;</span> git clone https://review.mlplatform.org/ml/ComputeLibrary ComputeLibrary_32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> ComputeLibrary_32 <span style="color:#ff79c6">&amp;&amp;</span><span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git checkout <span style="color:#ff79c6">$(</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/armnn/scripts/get_compute_library.sh -p<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    scons <span style="color:#8be9fd;font-style:italic">Werror</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">arch</span><span style="color:#ff79c6">=</span>armv7a <span style="color:#8be9fd;font-style:italic">neon</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">opencl</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">embed_kernels</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">extra_cxx_flags</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Download Tensorflow (Checkout latest tested version of TF using get_tensorflow.sh)</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git clone https://github.com/tensorflow/tensorflow.git <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tensorflow <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git checkout <span style="color:#ff79c6">$(</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/armnn/scripts/get_tensorflow.sh -p<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build 64-bit TF Lite</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl -LO https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir tflite-toolchains <span style="color:#ff79c6">&amp;&amp;</span><span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar xvf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz -C tflite-toolchains <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir -p tflite/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite-toolchains/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu- <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-funsafe-math-optimizations&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_C_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON  -DCMAKE_SYSTEM_NAME<span style="color:#ff79c6">=</span>Linux <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DTFLITE_ENABLE_XNNPACK<span style="color:#ff79c6">=</span>OFF <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_SYSTEM_PROCESSOR<span style="color:#ff79c6">=</span>aarch64 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tensorflow/tensorflow/lite/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake --build .
+
+<span style="color:#6272a4"># Build 32-bit TF Lite</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl -LO https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir tflite-toolchains-32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar xf gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz -C tflite-toolchains-32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir -p tflite-32/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite-32/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite-toolchains-32/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-funsafe-math-optimizations&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_C_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON  -DCMAKE_SYSTEM_NAME<span style="color:#ff79c6">=</span>Linux <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DTFLITE_ENABLE_XNNPACK<span style="color:#ff79c6">=</span>OFF <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_SYSTEM_PROCESSOR<span style="color:#ff79c6">=</span>armv7a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tensorflow/tensorflow/lite/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake --build .
+
+<span style="color:#6272a4"># Download Flatbuffers</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget -O flatbuffers-1.12.0.tar.gz https://github.com/google/flatbuffers/archive/v1.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar xf flatbuffers-1.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    rm -f CMakeCache.txt
+
+<span style="color:#6272a4"># Build native x86_64 version of Flatbuffers</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make all install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build arm64 version of Flatbuffers</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build-arm64 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build-arm64 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> cmake .. -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span>/usr/bin/aarch64-linux-gnu-gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span>/usr/bin/aarch64-linux-gnu-g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-arm64 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make all install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build arm32 version of Flatbuffers</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0  <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build-arm32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build-arm32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> cmake .. -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span>/usr/bin/arm-linux-gnueabihf-gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span>/usr/bin/arm-linux-gnueabihf-g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-arm32 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make all install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build onnx</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> git clone https://github.com/onnx/onnx.git <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> onnx <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git fetch https://github.com/onnx/onnx.git 553df22c67bee5f0fe6599cff60f1afc6748c635 <span style="color:#ff79c6">&amp;&amp;</span> git checkout FETCH_HEAD <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">LD_LIBRARY_PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/lib:<span style="color:#8be9fd;font-style:italic">$LD_LIBRARY_PATH</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/bin/protoc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    onnx/onnx.proto --proto_path<span style="color:#ff79c6">=</span>. --proto_path<span style="color:#ff79c6">=</span>../google/x86_64_pb_install/include --cpp_out <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/onnx
+
+<span style="color:#6272a4"># Generate TF Lite Schema 64-bit</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp ../tensorflow/tensorflow/lite/schema/schema.fbs . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../flatbuffers-1.12.0/build/flatc -c --gen-object-api --reflect-types --reflect-names schema.fbs
+
+<span style="color:#6272a4"># Generate TF Lite Schema 32-bit</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite-32 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp ../tensorflow/tensorflow/lite/schema/schema.fbs . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../flatbuffers-1.12.0/build/flatc -c --gen-object-api --reflect-types --reflect-names schema.fbs
+
+<span style="color:#6272a4"># Build 64-bit ArmNN</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> armnn <span style="color:#ff79c6">&amp;&amp;</span> mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span>aarch64-linux-gnu-g++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span>aarch64-linux-gnu-gcc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span>-w <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ComputeLibrary <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_BUILD_DIR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ComputeLibrary/build/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTENEON<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMCOMPUTECL<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMNNREF<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DONNX_GENERATED_SOURCES<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/onnx <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ONNX_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TF_LITE_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ARMNN_TFLITE_DELEGATE<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTENSORFLOW_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tensorflow <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTFLITE_LIB_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTF_LITE_SCHEMA_INCLUDE_PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-arm64 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATC_DIR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-1.12.0/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_DEBUG<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm64_pb_install/lib/libprotobuf.so.23.0.0 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_RELEASE<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm64_pb_install/lib/libprotobuf.so.23.0.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build 32-bit ArmNN</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> armnn-32 <span style="color:#ff79c6">&amp;&amp;</span> mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span>arm-linux-gnueabihf-g++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span>arm-linux-gnueabihf-gcc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span>-w <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ComputeLibrary_32 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_BUILD_DIR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ComputeLibrary_32/build/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTENEON<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMCOMPUTECL<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMNNREF<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DONNX_GENERATED_SOURCES<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/onnx <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ONNX_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TF_LITE_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ARMNN_TFLITE_DELEGATE<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTENSORFLOW_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tensorflow <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTFLITE_LIB_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite-32/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTF_LITE_SCHEMA_INCLUDE_PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite-32 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-arm32 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATC_DIR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-1.12.0/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_DEBUG<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm32_pb_install/lib/libprotobuf.so.23.0.0 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_RELEASE<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm32_pb_install/lib/libprotobuf.so.23.0.0 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div></li>
+<li>
+<p>如果需要自行替換toolchain，可以參考下面步驟：</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>Dockerfile</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#ff79c6">FROM</span><span style="color:#f1fa8c"> ubuntu:18.04</span>
+<span style="color:#ff79c6">ENV</span> TERM linux
+<span style="color:#ff79c6">ENV</span> DEBIAN_FRONTEND noninteractive
+
+<span style="color:#6272a4"># Forward system proxy setting</span>
+<span style="color:#6272a4"># ARG proxy</span>
+<span style="color:#6272a4"># ENV http_proxy $proxy</span>
+<span style="color:#6272a4"># ENV https_proxy $proxy</span>
+
+<span style="color:#6272a4"># Basic apt update</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">DEBIAN_FRONTEND</span><span style="color:#ff79c6">=</span>noninteractive apt-get install -y --no-install-recommends locales ca-certificates <span style="color:#ff79c6">&amp;&amp;</span>  rm -rf /var/lib/apt/lists/*
+
+<span style="color:#6272a4"># Set the locale to en_US.UTF-8, because the Yocto build fails without any locale set.</span>
+<span style="color:#ff79c6">RUN</span> locale-gen en_US.UTF-8 <span style="color:#ff79c6">&amp;&amp;</span> update-locale <span style="color:#8be9fd;font-style:italic">LC_ALL</span><span style="color:#ff79c6">=</span>en_US.UTF-8 <span style="color:#8be9fd;font-style:italic">LANG</span><span style="color:#ff79c6">=</span>en_US.UTF-8
+<span style="color:#ff79c6">ENV</span> LANG en_US.UTF-8
+<span style="color:#ff79c6">ENV</span> LC_ALL en_US.UTF-8
+
+<span style="color:#6272a4"># Again, off the certificare</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;check_certificate = off&#34;</span> &gt;&gt; ~/.wgetrc
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;[global] \n\
+</span><span style="color:#f1fa8c">trusted-host = pypi.python.org \n \
+</span><span style="color:#f1fa8c">\t               pypi.org \n \
+</span><span style="color:#f1fa8c">\t              files.pythonhosted.org&#34;</span> &gt;&gt; /etc/pip.conf
+
+<span style="color:#6272a4"># Get basic packages</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    apparmor <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    aufs-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    automake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    bash-completion <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    btrfs-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    build-essential <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    createrepo <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    dpkg-sig <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iptables <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    jq <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libapparmor-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libc6-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libcap-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libsystemd-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libyaml-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mercurial <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    net-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    parallel <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    pkg-config <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-mock <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-pip <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-setuptools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-websocket <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    golang-go <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iproute2 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iputils-ping <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    vim-common <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    vim <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libtool <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    unzip <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    scons <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    autoconf <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libtool <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    build-essential <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libssl-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    g++ <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+
+<span style="color:#6272a4"># Install Cross-compiling ToolChain</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y crossbuild-essential-arm64 crossbuild-essential-armhf
+
+<span style="color:#6272a4"># Install Cmake 3.19</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget -O cmake-3.19.0.tar.gz https://cmake.org/files/v3.19/cmake-3.19.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar -xzf cmake-3.19.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/cmake-3.19.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ./bootstrap <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo docker build --rm -t imprld01/armnn:v0 . --no-cache
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo docker run --rm --gpus all --net host -it --shm-size<span style="color:#ff79c6">=</span>8g <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>                -v /armnn_scripts/:/armnn_scripts/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>                -v /toolchain/:/toolchain/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>                imprld01/armnn:v0 bash
+</code></pre></div></li>
+<li>
+<p>Download Google Protobuf Library amd Build it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Build and install Google&#39;s Protobuf library</span>
+<span style="color:#6272a4"># Download and Extract</span>
+mkdir -p <span style="color:#8be9fd;font-style:italic">$HOME</span>/google <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget https://github.com/protocolbuffers/protobuf/releases/download/v3.12.0/protobuf-all-3.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar -zxvf protobuf-all-3.12.0.tar.gz
+
+<span style="color:#6272a4"># Build a native (x86_64) version</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google/protobuf-3.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir x86_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> x86_build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Build the arm32 version of the protobuf libraries</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/google/protobuf-3.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir arm32_build_myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> arm32_build_myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">LD_LIBRARY_PATH</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/lib/arm-unknown-linux-gnueabi/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-gcc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;--sysroot=/toolchain/sysroots/unknown-linux-gnueabi&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CFLAGS_FOR_BUILD</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-g -fPIC -fno-short-enums -fno-short-enums -lstdc++&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-g++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;--sysroot=/toolchain/sysroots/unknown-linux-gnueabi&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXXFLAGS_FOR_BUILD</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-g -fPIC -fno-short-enums -fno-short-enums -lstdc++&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --host<span style="color:#ff79c6">=</span>arm-unknown-linux <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --prefix<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm32_pb_install_myarm <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --with-protoc<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/bin/protoc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div></li>
+<li>
+<p>Download ArmNN</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Dep Error - Bug ARMNN</span>
+apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>     python-numpy
+
+<span style="color:#6272a4"># Download ArmNN 32-bit</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> git clone <span style="color:#f1fa8c">&#34;https://review.mlplatform.org/ml/armnn&#34;</span> armnn-32-myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> armnn-32-myarm/ <span style="color:#ff79c6">&amp;&amp;</span> git checkout master
+</code></pre></div></li>
+<li>
+<p>Download Compute Library and Build it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Build 32-bit Compute Library</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ <span style="color:#ff79c6">&amp;&amp;</span> mkdir ComputeLibrary_myarm <span style="color:#ff79c6">&amp;&amp;</span> git clone https://review.mlplatform.org/ml/ComputeLibrary ComputeLibrary_myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> ComputeLibrary_myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git checkout <span style="color:#ff79c6">$(</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/armnn/scripts/get_compute_library.sh -p<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">LD_LIBRARY_PATH</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/lib/arm-unknown-linux-gnueabi/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    scons <span style="color:#8be9fd;font-style:italic">Werror</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">arch</span><span style="color:#ff79c6">=</span>armv7a <span style="color:#8be9fd;font-style:italic">neon</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">opencl</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">embed_kernels</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">cppthreads</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">openmp</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">compiler_prefix</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-&#34;</span> <span style="color:#8be9fd;font-style:italic">extra_cxx_flags</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC -mfloat-abi=softfp --sysroot=/toolchain/sysroots/unknown-linux-gnueabi/&#34;</span> <span style="color:#8be9fd;font-style:italic">extra_link_flags</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC --sysroot=/toolchain/sysroots/unknown-linux-gnueabi/&#34;</span> -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div></li>
+<li>
+<p>Download Tensorflow and Build TFLite</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Download Tensorflow (Checkout latest tested version of TF using get_tensorflow.sh)</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git clone https://github.com/tensorflow/tensorflow.git <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tensorflow <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git checkout <span style="color:#ff79c6">$(</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/armnn/scripts/get_tensorflow.sh -p<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4"># Build 32-bit TF Lite</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir -p tflite-myarm/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite-myarm/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi- <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-funsafe-math-optimizations -fPIC --sysroot=/toolchain/sysroots/unknown-linux-gnueabi/&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_C_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON  -DCMAKE_SYSTEM_NAME<span style="color:#ff79c6">=</span>Linux <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DTFLITE_ENABLE_XNNPACK<span style="color:#ff79c6">=</span>OFF <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_SYSTEM_PROCESSOR<span style="color:#ff79c6">=</span>armv7a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tensorflow/tensorflow/lite/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake --build .
+</code></pre></div></li>
+<li>
+<p>Download Flatbuffers and Build it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Download Flatbuffers</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget -O flatbuffers-1.12.0.tar.gz https://github.com/google/flatbuffers/archive/v1.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar xf flatbuffers-1.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    rm -f CMakeCache.txt
+
+<span style="color:#6272a4"># Build native x86_64 version of Flatbuffers</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make all install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># Build arm32 version of Flatbuffers</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0  <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp /root/armnn_envs_x86_64/flatbuffers-1.12.0/CMakeLists.txt . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build-arm32-myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build-arm32-myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC --sysroot=/toolchain/sysroots/unknown-linux-gnueabi&#34;</span> cmake .. -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-arm32-myarm <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make all install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div></li>
+<li>
+<p>Download ONNX and Build it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Build onnx</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> git clone https://github.com/onnx/onnx.git <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> onnx <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git fetch https://github.com/onnx/onnx.git 553df22c67bee5f0fe6599cff60f1afc6748c635 <span style="color:#ff79c6">&amp;&amp;</span> git checkout FETCH_HEAD <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">LD_LIBRARY_PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/lib:<span style="color:#8be9fd;font-style:italic">$LD_LIBRARY_PATH</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install/bin/protoc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    onnx/onnx.proto --proto_path<span style="color:#ff79c6">=</span>. --proto_path<span style="color:#ff79c6">=</span>../google/x86_64_pb_install/include --cpp_out <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/onnx
+</code></pre></div></li>
+<li>
+<p>Generate TFLite Schema</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Generate TF Lite Schema 32-bit</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite-myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp ../tensorflow/tensorflow/lite/schema/schema.fbs . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../flatbuffers-1.12.0/build/flatc -c --gen-object-api --reflect-types --reflect-names schema.fbs
+</code></pre></div></li>
+<li>
+<p>Build Arm NN</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Build 32-bit ArmNN</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> armnn-32-myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp /root/armnn_envs_x86_64/armnn-32-myarm/CMakeLists.txt . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">LD_LIBRARY_PATH</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/lib/arm-unknown-linux-gnueabi/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-g++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span>/toolchain/sysroots/unknown-linux/usr/bin/arm-unknown-linux-gnueabi/arm-unknown-linux-gnueabi-gcc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-w -fPIC -pthread -latomic --sysroot=/toolchain/sysroots/unknown-linux-gnueabi&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ComputeLibrary_myarm <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_BUILD_DIR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/ComputeLibrary_myarm/build/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTENEON<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMCOMPUTECL<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMNNREF<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DONNX_GENERATED_SOURCES<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/onnx <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ONNX_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TF_LITE_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ARMNN_TFLITE_DELEGATE<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTENSORFLOW_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tensorflow <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTFLITE_LIB_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite-myarm/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTF_LITE_SCHEMA_INCLUDE_PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/tflite-myarm <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-arm32-myarm <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATC_DIR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers-1.12.0/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_ROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/x86_64_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_DEBUG<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm32_pb_install_myarm/lib/libprotobuf.so.23.0.0 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_RELEASE<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/google/arm32_pb_install_myarm/lib/libprotobuf.so.23.0.0 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
+</code></pre></div></li>
+</ol>
+<h3 id="reference">Reference</h3>
+<ol>
+<li><a href="https://github.com/ARM-software/armnn">https://github.com/ARM-software/armnn</a></li>
+<li><a href="https://blog.csdn.net/yiyayiya557/article/details/107069590">交叉编译ARM平台、移植ArmNN_yiyayiya557的博客-CSDN博客_arm nn</a></li>
+<li><a href="https://blog.csdn.net/a845414332/article/details/102718813">为Tensorflow、Tensorflow lite配置Arm NN SDK编译环境_我是木林森呀的博客-CSDN博客_armnn tensorflow</a></li>
+<li><a href="https://blog.csdn.net/liugan528/article/details/80272763">Configuring the Arm NN SDK build environment for Caffe</a></li>
+<li><a href="https://blog.csdn.net/u013739490/article/details/84314290">在imx8qm上开心把玩Machine Learning_AIA-XP的博客-CSDN博客_imx8qm</a></li>
+<li><a href="https://www.wpgdadatong.com/tw/blog/detail?BID=B5035">ATU Book i.MX8系列 - ArmNN 使用介紹</a></li>
+<li><a href="https://github.com/ARM-software/armnn/blob/branches/armnn_20_02/BuildGuideCrossCompilation.md">armnn/BuildGuideCrossCompilation.md at branches/armnn_20_02 · ARM-software/armnn</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2022/02/15/note_of_googletest_for_installation_and_execution/' data-toggle="tooltip" data-placement="top" title="GoogleTest筆記：安裝與執行">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "imprld01-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>
