@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NDK on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/ndk/</link>
+    <description>Recent content in NDK on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 08 Jul 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/ndk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Android NDK 編譯 Arm NN</title>
+      <link>https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/</link>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/</guid>
+      <description>版本對齊 Android API Version：29 System：aarch64、armv7a Arm NN：branches/armnn_22_05 Android NDK：andr</description>
+    </item>
+    
+  </channel>
+</rss>

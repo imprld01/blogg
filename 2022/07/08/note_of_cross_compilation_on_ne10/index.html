@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="Ne10 的交叉編譯筆記" />
+    <meta property="og:title" content="Ne10 的交叉編譯筆記" />
+    <meta property="twitter:title" content="Ne10 的交叉編譯筆記" />
+    
+
+    
+    <meta name="description" content="修改GNUlinux_config.cmake，可以在開頭補上兩個變數，避免編譯測試，設定armv7的編譯器路徑">
+    <meta property="og:description" content="修改GNUlinux_config.cmake，可以在開頭補上兩個變數，避免編譯測試，設定armv7的編譯器路徑" />
+    <meta property="twitter:description" content="修改GNUlinux_config.cmake，可以在開頭補上兩個變數，避免編譯測試，設定armv7的編譯器路徑" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>Ne10 的交叉編譯筆記 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2022/07/08/note_of_cross_compilation_on_ne10/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2015/07/18/04/01/wave-850007_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/ne10' title="Ne10">
+                            Ne10
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/arm' title="ARM">
+                            ARM
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/spectrogram' title="Spectrogram">
+                            Spectrogram
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/frequency' title="Frequency">
+                            Frequency
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/fourier' title="Fourier">
+                            Fourier
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/dft' title="DFT">
+                            DFT
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/fft' title="FFT">
+                            FFT
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/istft' title="ISTFT">
+                            ISTFT
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/stft' title="STFT">
+                            STFT
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compile' title="Compile">
+                            Compile
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compilation' title="Compilation">
+                            Compilation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compiler' title="Compiler">
+                            Compiler
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/cross-compilsation' title="Cross Compilsation">
+                            Cross Compilsation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/cross' title="Cross">
+                            Cross
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/signal' title="Signal">
+                            Signal
+                        </a>
+                        
+                    </div>
+                    <h1>Ne10 的交叉編譯筆記</h1>
+                    <h2 class="subheading">Note of Cross Compilation on Ne10</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Friday, July 8, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#原始碼來源">原始碼來源</a></li>
+    <li><a href="#目標平台">目標平台</a></li>
+    <li><a href="#修改gnulinux_configcmake">修改<strong><strong>GNUlinux_config.cmake</strong></strong></a></li>
+    <li><a href="#修改cmakeliststxt">修改CMakelists.txt</a></li>
+    <li><a href="#執行編譯">執行編譯</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="原始碼來源">原始碼來源</h3>
+<p><a href="https://github.com/projectNe10/Ne10">https://github.com/projectNe10/Ne10</a></p>
+<h3 id="目標平台">目標平台</h3>
+<ul>
+<li>Arm</li>
+<li>armv7</li>
+</ul>
+<h3 id="修改gnulinux_configcmake">修改<strong><strong>GNUlinux_config.cmake</strong></strong></h3>
+<ol>
+<li>
+<p>可以在開頭補上兩個變數，避免編譯測試：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">set(CMAKE_C_COMPILER_FORCED TRUE)
+set(CMAKE_CXX_COMPILER_FORCED TRUE)
+
+set(GNULINUX_PLATFORM ON)
+set(CMAKE_SYSTEM_NAME <span style="color:#f1fa8c">&#34;Linux&#34;</span>)
+set(CMAKE_SYSTEM_PROCESSOR <span style="color:#f1fa8c">&#34;arm&#34;</span>)
+</code></pre></div></li>
+<li>
+<p>設定&quot;armv7&quot;的編譯器路徑：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">if(NE10_LINUX_TARGET_ARCH STREQUAL <span style="color:#f1fa8c">&#34;armv7&#34;</span>)
+   set(MYSYSROOT <span style="color:#f1fa8c">&#34;/path/toolchain/x86_64-ca9v1-tc14-toolchain-9.0/sysroots/ca9v1-starfishmllib32-linux-gnueabi&#34;</span>)
+   set(CMAKE_C_COMPILER <span style="color:#f1fa8c">&#34;/path/toolchain/x86_64-ca9v1-tc14-toolchain-9.0/sysroots/x86_64-starfishsdk-linux/usr/bin/arm-starfish-linux-gnueabi/arm-starfish-linux-gnueabi-gcc&#34;</span>)
+   set(CMAKE_CXX_COMPILER <span style="color:#f1fa8c">&#34;/path/toolchain/x86_64-ca9v1-tc14-toolchain-9.0/sysroots/x86_64-starfishsdk-linux/usr/bin/arm-starfish-linux-gnueabi/arm-starfish-linux-gnueabi-g++&#34;</span>)
+   set(CMAKE_ASM_COMPILER <span style="color:#f1fa8c">&#34;/path/toolchain/x86_64-ca9v1-tc14-toolchain-9.0/sysroots/x86_64-starfishsdk-linux/usr/bin/arm-starfish-linux-gnueabi/arm-starfish-linux-gnueabi-as&#34;</span>)
+   find_program(CMAKE_AR NAMES <span style="color:#f1fa8c">&#34;arm-starfish-linux-gnueabi-ar&#34;</span> PATHS <span style="color:#f1fa8c">&#34;/home2/bowuns/source/k8/kernel/system/tmp/toolchain/x86_64-ca9v1-tc14-toolchain-9.0/sysroots/x86_64-starfishsdk-linux/usr/bin/arm-starfish-linux-gnueabi/&#34;</span> NO_DEFAULT_PATH)
+   find_program(CMAKE_RANLIB NAMES <span style="color:#f1fa8c">&#34;arm-starfish-linux-gnueabi-ranlib&#34;</span> PATHS <span style="color:#f1fa8c">&#34;/home2/bowuns/source/k8/kernel/system/tmp/toolchain/x86_64-ca9v1-tc14-toolchain-9.0/sysroots/x86_64-starfishsdk-linux/usr/bin/arm-starfish-linux-gnueabi/&#34;</span> NO_DEFAULT_PATH)
+</code></pre></div><ul>
+<li>
+<p>對於linux x86_64本機的編譯器路徑則可如下表示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">if(NE10_LINUX_TARGET_ARCH STREQUAL <span style="color:#f1fa8c">&#34;armv7&#34;</span>)
+   set(MYSYSROOT <span style="color:#f1fa8c">&#34;/usr/arm-linux-gnueabihf/&#34;</span>)
+   set(CMAKE_C_COMPILER <span style="color:#f1fa8c">&#34;/usr/bin/arm-linux-gnueabihf-gcc&#34;</span>)
+   set(CMAKE_CXX_COMPILER <span style="color:#f1fa8c">&#34;/usr/bin/arm-linux-gnueabihf-g++&#34;</span>)
+   set(CMAKE_ASM_COMPILER <span style="color:#f1fa8c">&#34;/usr/bin/arm-linux-gnueabihf-as&#34;</span>)
+   find_program(CMAKE_AR NAMES <span style="color:#f1fa8c">&#34;arm-linux-gnueabihf-ar&#34;</span> PATHS <span style="color:#f1fa8c">&#34;/usr/bin/&#34;</span> NO_DEFAULT_PATH)
+   find_program(CMAKE_RANLIB NAMES <span style="color:#f1fa8c">&#34;arm-linux-gnueabihf-ranlib&#34;</span> PATHS <span style="color:#f1fa8c">&#34;/usr/bin/&#34;</span> NO_DEFAULT_PATH)
+</code></pre></div></li>
+</ul>
+</li>
+</ol>
+<h3 id="修改cmakeliststxt">修改CMakelists.txt</h3>
+<ol>
+<li>
+<p>將參數改為ON，建置Share Object：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">option(NE10_BUILD_SHARED <span style="color:#f1fa8c">&#34;Build NE10 shared libraries&#34;</span> ON)
+</code></pre></div></li>
+<li>
+<p>選擇預期的模式 (Optional)，這裡使用預設值：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">option(NE10_ARM_HARD_FLOAT <span style="color:#f1fa8c">&#34;Build NE10 for hard float abi&#34;</span> ON)
+</code></pre></div></li>
+<li>
+<p>修改GNULINUX_PLATFORM的編譯參數：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">if(<span style="color:#f1fa8c">&#34;${NE10_TARGET_ARCH}&#34;</span> STREQUAL <span style="color:#f1fa8c">&#34;armv7&#34;</span>)
+  set(FLOAT_ABI <span style="color:#f1fa8c">&#34;softfp&#34;</span>)
+  set(CMAKE_C_FLAGS <span style="color:#f1fa8c">&#34;${CMAKE_C_FLAGS} --sysroot=${MYSYSROOT} -mthumb -march=armv7-a -mfloat-abi=${FLOAT_ABI} -mfpu=vfp3 -funsafe-math-optimizations&#34;</span>)
+  set(CMAKE_ASM_FLAGS <span style="color:#f1fa8c">&#34;${CMAKE_C_FLAGS} -mthumb -march=armv7-a -mfpu=neon&#34;</span>)
+  <span style="color:#6272a4"># Turn on asm optimization for Linux on ARM v7.
+</span><span style="color:#6272a4"></span>  set<span style="color:#ff79c6">(</span>NE10_ASM_OPTIMIZATION on<span style="color:#ff79c6">)</span>
+endif()
+</code></pre></div><ul>
+<li>這裡強制將armv7的<code>FLOAT_ABI</code>設為<code>&quot;softfp&quot;</code>，也可以透過前一個步驟的方式來設定</li>
+</ul>
+</li>
+</ol>
+<h3 id="執行編譯">執行編譯</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$NE10_PATH</span>
+mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> build
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NE10_LINUX_TARGET_ARCH</span><span style="color:#ff79c6">=</span>armv7
+cmake -DCMAKE_TOOLCHAIN_FILE<span style="color:#ff79c6">=</span>../GNUlinux_config.cmake ..
+make
+</code></pre></div>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/' data-toggle="tooltip" data-placement="top" title="使用 Android NDK 編譯 Arm NN">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "imprld01-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>

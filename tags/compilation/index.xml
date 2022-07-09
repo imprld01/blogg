@@ -6,9 +6,27 @@
     <description>Recent content in Compilation on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Jun 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/compilation/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/compilation/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Arm NN 交叉編譯的筆記</title>
+      <title>Ne10 的交叉編譯筆記</title>
+      <link>https://imprld01.github.io/blogg/2022/07/08/note_of_cross_compilation_on_ne10/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/08/note_of_cross_compilation_on_ne10/</guid>
+      <description>原始碼來源 https://github.com/projectNe10/Ne10 目標平台 Arm armv7 修改GNUlinux_config.cmake 可以在開頭補上兩個變數，避免編譯測試： set(CMAKE_C_COMPILER_FORCED TRUE) set(CMAKE_CXX_COMPILER_FORCED TRUE) set(GNULINUX_PLATFORM ON) set(CMAKE_SYSTEM_NAME &amp;#34;Linux&amp;#34;) set(CMAKE_SYSTEM_PROCESSOR &amp;#34;arm&amp;#34;) 設定&amp;quo</description>
+    </item>
+    
+    <item>
+      <title>使用 Android NDK 編譯 Arm NN</title>
+      <link>https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/</link>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/</guid>
+      <description>版本對齊 Android API Version：29 System：aarch64、armv7a Arm NN：branches/armnn_22_05 Android NDK：andr</description>
+    </item>
+    
+    <item>
+      <title>Arm NN 的交叉編譯筆記</title>
       <link>https://imprld01.github.io/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/</link>
       <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
       

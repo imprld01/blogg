@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="使用 Android NDK 編譯 Arm NN" />
+    <meta property="og:title" content="使用 Android NDK 編譯 Arm NN" />
+    <meta property="twitter:title" content="使用 Android NDK 編譯 Arm NN" />
+    
+
+    
+    <meta name="description" content="版本對齊，Android API Version 29，System aarch64、armv7a，Arm NN branches armnn_22_05，Android NDK android-ndk-r20b-linux-x86_64">
+    <meta property="og:description" content="版本對齊，Android API Version 29，System aarch64、armv7a，Arm NN branches armnn_22_05，Android NDK android-ndk-r20b-linux-x86_64" />
+    <meta property="twitter:description" content="版本對齊，Android API Version 29，System aarch64、armv7a，Arm NN branches armnn_22_05，Android NDK android-ndk-r20b-linux-x86_64" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>使用 Android NDK 編譯 Arm NN – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2021/10/03/15/40/android-6678254_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/armnn' title="ArmNN">
+                            ArmNN
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/arm' title="ARM">
+                            ARM
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/nn' title="NN">
+                            NN
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compile' title="Compile">
+                            Compile
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compilation' title="Compilation">
+                            Compilation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/compiler' title="Compiler">
+                            Compiler
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/cross-compilsation' title="Cross Compilsation">
+                            Cross Compilsation
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/cross' title="Cross">
+                            Cross
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/deep-learning' title="Deep Learning">
+                            Deep Learning
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/android' title="Android">
+                            Android
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/ndk' title="NDK">
+                            NDK
+                        </a>
+                        
+                    </div>
+                    <h1>使用 Android NDK 編譯 Arm NN</h1>
+                    <h2 class="subheading">Note of Compilation of Arm NN by Android NDK</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Friday, July 8, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#版本對齊">版本對齊</a></li>
+    <li><a href="#dockerfile">Dockerfile</a></li>
+    <li><a href="#編譯步驟">編譯步驟</a></li>
+    <li><a href="#further-reading">Further Reading</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="版本對齊">版本對齊</h3>
+<ol>
+<li>Android API Version：29</li>
+<li>System：aarch64、armv7a</li>
+<li>Arm NN：branches/armnn_22_05</li>
+<li>Android NDK：android-ndk-r20b-linux-x86_64</li>
+</ol>
+<h3 id="dockerfile">Dockerfile</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#ff79c6">FROM</span><span style="color:#f1fa8c"> ubuntu:18.04</span>
+<span style="color:#ff79c6">ENV</span> TERM linux
+<span style="color:#ff79c6">ENV</span> DEBIAN_FRONTEND noninteractive
+
+<span style="color:#6272a4"># Forward system proxy setting</span>
+<span style="color:#6272a4"># ARG proxy</span>
+<span style="color:#6272a4"># ENV http_proxy $proxy</span>
+<span style="color:#6272a4"># ENV https_proxy $proxy</span>
+
+<span style="color:#6272a4"># Basic apt update</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">DEBIAN_FRONTEND</span><span style="color:#ff79c6">=</span>noninteractive apt-get install -y --no-install-recommends locales ca-certificates <span style="color:#ff79c6">&amp;&amp;</span>  rm -rf /var/lib/apt/lists/*
+
+<span style="color:#6272a4"># Set the locale to en_US.UTF-8, because the Yocto build fails without any locale set.</span>
+<span style="color:#ff79c6">RUN</span> locale-gen en_US.UTF-8 <span style="color:#ff79c6">&amp;&amp;</span> update-locale <span style="color:#8be9fd;font-style:italic">LC_ALL</span><span style="color:#ff79c6">=</span>en_US.UTF-8 <span style="color:#8be9fd;font-style:italic">LANG</span><span style="color:#ff79c6">=</span>en_US.UTF-8
+<span style="color:#ff79c6">ENV</span> LANG en_US.UTF-8
+<span style="color:#ff79c6">ENV</span> LC_ALL en_US.UTF-8
+
+<span style="color:#6272a4"># Again, off the certificare</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;check_certificate = off&#34;</span> &gt;&gt; ~/.wgetrc
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;[global] \n\
+</span><span style="color:#f1fa8c">trusted-host = pypi.python.org \n \
+</span><span style="color:#f1fa8c">\t               pypi.org \n \
+</span><span style="color:#f1fa8c">\t              files.pythonhosted.org&#34;</span> &gt;&gt; /etc/pip.conf
+
+<span style="color:#6272a4"># Get basic packages</span>
+<span style="color:#ff79c6">RUN</span> apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    apparmor <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    aufs-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    automake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    bash-completion <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    btrfs-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    build-essential <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    createrepo <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    dpkg-sig <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    g++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    gcc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iptables <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    jq <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libapparmor-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libc6-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libcap-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libsystemd-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libyaml-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mercurial <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    net-tools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    parallel <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    pkg-config <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-mock <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-pip <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-setuptools <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    python-websocket <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    golang-go <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iproute2 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    iputils-ping <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    vim-common <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    vim <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libtool <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    unzip <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    scons <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    curl <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    autoconf <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libtool <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    build-essential <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    libssl-dev <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    g++ <span style="color:#ff79c6">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+
+<span style="color:#6272a4">#</span>
+<span style="color:#ff79c6">RUN</span> apt-get update
+
+<span style="color:#6272a4"># Install Cmake 3.23.2</span>
+<span style="color:#ff79c6">RUN</span> <span style="color:#8be9fd;font-style:italic">cd</span> /home/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget -O cmake-3.23.2.tar.gz https://cmake.org/files/v3.23/cmake-3.23.2.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar -xzf cmake-3.23.2.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> /home/cmake-3.23.2 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ./bootstrap <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo docker build --rm -t imprld01/armnn:v1 . --no-cache
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">MYPARENT</span><span style="color:#ff79c6">=</span>/my_armnn_scripts/
+sudo mkdir -p <span style="color:#8be9fd;font-style:italic">$MYPARENT</span>/packages/home/
+sudo docker run --rm --gpus all --net host -it --shm-size<span style="color:#ff79c6">=</span>30g <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>                -v <span style="color:#8be9fd;font-style:italic">$MYPARENT</span>/:/armnn_envs_ndk/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>                -v <span style="color:#8be9fd;font-style:italic">$MYPARENT</span>/packages/home/:/home/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>                imprld01/armnn:v1 bash
+</code></pre></div><h3 id="編譯步驟">編譯步驟</h3>
+<ol>
+<li>
+<p>下載Android NDK，以及TensorFlow、Arm NN、Boost C++：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#6272a4"># Download the Android NDK and make a standalone toolchain</span>
+mkdir -p /home/armnn-devenv/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget https://dl.google.com/android/repository/android-ndk-r20b-linux-x86_64.zip <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    unzip android-ndk-r20b-linux-x86_64.zip
+
+mkdir -p /home/armnn-devenv/google
+
+<span style="color:#6272a4"># clone tensorflow</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/google/
+git clone https://github.com/tensorflow/tensorflow.git 
+
+<span style="color:#6272a4"># clone armnn</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/
+git clone https://github.com/ARM-software/armnn.git
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/armnn/
+git checkout branches/armnn_22_05
+git pull
+
+<span style="color:#6272a4"># clone the Boost C++ libraries</span>
+mkdir -p /home/armnn-devenv/boost <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/boost <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.bz2 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar xvf boost_1_64_0.tar.bz2
+</code></pre></div></li>
+<li>
+<p>建置Boost C++與Compute Library</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+<span style="color:#6272a4">#C_PREFIX=&#34;&#34;</span>
+<span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#ff79c6">=</span>eabi
+<span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">29</span>
+
+<span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#ff79c6">=</span>armv7a
+<span style="color:#6272a4">#AECH_NAME=aarch64</span>
+
+<span style="color:#8be9fd;font-style:italic">AABI_NAME</span><span style="color:#ff79c6">=</span>armv7a
+<span style="color:#6272a4">#AABI_NAME=arm64-v8a</span>
+
+<span style="color:#6272a4"># Build the Boost C++ libraries</span>
+<span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;using gcc : arm : </span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">-linux-android</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">-clang++ ;&#34;</span> &gt; /home/armnn-devenv/boost/user-config.jam <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/boost/boost_1_64_0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ./bootstrap.sh --prefix<span style="color:#ff79c6">=</span>/home/armnn-devenv/boost/install <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ./b2 install --user-config<span style="color:#ff79c6">=</span>/home/armnn-devenv/boost/user-config.jam <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">toolset</span><span style="color:#ff79c6">=</span>gcc-arm <span style="color:#8be9fd;font-style:italic">link</span><span style="color:#ff79c6">=</span>static <span style="color:#8be9fd;font-style:italic">cxxflags</span><span style="color:#ff79c6">=</span>-fPIC --with-filesystem <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --with-test --with-log --with-program_options -j16
+
+<span style="color:#6272a4"># Build the Compute Library</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv
+git clone https://github.com/ARM-software/ComputeLibrary.git
+<span style="color:#8be9fd;font-style:italic">cd</span> ComputeLibrary
+<span style="color:#6272a4">#git checkout $(/home/armnn-devenv/armnn/scripts/get_compute_library.sh -p)</span>
+scons <span style="color:#8be9fd;font-style:italic">arch</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">AABI_NAME</span><span style="color:#f1fa8c">}</span> <span style="color:#8be9fd;font-style:italic">neon</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">opencl</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">embed_kernels</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">cppthreads</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">openmp</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">compiler_prefix</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">-linux-android</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">-&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">extra_cxx_flags</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">extra_link_flags</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">benchmark_tests</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">validation_tests</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">os</span><span style="color:#ff79c6">=</span>android -j16
+</code></pre></div><ul>
+<li>平台若不支援OpenCL，則調整Compute Library參數<code>opencl=0</code></li>
+</ul>
+</li>
+<li>
+<p>下載並編譯Protobuf，接著生成TensorFlow的Protobuf定義</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+<span style="color:#6272a4">#C_PREFIX=&#34;&#34;</span>
+<span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#ff79c6">=</span>eabi
+<span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">29</span>
+
+<span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#ff79c6">=</span>armv7a
+<span style="color:#6272a4">#AECH_NAME=aarch64</span>
+
+<span style="color:#8be9fd;font-style:italic">AABI_NAME</span><span style="color:#ff79c6">=</span>armeabi-v7a
+<span style="color:#6272a4">#AABI_NAME=arm64-v8a</span>
+
+<span style="color:#6272a4"># protobuf</span>
+<span style="color:#6272a4">#mkdir -p /home/armnn-devenv/google &amp;&amp; \</span>
+<span style="color:#6272a4">#    cd /home/armnn-devenv/google &amp;&amp; \</span>
+<span style="color:#6272a4">#    wget https://github.com/protocolbuffers/protobuf/releases/download/v3.12.0/protobuf-all-3.12.0.tar.gz &amp;&amp; \</span>
+<span style="color:#6272a4">#    tar -zxvf protobuf-all-3.12.0.tar.gz</span>
+mkdir -p /home/armnn-devenv/google
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/google
+git clone https://github.com/google/protobuf.git protobuf-3.12.0
+<span style="color:#8be9fd;font-style:italic">cd</span> protobuf-3.12.0
+./autogen.sh
+
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/google/protobuf-3.12.0
+mkdir x86_build
+<span style="color:#8be9fd;font-style:italic">cd</span> x86_build
+<span style="color:#8be9fd;font-style:italic">CFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIE -fPIC&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-g -std=c++11 -DNDEBUG -lpthread -fno-short-enums -fno-short-enums -lstdc++&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">LDFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-pthread -Wl,--no-as-needed -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -static -static-libstdc++&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --prefix<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/x86_pb_install <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j32
+
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/google/protobuf-3.12.0
+mkdir arm64_build
+<span style="color:#8be9fd;font-style:italic">cd</span> arm64_build
+<span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>-clang <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>-clang++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIE -fPIC -llog&#34;</span> <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIE -fPIC -llog&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">LDFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-llog -lz -lc++_static&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    ../configure --host<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --prefix<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/arm64_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --enable-cross-compile <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    --with-protoc<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/x86_pb_install/bin/protoc <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make install -j32
+
+<span style="color:#6272a4"># generate tensorFlow protobuf definitions</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/google/tensorflow/
+git checkout <span style="color:#ff79c6">$(</span>/home/armnn-devenv/armnn/scripts/get_tensorflow.sh -p<span style="color:#ff79c6">)</span>
+/home/armnn-devenv/armnn/scripts/generate_tensorflow_protobuf.sh <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>/home/armnn-devenv/google/tf_pb /home/armnn-devenv/google/x86_pb_install
+</code></pre></div><ul>
+<li>
+<p>問題記錄</p>
+<p>錯誤訊息</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./.libs/libprotoc.so: error: undefined reference to <span style="color:#f1fa8c">&#39;descriptor_table_google_2fprotobuf_2fdescriptor_2eproto&#39;</span>
+./.libs/libprotoc.so: error: undefined reference to <span style="color:#f1fa8c">&#39;scc_info_FileDescriptorProto_google_2fprotobuf_2fdescriptor_2eproto&#39;</span>
+</code></pre></div><p>解決方式：修改<code>armnn-devenv/google/protobuf-3.12.0/src/</code>下的<code>libprotoc.map</code>、<code>libprotobuf.map</code>、<code>libprotobuf-lite.map</code>，記得改完之後，不要執行<code>./autogen.sh</code>，否則修改會被覆蓋掉。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">{
+  <span style="color:#50fa7b">global</span><span style="color:#ff79c6">:</span>
+    extern <span style="color:#f1fa8c">&#34;C++&#34;</span> <span style="color:#ff79c6">{</span>
+      *google*;
+    <span style="color:#ff79c6">}</span>;
+    scc_info_*;
+    descriptor_table_*;
+
+  local:
+    *;
+};
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>下載並建置Flatbuffers</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+<span style="color:#6272a4">#C_PREFIX=&#34;&#34;</span>
+<span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#ff79c6">=</span>eabi
+<span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">29</span>
+
+<span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#ff79c6">=</span>armv7a
+<span style="color:#6272a4">#AECH_NAME=aarch64</span>
+
+<span style="color:#6272a4"># Download Flatbuffers</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    wget -O flatbuffers-1.12.0.tar.gz https://github.com/google/flatbuffers/archive/v1.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    tar xf flatbuffers-1.12.0.tar.gz <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    rm -f CMakeCache.txt
+
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make all install -j16
+
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0  <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp /armnn_envs_ndk/flatbuffers-1.12.0/CMakeLists.txt . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    mkdir build-arm64 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> build-arm64 <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">CXXFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIC&#34;</span> <span style="color:#8be9fd;font-style:italic">CFLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-fPIE -fPIC&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>-clang <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>-clang++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_ANDROID_NDK<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_SYSTEM_VERSION<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$ANDROID_API</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_SYSTEM_NAME<span style="color:#ff79c6">=</span>Android <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_FLATC<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>         make all install -j16
+</code></pre></div></li>
+<li>
+<p>建置TensorFlow Lite</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+<span style="color:#6272a4">#C_PREFIX=&#34;&#34;</span>
+<span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#ff79c6">=</span>eabi
+<span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">29</span>
+
+<span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#ff79c6">=</span>armv7a
+<span style="color:#6272a4">#AECH_NAME=aarch64</span>
+
+<span style="color:#8be9fd;font-style:italic">AABI_NAME</span><span style="color:#ff79c6">=</span>armeabi-v7a
+<span style="color:#6272a4">#AABI_NAME=arm64-v8a</span>
+
+<span style="color:#6272a4"># Build TF Lite</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> mkdir -p tflite/build
+<span style="color:#8be9fd;font-style:italic">cd</span> tflite/build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>- <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-funsafe-math-optimizations -fPIC&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">ARMCX_FLAGS</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-funsafe-math-optimizations -fPIC&#34;</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake -DCMAKE_C_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>clang <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_CXX_COMPILER<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_PREFIX</span><span style="color:#f1fa8c">}</span>clang++ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_C_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCC_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">ARMCX_FLAGS</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON  -DCMAKE_SYSTEM_NAME<span style="color:#ff79c6">=</span>Android <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_TOOLCHAIN_FILE<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/build/cmake/android.toolchain.cmake <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_ANDROID_NDK<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_SYSTEM_VERSION<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$ANDROID_API</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DANDROID_PLATFORM<span style="color:#ff79c6">=</span>android-<span style="color:#8be9fd;font-style:italic">$ANDROID_API</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DTFLITE_ENABLE_XNNPACK<span style="color:#ff79c6">=</span>OFF <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DCMAKE_SYSTEM_PROCESSOR<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DANDROID_ABI<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AABI_NAME</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DTFLITE_ENABLE_GPU<span style="color:#ff79c6">=</span>OFF <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          -DEIGEN_TEST_CXX11<span style="color:#ff79c6">=</span>ON <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>          /home/armnn-devenv/google/tensorflow/tensorflow/lite/
+
+cmake --build .
+</code></pre></div></li>
+<li>
+<p>生成TensorFlow Lite的Schema，並建置ONNX</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+<span style="color:#6272a4"># Generate TF Lite Schema</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">cd</span> tflite <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cp /home/armnn-devenv/google/tensorflow/tensorflow/lite/schema/schema.fbs . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    /home/armnn-devenv/flatbuffers-1.12.0/build/flatc -c --gen-object-api --reflect-types --reflect-names schema.fbs
+
+<span style="color:#6272a4"># Build onnx</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv
+git clone https://github.com/onnx/onnx.git
+<span style="color:#8be9fd;font-style:italic">cd</span> onnx <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    git fetch https://github.com/onnx/onnx.git 553df22c67bee5f0fe6599cff60f1afc6748c635 <span style="color:#ff79c6">&amp;&amp;</span> git checkout FETCH_HEAD <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">LD_LIBRARY_PATH</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/google/x86_pb_install/lib:<span style="color:#8be9fd;font-style:italic">$LD_LIBRARY_PATH</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    /home/armnn-devenv/google/x86_pb_install/bin/protoc <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    onnx/onnx.proto --proto_path<span style="color:#ff79c6">=</span>. --proto_path<span style="color:#ff79c6">=</span>../google/x86_pb_install/include --cpp_out /home/armnn-devenv/onnx
+</code></pre></div></li>
+<li>
+<p>針對Arm NN的單元測試，修改CMakeLists.txt，增加函式庫連結至<code>${TfLite_flatbuffers_LIB}</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>BUILD_TF_LITE_PARSER<span style="color:#ff79c6">)</span>
+    target_include_directories<span style="color:#ff79c6">(</span>UnitTests SYSTEM PRIVATE <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TF_LITE_SCHEMA_INCLUDE_PATH</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">)</span>
+    target_include_directories<span style="color:#ff79c6">(</span>UnitTests SYSTEM PRIVATE <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">FLATBUFFERS_INCLUDE_PATH</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">)</span>
+    target_link_libraries<span style="color:#ff79c6">(</span>UnitTests <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_flatbuffers_LIB</span><span style="color:#f1fa8c">}</span><span style="color:#ff79c6">)</span>
+    target_link_libraries<span style="color:#ff79c6">(</span>UnitTests armnnTfLiteParser<span style="color:#ff79c6">)</span>
+endif<span style="color:#ff79c6">()</span>
+
+<span style="color:#ff79c6">if</span><span style="color:#ff79c6">(</span>BUILD_ARMNN_SERIALIZER AND ARMNNREF<span style="color:#ff79c6">)</span>
+    target_include_directories<span style="color:#ff79c6">(</span>UnitTests SYSTEM PRIVATE <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">CMAKE_CURRENT_BINARY_DIR</span><span style="color:#f1fa8c">}</span>/src/armnnSerializer<span style="color:#ff79c6">)</span>
+    target_include_directories<span style="color:#ff79c6">(</span>UnitTests SYSTEM PRIVATE <span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">FLATBUFFERS_INCLUDE_PATH</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">)</span>
+    target_link_libraries<span style="color:#ff79c6">(</span>UnitTests <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_flatbuffers_LIB</span><span style="color:#f1fa8c">}</span><span style="color:#ff79c6">)</span>
+    target_link_libraries<span style="color:#ff79c6">(</span>UnitTests armnnSerializer<span style="color:#ff79c6">)</span>
+endif<span style="color:#ff79c6">()</span>
+</code></pre></div><ul>
+<li>
+<p>如果建置Arm NN時，設定<code>-DBUILD_UNIT_TESTS=0</code>，則可以省略此步驟</p>
+</li>
+<li>
+<p>因為遇到下面錯誤，所以才執行此步驟：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/home/armnn-devenv/armnn/src/armnnTfLiteParser/test/ParserFlatbuffersFixture.hpp:167: error: undefined reference to <span style="color:#f1fa8c">&#39;flatbuffers::Parser::Parse(char const*, char const**, char const*)&#39;</span>
+/home/armnn-devenv/armnn/src/armnnTfLiteParser/test/ParserFlatbuffersFixture.hpp:170: error: undefined reference to <span style="color:#f1fa8c">&#39;flatbuffers::Parser::Parse(char const*, char const**, char const*)&#39;</span>
+/home/armnn-devenv/armnn/src/armnnTfLiteParser/test/LoadModel.cpp:203: error: undefined reference to <span style="color:#f1fa8c">&#39;flatbuffers::SaveFile(char const*, char const*, unsigned int, bool)&#39;</span>
+/home/armnn-devenv/armnn/src/armnnDeserializer/test/ParserFlatbuffersSerializeFixture.hpp:98: error: undefined reference to <span style="color:#f1fa8c">&#39;flatbuffers::Parser::Parse(char const*, char const**, char const*)&#39;</span>
+/home/armnn-devenv/armnn/src/armnnDeserializer/test/ParserFlatbuffersSerializeFixture.hpp:101: error: undefined reference to <span style="color:#f1fa8c">&#39;flatbuffers::Parser::Parse(char const*, char const**, char const*)&#39;</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>針對Arm NN的需求，依需求作修改檔案<code>armnn/delegate/cmake/Modules/FindTfLite.cmake</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">find_library<span style="color:#ff79c6">(</span>TfLite_throw_delegate_LIB <span style="color:#f1fa8c">&#34;libabsl_throw_delegate.a&#34;</span>
+             PATH <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TFLITE_LIB_ROOT</span><span style="color:#f1fa8c">}</span>/_deps/abseil-cpp-build/absl/base<span style="color:#ff79c6">)</span>
+find_library<span style="color:#ff79c6">(</span>TfLite_raw_logging_internal_LIB <span style="color:#f1fa8c">&#34;libabsl_raw_logging_internal.a&#34;</span>
+             PATH <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TFLITE_LIB_ROOT</span><span style="color:#f1fa8c">}</span>/_deps/abseil-cpp-build/absl/base<span style="color:#ff79c6">)</span>
+
+<span style="color:#6272a4">## Set TFLITE_FOUND if all libraries are satisfied for static lib</span>
+find_package_handle_standard_args<span style="color:#ff79c6">(</span>TfLite DEFAULT_MSG TfLite_LIB TfLite_abseilstrings_LIB TfLite_ruy_LIB TfLite_fftsg_LIB TfLite_fftsg2d_LIB TfLite_farmhash_LIB TfLite_flatbuffers_LIB TfLite_throw_delegate_LIB TfLite_raw_logging_internal_LIB<span style="color:#ff79c6">)</span>
+<span style="color:#6272a4"># Set external variables for usage in CMakeLists.txt</span>
+<span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>TFLITE_FOUND<span style="color:#ff79c6">)</span>
+    set<span style="color:#ff79c6">(</span>TfLite_LIB <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_abseilstrings_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_ruy_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_fftsg_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_fftsg2d_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_farmhash_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_flatbuffers_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_throw_delegate_LIB</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">TfLite_raw_logging_internal_LIB</span><span style="color:#f1fa8c">}</span><span style="color:#ff79c6">)</span>
+endif <span style="color:#ff79c6">()</span>
+</code></pre></div><ul>
+<li>
+<p>因為遇到下面錯誤，所以才執行此步驟：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/home/armnn-devenv/tflite/build/abseil-cpp/absl/strings/numbers.cc:99: error: undefined reference to <span style="color:#f1fa8c">&#39;absl::lts_2020_02_25::raw_logging_internal::RawLog(absl::lts_2020_02_25::LogSeverity, char const*, int, char const*, ...)&#39;</span>
+/home/armnn-devenv/tflite/build/abseil-cpp/absl/strings/string_view.h:387: error: undefined reference to <span style="color:#f1fa8c">&#39;absl::lts_2020_02_25::base_internal::ThrowStdOutOfRange(char const*)&#39;</span>
+</code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>建置Arm NN</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+<span style="color:#6272a4">#C_PREFIX=&#34;&#34;</span>
+<span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#ff79c6">=</span>eabi
+<span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">29</span>
+
+<span style="color:#8be9fd;font-style:italic">AECH_NAME</span><span style="color:#ff79c6">=</span>armv7a
+<span style="color:#6272a4">#AECH_NAME=aarch64</span>
+
+<span style="color:#8be9fd;font-style:italic">AABI_NAME</span><span style="color:#ff79c6">=</span>armeabi-v7a
+<span style="color:#6272a4">#AABI_NAME=arm64-v8a</span>
+
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/armnn/
+mkdir build
+<span style="color:#8be9fd;font-style:italic">cd</span> build <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CXX</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>-clang++ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    <span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">CC</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AECH_NAME</span>-linux-android<span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">C_PREFIX</span><span style="color:#f1fa8c">}${</span><span style="color:#8be9fd;font-style:italic">ANDROID_API</span><span style="color:#f1fa8c">}</span>-clang <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    cmake .. <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_C_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-w -fPIE -fPIC -lc++_shared -I/home/armnn-devenv/google/tensorflow/&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_CXX_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-w -fPIE -fPIC -pthread -latomic -lc++_shared -I/home/armnn-devenv/google/tensorflow/&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DBUILD_UNIT_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_ANDROID_NDK<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_SYSTEM_NAME<span style="color:#ff79c6">=</span>Android <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_SYSTEM_VERSION<span style="color:#ff79c6">=</span><span style="color:#bd93f9">29</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_ANDROID_ARCH_ABI<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$AABI_NAME</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_SYSROOT<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/sysroot <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_ANDROID_STANDALONE_TOOLCHAIN<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_EXE_LINKER_FLAGS<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;-pie -llog -lz&#34;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_ROOT<span style="color:#ff79c6">=</span>/home/armnn-devenv/ComputeLibrary/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTE_BUILD_DIR<span style="color:#ff79c6">=</span>/home/armnn-devenv/ComputeLibrary/build/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBOOST_ROOT<span style="color:#ff79c6">=</span>/home/armnn-devenv/boost/install/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBoost_LIBRARY_DIR<span style="color:#ff79c6">=</span>/home/armnn-devenv/boost/install/lib <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBoost_INCLUDE_DIR<span style="color:#ff79c6">=</span>/home/armnn-devenv/boost/install/include <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_ROOT<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64 <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_INCLUDE_PATH<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64/include <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_LIBRARY<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64/lib <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_LIBRARY_DEBUG<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64/lib/libflatbuffers.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATBUFFERS_LIBRARY_RELEASE<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64/lib/libflatbuffers.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFLATC_DIR<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-1.12.0/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ARMNN_TFLITE_DELEGATE<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTENSORFLOW_ROOT<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/tensorflow <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTFLITE_LIB_ROOT<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFlatbuffers_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64/lib <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DFlatbuffers_INCLUDE_DIR<span style="color:#ff79c6">=</span>/home/armnn-devenv/flatbuffers-arm64/include <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_INCLUDE_DIR<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/tensorflow/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_Schema_INCLUDE_PATH<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/libtensorflow-lite.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_abseilstrings_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/abseil-cpp-build/absl/strings/libabsl_strings.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_farmhash_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/farmhash-build/libfarmhash.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_fftsg_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/fft2d-build/libfft2d_fftsg.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_fftsg2d_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/fft2d-build/libfft2d_fftsg2d.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_ruy_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/ruy-build/libruy.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_flatbuffers_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/flatbuffers-build/libflatbuffers.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_throw_delegate_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/abseil-cpp-build/absl/base/libabsl_throw_delegate.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTfLite_raw_logging_internal_LIB<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite/build/_deps/abseil-cpp-build/absl/base/libabsl_raw_logging_internal.a <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TF_LITE_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTF_LITE_GENERATED_PATH<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTF_GENERATED_SOURCES<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/tf_pb/ <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_TF_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DTF_LITE_SCHEMA_INCLUDE_PATH<span style="color:#ff79c6">=</span>/home/armnn-devenv/tflite <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ONNX_PARSER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DONNX_GENERATED_SOURCES<span style="color:#ff79c6">=</span>/home/armnn-devenv/onnx <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DARMCOMPUTENEON<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMCOMPUTECL<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DARMNNREF<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_ROOT<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/arm64_pb_install <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/arm64_pb_install/lib <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_DEBUG<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/arm64_pb_install/lib/libprotobuf.so <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DPROTOBUF_LIBRARY_RELEASE<span style="color:#ff79c6">=</span>/home/armnn-devenv/google/arm64_pb_install/lib/libprotobuf.so <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DBUILD_ARMNN_SERIALIZER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> -DBUILD_GATORD_MOCK<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> -DBUILD_BASE_PIPE_SERVER<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    -DCMAKE_VERBOSE_MAKEFILE:BOOL<span style="color:#ff79c6">=</span>ON <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span><span style="color:#f1fa8c"></span>    make -j32
+</code></pre></div><ul>
+<li>平台若不支援OpenCL，則調整Arm NN參數<code>-DARMCOMPUTECL=0</code></li>
+</ul>
+</li>
+<li>
+<p>在目標平台上運行UnitTests</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
+</span><span style="color:#ff79c6"></span>
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK</span><span style="color:#ff79c6">=</span>/home/armnn-devenv/android-ndk-r20b
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">NDK_TOOLCHAIN_ROOT</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK</span>/toolchains/llvm/prebuilt/linux-x86_64
+<span style="color:#8be9fd;font-style:italic">export</span> <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$NDK_TOOLCHAIN_ROOT</span>/bin/:<span style="color:#8be9fd;font-style:italic">$PATH</span>
+
+apt install -y android-tools-fastboot
+
+adb connect 192.11.22.33:5555
+adb root
+adb connect 192.11.22.33:5555
+adb remount
+adb connect 192.11.22.33:5555
+
+<span style="color:#8be9fd;font-style:italic">AABI_NAME</span><span style="color:#ff79c6">=</span>armeabi-v7a
+<span style="color:#6272a4">#AABI_NAME=arm64-v8a</span>
+
+<span style="color:#8be9fd;font-style:italic">TARGET_LIB_PATH</span><span style="color:#ff79c6">=</span>/vendor/lib
+<span style="color:#6272a4">#TARGET_LIB_PATH=/vendor/lib64</span>
+
+<span style="color:#6272a4"># prepare required data and lib</span>
+<span style="color:#8be9fd;font-style:italic">cd</span> /home/armnn-devenv/armnn/build/
+adb push libarmnn.so /data/local/tmp/
+adb push libarmnnUtils.a /data/local/tmp/
+adb push libarmnnTestUtils.so /data/local/tmp/
+adb push libarmnnOnnxParser.so /data/local/tmp/
+adb push libarmnnSerializer.so /data/local/tmp/
+adb push libtimelineDecoder.so /data/local/tmp/
+adb push libarmnnTfLiteParser.so /data/local/tmp/
+adb push libtimelineDecoderJson.so /data/local/tmp/
+adb push UnitTests /data/local/tmp/
+adb push <span style="color:#8be9fd;font-style:italic">$NDK</span>/sources/cxx-stl/llvm-libc++/libs/<span style="color:#8be9fd;font-style:italic">$AABI_NAME</span>/libc++_shared.so /data/local/tmp/
+adb push /home/armnn-devenv/google/arm64_pb_install/lib/libprotobuf.so /data/local/tmp/libprotobuf.so.23.0.0
+adb shell <span style="color:#f1fa8c">&#39;ln -s libprotobuf.so.23.0.0 /data/local/tmp/libprotobuf.so.23&#39;</span>
+adb shell <span style="color:#f1fa8c">&#39;ln -s libprotobuf.so.23.0.0 /data/local/tmp/libprotobuf.so&#39;</span>
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/testSharedObject
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/testSharedObject/* /data/local/tmp/src/backends/backendsCommon/test/testSharedObject/
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/testDynamicBackend
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/testDynamicBackend/* /data/local/tmp/src/backends/backendsCommon/test/testDynamicBackend/
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath1
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/backendsTestPath1/* /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath1/
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/backendsTestPath2/Arm_CpuAcc_backend.so /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2/
+adb shell ln -s Arm_CpuAcc_backend.so /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2/Arm_CpuAcc_backend.so.1
+adb shell ln -s Arm_CpuAcc_backend.so.1 /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2/Arm_CpuAcc_backend.so.1.2
+adb shell ln -s Arm_CpuAcc_backend.so.1.2 /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2/Arm_CpuAcc_backend.so.1.2.3
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/backendsTestPath2/Arm_GpuAcc_backend.so /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2/
+adb shell ln -s nothing /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath2/Arm_no_backend.so
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath3
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath5
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/backendsTestPath5/* /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath5/
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath6
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/backendsTestPath6/* /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath6/
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath7
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath9
+adb push -p /home/armnn-devenv/armnn/build/src/backends/backendsCommon/test/backendsTestPath9/* /data/local/tmp/src/backends/backendsCommon/test/backendsTestPath9/
+<span style="color:#6272a4">#</span>
+adb shell mkdir -p /data/local/tmp/src/backends/dynamic/reference
+adb push -p /home/armnn-devenv/armnn/build/src/backends/dynamic/reference/Arm_CpuRef_backend.so /data/local/tmp/src/backends/dynamic/reference/
+
+<span style="color:#6272a4"># execute UnitTests</span>
+adb shell <span style="color:#f1fa8c">&#39;LD_LIBRARY_PATH=/data/local/tmp:${TARGET_LIB_PATH}:${TARGET_LIB_PATH}/egl /data/local/tmp/UnitTests&#39;</span>
+</code></pre></div></li>
+</ol>
+<h3 id="further-reading">Further Reading</h3>
+<ol>
+<li><a href="https://imprld01.github.io/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/">Note of Cross Compilation on Arm NN - Arm NN 的交叉編譯筆記</a></li>
+</ol>
+<h3 id="reference">Reference</h3>
+<ol>
+<li><a href="https://github.com/ARM-software/armnn/blob/branches/armnn_22_05/BuildGuideAndroidNDK.md#run-the-armnn-unit-tests-on-an-android-device">armnn/BuildGuideAndroidNDK.md at branches/armnn_22_05 · ARM-software/armnn</a></li>
+<li><a href="https://medium.com/@payaljindal050/how-did-i-build-arm-nn-using-android-ndk-76bdd04f19c2">How did I build Arm NN using Android NDK</a></li>
+<li><a href="https://kheresy.wordpress.com/2010/10/13/boostcpplibraries/">Boost C++ Libraries 簡介</a></li>
+<li><a href="https://github.com/boostorg/boost/issues/298">https://github.com/boostorg/boost/issues/298</a></li>
+<li><a href="https://github.com/ARM-software/armnn/issues/659">https://github.com/ARM-software/armnn/issues/659</a></li>
+<li><a href="https://github.com/protocolbuffers/protobuf/issues/5144">https://github.com/protocolbuffers/protobuf/issues/5144</a></li>
+<li><a href="https://github.com/google/or-tools/issues/2196">https://github.com/google/or-tools/issues/2196</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/' data-toggle="tooltip" data-placement="top" title="Arm NN 的交叉編譯筆記">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href='/blogg/2022/07/08/note_of_cross_compilation_on_ne10/' data-toggle="tooltip" data-placement="top" title="Ne10 的交叉編譯筆記">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "imprld01-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>

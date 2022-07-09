@@ -6,9 +6,18 @@
     <description>Recent content in ArmNN on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Jun 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/armnn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Jul 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/armnn/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Arm NN 交叉編譯的筆記</title>
+      <title>使用 Android NDK 編譯 Arm NN</title>
+      <link>https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/</link>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/</guid>
+      <description>版本對齊 Android API Version：29 System：aarch64、armv7a Arm NN：branches/armnn_22_05 Android NDK：andr</description>
+    </item>
+    
+    <item>
+      <title>Arm NN 的交叉編譯筆記</title>
       <link>https://imprld01.github.io/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/</link>
       <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
       

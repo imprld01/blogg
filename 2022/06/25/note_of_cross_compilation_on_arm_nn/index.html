@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Arm NN 交叉編譯的筆記" />
-    <meta property="og:title" content="Arm NN 交叉編譯的筆記" />
-    <meta property="twitter:title" content="Arm NN 交叉編譯的筆記" />
+    <meta name="title" content="Arm NN 的交叉編譯筆記" />
+    <meta property="og:title" content="Arm NN 的交叉編譯筆記" />
+    <meta property="twitter:title" content="Arm NN 的交叉編譯筆記" />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="blog, knowledge">
     <link rel="shortcut icon" href="/blogg/img/o.ico">
 
-    <title>Arm NN 交叉編譯的筆記 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+    <title>Arm NN 的交叉編譯筆記 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
 
     <link rel="canonical" href="/blogg/2022/06/25/note_of_cross_compilation_on_arm_nn/">
 
@@ -199,8 +199,12 @@
                             Deep Learning
                         </a>
                         
+                        <a class="tag" href='/blogg/tags/linux' title="Linux">
+                            Linux
+                        </a>
+                        
                     </div>
-                    <h1>Arm NN 交叉編譯的筆記</h1>
+                    <h1>Arm NN 的交叉編譯筆記</h1>
                     <h2 class="subheading">Note of Cross Compilation on Arm NN</h2>
                     <span class="meta">
                         Posted by 
@@ -242,6 +246,7 @@
     <li><a href="#框架概念-concept-of-arm-nn-ml-software">框架概念 (Concept of Arm NN ML Software)</a></li>
     <li><a href="#交叉編譯-cross-compilation">交叉編譯 (Cross Compilation)</a></li>
     <li><a href="#arm-nn的交叉編譯筆記-note-for-cross-compilation-on-arm-nn">Arm NN的交叉編譯筆記 (Note for Cross Compilation on Arm NN)</a></li>
+    <li><a href="#further-reading">Further Reading</a></li>
     <li><a href="#reference">Reference</a></li>
   </ul>
 </nav>
@@ -772,7 +777,12 @@ apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y 
 </span><span style="color:#f1fa8c"></span>         -DCMAKE_INSTALL_PREFIX:PATH<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv/flatbuffers <span style="color:#f1fa8c">\
 </span><span style="color:#f1fa8c"></span>         -DFLATBUFFERS_BUILD_TESTS<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
 </span><span style="color:#f1fa8c"></span>    make all install -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># Build arm32 version of Flatbuffers</span>
+</code></pre></div><blockquote>
+<p>修改flatbuffers-1.12.0下面的CMakeLists.txt，加上：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">set(CMAKE_C_COMPILER_FORCED TRUE)
+set(CMAKE_CXX_COMPILER_FORCED TRUE)
+</code></pre></div></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># Build arm32 version of Flatbuffers</span>
 <span style="color:#8be9fd;font-style:italic">cd</span> <span style="color:#8be9fd;font-style:italic">$HOME</span>/armnn-devenv <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> flatbuffers-1.12.0  <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
 </span><span style="color:#f1fa8c"></span>    cp /root/armnn_envs_x86_64/flatbuffers-1.12.0/CMakeLists.txt . <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
 </span><span style="color:#f1fa8c"></span>    mkdir build-arm32-myarm <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
@@ -808,6 +818,11 @@ apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y 
 </code></pre></div></li>
 <li>
 <p>Build Arm NN</p>
+<blockquote>
+<p>修改armnn-32-myarm下面的CMakeLists.txt，加上：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">set(CMAKE_C_COMPILER_FORCED TRUE)
+set(CMAKE_CXX_COMPILER_FORCED TRUE)
+</code></pre></div></blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">#!/bin/bash
 </span><span style="color:#ff79c6"></span>
 <span style="color:#6272a4"># Build 32-bit ArmNN</span>
@@ -840,6 +855,10 @@ apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y 
 </span><span style="color:#f1fa8c"></span>    make -j<span style="color:#ff79c6">$(</span>nproc<span style="color:#ff79c6">)</span>
 </code></pre></div></li>
 </ol>
+<h3 id="further-reading">Further Reading</h3>
+<ol>
+<li><a href="https://imprld01.github.io/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/">Note of Compilation of Arm NN by Android NDK - 使用 Android NDK 編譯 Arm NN</a></li>
+</ol>
 <h3 id="reference">Reference</h3>
 <ol>
 <li><a href="https://github.com/ARM-software/armnn">https://github.com/ARM-software/armnn</a></li>
@@ -862,6 +881,11 @@ apt-get update <span style="color:#ff79c6">&amp;&amp;</span> apt-get install -y 
                             Previous Post</a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href='/blogg/2022/07/08/note_of_compilation_of_arm_nn_by_android_ndk/' data-toggle="tooltip" data-placement="top" title="使用 Android NDK 編譯 Arm NN">Next
+                            Post &rarr;</a>
+                    </li>
                     
                 </ul>
 

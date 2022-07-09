@@ -6,29 +6,20 @@
     <description>Recent content in Tags on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Jun 2022 21:00:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ARM</title>
       <link>https://imprld01.github.io/blogg/tags/arm/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/arm/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>ArmNN</title>
-      <link>https://imprld01.github.io/blogg/tags/armnn/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/armnn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Compilation</title>
       <link>https://imprld01.github.io/blogg/tags/compilation/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/compilation/</guid>
       <description></description>
@@ -37,7 +28,7 @@
     <item>
       <title>Compile</title>
       <link>https://imprld01.github.io/blogg/tags/compile/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/compile/</guid>
       <description></description>
@@ -46,7 +37,7 @@
     <item>
       <title>Compiler</title>
       <link>https://imprld01.github.io/blogg/tags/compiler/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/compiler/</guid>
       <description></description>
@@ -55,7 +46,7 @@
     <item>
       <title>Cross</title>
       <link>https://imprld01.github.io/blogg/tags/cross/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/cross/</guid>
       <description></description>
@@ -64,27 +55,144 @@
     <item>
       <title>Cross Compilsation</title>
       <link>https://imprld01.github.io/blogg/tags/cross-compilsation/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/cross-compilsation/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>DFT</title>
+      <link>https://imprld01.github.io/blogg/tags/dft/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/dft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FFT</title>
+      <link>https://imprld01.github.io/blogg/tags/fft/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/fft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fourier</title>
+      <link>https://imprld01.github.io/blogg/tags/fourier/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/fourier/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Frequency</title>
+      <link>https://imprld01.github.io/blogg/tags/frequency/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/frequency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ISTFT</title>
+      <link>https://imprld01.github.io/blogg/tags/istft/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/istft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ne10</title>
+      <link>https://imprld01.github.io/blogg/tags/ne10/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/ne10/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Signal</title>
+      <link>https://imprld01.github.io/blogg/tags/signal/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/signal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Spectrogram</title>
+      <link>https://imprld01.github.io/blogg/tags/spectrogram/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/spectrogram/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>STFT</title>
+      <link>https://imprld01.github.io/blogg/tags/stft/</link>
+      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/stft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Android</title>
+      <link>https://imprld01.github.io/blogg/tags/android/</link>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ArmNN</title>
+      <link>https://imprld01.github.io/blogg/tags/armnn/</link>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/armnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Deep Learning</title>
       <link>https://imprld01.github.io/blogg/tags/deep-learning/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/deep-learning/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>NDK</title>
+      <link>https://imprld01.github.io/blogg/tags/ndk/</link>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/ndk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>NN</title>
       <link>https://imprld01.github.io/blogg/tags/nn/</link>
-      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 08 Jul 2022 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/nn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>https://imprld01.github.io/blogg/tags/linux/</link>
+      <pubDate>Sat, 25 Jun 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/linux/</guid>
       <description></description>
     </item>
     
@@ -161,15 +269,6 @@
     </item>
     
     <item>
-      <title>DFT</title>
-      <link>https://imprld01.github.io/blogg/tags/dft/</link>
-      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/dft/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Discrete Fourier Transform</title>
       <link>https://imprld01.github.io/blogg/tags/discrete-fourier-transform/</link>
       <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
@@ -184,15 +283,6 @@
       <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/dtft/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>FFT</title>
-      <link>https://imprld01.github.io/blogg/tags/fft/</link>
-      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/fft/</guid>
       <description></description>
     </item>
     
@@ -215,29 +305,11 @@
     </item>
     
     <item>
-      <title>ISTFT</title>
-      <link>https://imprld01.github.io/blogg/tags/istft/</link>
-      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/istft/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Phase</title>
       <link>https://imprld01.github.io/blogg/tags/phase/</link>
       <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/phase/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>STFT</title>
-      <link>https://imprld01.github.io/blogg/tags/stft/</link>
-      <pubDate>Sat, 05 Feb 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/stft/</guid>
       <description></description>
     </item>
     
@@ -265,15 +337,6 @@
       <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/ftp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
-      <link>https://imprld01.github.io/blogg/tags/linux/</link>
-      <pubDate>Sat, 29 Jan 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/linux/</guid>
       <description></description>
     </item>
     
@@ -319,15 +382,6 @@
       <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/adb-push/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Android</title>
-      <link>https://imprld01.github.io/blogg/tags/android/</link>
-      <pubDate>Sat, 22 Jan 2022 21:00:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/android/</guid>
       <description></description>
     </item>
     
