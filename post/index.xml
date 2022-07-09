@@ -125,6 +125,15 @@
     </item>
     
     <item>
+      <title>紅黑樹</title>
+      <link>https://imprld01.github.io/blogg/2020/02/07/red_black_tree/</link>
+      <pubDate>Fri, 07 Feb 2020 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2020/02/07/red_black_tree/</guid>
+      <description>概念介紹 樹的搜尋 (Tree Search)，一直是電腦科學領域的重要演算法，當中探討了樹可能遇到的問題：樹成長時可能偏重於特定一邊，即不平衡 (Unbalance) 的現象。</description>
+    </item>
+    
+    <item>
       <title>快來使用JavaFX輕鬆撰寫Java GUI</title>
       <link>https://imprld01.github.io/blogg/2017/10/01/come_to_use_javafx_for_easily_writing_java_gui/</link>
       <pubDate>Sun, 01 Oct 2017 22:37:00 +0000</pubDate>

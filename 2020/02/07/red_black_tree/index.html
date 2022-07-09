@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="紅黑樹" />
+    <meta property="og:title" content="紅黑樹" />
+    <meta property="twitter:title" content="紅黑樹" />
+    
+
+    
+    <meta name="description" content="樹的搜尋(Tree Search)，一直是電腦科學領域的重要演算法，當中探討了樹可能遇到的問題：樹成長時可能偏重於特定一邊，即不平衡(Unbalance) 的現象。二元樹是常見且廣泛使用的一種樹，面臨這樣關乎運氣、可能退化成連結串列(Linked List) 的潛藏缺點，在使用上免不了讓人擔心效能是否能常保順暢">
+    <meta property="og:description" content="樹的搜尋(Tree Search)，一直是電腦科學領域的重要演算法，當中探討了樹可能遇到的問題：樹成長時可能偏重於特定一邊，即不平衡(Unbalance) 的現象。二元樹是常見且廣泛使用的一種樹，面臨這樣關乎運氣、可能退化成連結串列(Linked List) 的潛藏缺點，在使用上免不了讓人擔心效能是否能常保順暢" />
+    <meta property="twitter:description" content="樹的搜尋(Tree Search)，一直是電腦科學領域的重要演算法，當中探討了樹可能遇到的問題：樹成長時可能偏重於特定一邊，即不平衡(Unbalance) 的現象。二元樹是常見且廣泛使用的一種樹，面臨這樣關乎運氣、可能退化成連結串列(Linked List) 的潛藏缺點，在使用上免不了讓人擔心效能是否能常保順暢" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>紅黑樹 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2020/02/07/red_black_tree/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2018/10/18/05/24/red-3755547_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/red-black-tree' title="Red-Black Tree">
+                            Red-Black Tree
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/binary-search-tree' title="Binary Search Tree">
+                            Binary Search Tree
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/tree' title="Tree">
+                            Tree
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/computer-science' title="Computer Science">
+                            Computer Science
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/algorithm' title="Algorithm">
+                            Algorithm
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/search' title="Search">
+                            Search
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/balance' title="Balance">
+                            Balance
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/avl-tree' title="AVL Tree">
+                            AVL Tree
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/bst' title="BST">
+                            BST
+                        </a>
+                        
+                    </div>
+                    <h1>紅黑樹</h1>
+                    <h2 class="subheading">Red-Black Tree</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Friday, February 7, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概念介紹">概念介紹</a></li>
+    <li><a href="#規則特性">規則特性</a></li>
+    <li><a href="#基礎操作">基礎操作</a></li>
+    <li><a href="#新增-insertion">新增 (Insertion)</a></li>
+    <li><a href="#刪除deletion">刪除(Deletion)</a></li>
+    <li><a href="#結語">結語</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="概念介紹">概念介紹</h3>
+<p>樹的搜尋 (Tree Search)，一直是電腦科學領域的重要演算法，當中探討了樹可能遇到的問題：<strong>樹成長時可能偏重於特定一邊</strong>，即<strong>不平衡 (Unbalance)</strong> 的現象。二元樹是常見且廣泛使用的一種樹，面臨這樣關乎運氣、可能退化成連結串列 (Linked List) 的潛藏缺點，在使用上免不了讓人擔心效能是否能常保順暢。此外，在一些應用上，可能不期望這樣不平衡的可能性發生，所以具有自動平衡左右數量分布效果的演算法早在約 1962 年便被發表出來，稱為 AVL 樹 (Adelson-Velsky and Landis Tree, AVL Tree)。這種平衡成長的二元搜尋樹 (Binary Search Tree, BST) 被歸類稱為<strong>自平衡二元搜尋樹 (Self-Balancing Binary Search Tree)</strong>。</p>
+<h3 id="規則特性">規則特性</h3>
+<p>接下來，要介紹同歸為自平衡二元搜尋樹的紅黑樹 (Red-Black Tree, RBT or RB Tree) 對平衡性的要求比 AVL 樹還寬鬆。紅黑樹是利用<strong>節點顏色</strong>來檢視二元樹每條延展的路徑高度是否差不多，因此發明者訂立了以下幾點規則。</p>
+<blockquote>
+<p><strong>紅黑樹規則</strong></p>
+<ol>
+<li>樹上的每個<strong>節點 (node)</strong> 只能是<strong>紅色</strong>或<strong>黑色</strong></li>
+<li><strong>根節點 (root)</strong> 一定要是<strong>黑色</strong></li>
+<li><strong>葉節點 (leaf)</strong> 一定要是<strong>黑色</strong>的<strong>空值 (NULL)</strong></li>
+<li><strong>紅色節點</strong>的兩個<strong>子節點 (child)</strong> 一定要是<strong>黑色</strong> (亦即<strong>不能有兩個紅色節點相連</strong>，注意：黑色節點的子節點顏色沒有限制)</li>
+<li>從任何<strong>節點</strong>出發，其下至葉節點所有路徑的<strong>黑色節點數目</strong>要相同</li>
+</ol>
+</blockquote>
+<p>滿足上述規則的二元樹，相比一般的二元樹更能保持平衡性，往後套用二元樹的算法來查找資料時能更快速、方便地到達目的地，套用運算的時間複雜度為 O(log n)，這是因為紅黑樹保證<strong>最長路徑不會超過最短路徑的兩倍</strong>。</p>
+<h3 id="基礎操作">基礎操作</h3>
+<p>因為紅黑樹也是二元樹的一種，所以例如：新增節點、刪除節點、查詢節點等針對紅黑樹的操作與二元樹的操作前段演算法相同，只是在每次操作完畢之後可能會讓樹的結構改變而可能無法滿足成為紅黑樹的性質，進而可能不具有平衡的性質。</p>
+<blockquote>
+<p><strong>複習小教室：Operations on Binary Search Tree</strong></p>
+<p>常見的操作包含：SEARCH, MINIMUM, MAXIMUM, SUCCESSOR, PREDECESSOR，
+其中搜尋節點 (Search)、找最大節點 (Maximum)、找最小節點 (Minimum) 較單純，不多介紹。
+這邊想多著墨於找尋上位者 (Successor)與下位者 (Predecessor)的操作上，
+這與之後新增 (Insertion)與刪除 (Deletion)節點的操作具有高度關聯：</p>
+<ol>
+<li>Successor(z)：尋找數列的下一個數字 (下位者)。如果右子樹非空，則找右子樹中最小的節點；如果右子樹為空，則往回找第一個比自己大的祖先。</li>
+<li>Predecessor(z)：尋找數列的上一個數字 (上位者)。如果右子樹非空，則找右子樹中最大的節點；如果右子樹為空，則往回找第一個比自己小的祖先。</li>
+<li>Deletion(z)：刪除特定節點，由子節點的三種情況來討論演算法。沒有子節點或只有一個子節點的時候，直接將該節點刪除，其父節點則直接連接至其子節點(或為NULL)上。但有兩個子節點時，則需要先找到欲刪除節點的下位者是誰，將下位者與欲刪除節點的數值交換，再將下位者(已換成欲刪除節點數值)刪除，其中會將下位者的父節點與下位者的子節點相連 (有兩個子節點時，一般是以右邊最小的子節點、或者左邊最大的子節點來遞補)。</li>
+</ol>
+</blockquote>
+<p>為了在操作後仍是一棵紅黑樹 (滿足上述五項規則)，以下有兩項基本運算可以用來幫助調整樹狀結構以滿足紅黑樹的規則，這兩個運算分別為<strong>變色</strong>與<strong>旋轉</strong> (左旋、右旋)。</p>
+<ol>
+<li>
+<p>首先是變色，這個運算很容易理解，就是將當前顏色改變成另一個顏色，例如紅色改成黑色。</p>
+</li>
+<li>
+<p>但是很多時候用到的運算是旋轉，如下是以節點 P 為中心進行旋轉運算。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*yqRxuEUU8x7SMZmHj0bfoA.png" alt="&lt;strong&gt;Left Rotation on Node P&lt;/strong&gt;">
+
+</p>
+<p><strong>Left Rotation on Node P</strong></p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*H5UyF8TKJl4teaAlXwIg4g.png" alt="&lt;strong&gt;Right Rotation on Node P&lt;/strong&gt;">
+
+</p>
+<p><strong>Right Rotation on Node P</strong></p>
+</li>
+</ol>
+<p>基本上維持紅黑樹的演算過程都是由變色與旋轉依次組成。總結來說，紅黑樹的新增與刪除操作是先透過一般二元樹的新增與刪除操作後，再從遞補的節點開始向上進行紅黑樹性質維護。</p>
+<p>接下來，直接用例子演示走過一遍新增與刪除節點的演算法更能了解到變色與旋轉的作用為何：</p>
+<h3 id="新增-insertion">新增 (Insertion)</h3>
+<p>在新增操作上，新插入的節點一律都為<strong>紅色</strong>，目的是希望紅黑樹維持規則 5 的約束，但也可能會違反除了規則 5 以外的其他規則，所以作完二元樹新增節點的操作後，需要以新增的節點開始向上檢查紅黑樹是否符合各項規則，修正紅黑樹的演算法可能會有以下幾種情境，因應不同情境會採取不同的修正過程：</p>
+<ul>
+<li>
+<p>情境一：紅黑樹為空，插入紅節點後成為根結點，會違反規則 2，需將該節點改為黑色，即可完成紅黑樹維護。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*ncSgBmyXELomx-QV-Ndwdw.png" alt="&lt;strong&gt;Case 1: Red Node on the Empty RB Tree&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 1: Red Node on the Empty RB Tree</strong></p>
+</li>
+<li>
+<p>情境二：在黑節點上與紅節點 z 相接，不違反任何規則，無須作其他調整。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*WuLUbjnpB2hcQBsriX3tag.png" alt="&lt;strong&gt;Case 2: Red Node on a Black Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 2: Red Node on a Black Node</strong></p>
+</li>
+<li>
+<p>情境三：在紅節點上與紅節點 z 相接，會違反規則 4。從自己開始維護，若叔叔節點為紅色，則先將父節點塗黑，用以保持規則 4，但這時會違反規則 5，所以須再將祖節點與叔節點分別塗成紅色和黑色。接著再從祖節點繼續往上檢查維護。</p>
+<p>如圖片，可以看到最後的結果違反規則 4，該情境符合情境四所示，其父節點與自身皆為紅色，所以下一輪會再以對應的流程處理。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*HwzUauQb2j1UrVnOvoQGMQ.png" alt="&lt;strong&gt;Case 3: Red Node on a Red Node with its Red Uncle Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 3: Red Node on a Red Node with its Red Uncle Node</strong></p>
+</li>
+<li>
+<p>情境四：在紅節點上與紅節點 z 相接，會違反規則 4。從自己開始維護，若叔叔節點為黑色且自己位置在父節點右邊的狀況，則先以父節點進行左旋，形成情境五，再作為情況五進行下一輪的處理。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*_GlKNdENTdpfJ3pKbcSGyg.png" alt="&lt;strong&gt;Case 4: Red Node on the Right Side of Red Node with its Black Uncle Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 4: Red Node on the Right Side of Red Node with its Black Uncle Node</strong></p>
+</li>
+<li>
+<p>情境五：在紅節點上與紅節點 z 相接，會違反規則 4。從自己開始維護，若叔叔節點為黑色且自己位置在父節點左邊的狀況，則先將父節點改為黑色，用以保持規則 4，但這時會違反規則 5，所以須再將祖節點塗成紅色，接著再以祖節點進行右旋，即能完成維護。(直覺上，節點 F 的左邊路徑會多一個黑色，可以透過右旋把黑色轉掉)</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*_ek8Fk_vWvqzAhXn1k_0fQ.png" alt="&lt;strong&gt;Case 5: Red Node on the Left Side of Red Node with its Black Uncle Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 5: Red Node on the Left Side of Red Node with its Black Uncle Node</strong></p>
+</li>
+</ul>
+<h3 id="刪除deletion">刪除(Deletion)</h3>
+<p>在刪除操作上，刪除一個節點時可能也會違反規則，所以作完二元樹刪除節點的操作後，視需要以遞補節點開始向上檢查紅黑樹是否符合各項規則，修正紅黑樹的演算法可能會有以下幾種情境，因應不同情境會採取不同的修正過程：</p>
+<ul>
+<li>
+<p>情境一：刪除紅節點，不違反任何規則，無須進行維護。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*T_-Jx5ra1Ah6wONjOSsDZA.png" alt="&lt;strong&gt;Case 1: Deletion on Red Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 1: Deletion on Red Node</strong></p>
+</li>
+<li>
+<p>情境二：刪除節點為黑色需要進行維護。刪除黑節點後，如果遞補上來的節點為紅色時，因為黑節點被刪除會違反規則 5，所以直接將遞補的紅節點塗黑即可。或者，如果維護點在根結點時，如果根節點為紅色，這時則違反規則 2，直接將根節點塗黑即可。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*v8UqVcUItXeVTiGw8MGWnQ.png" alt="&lt;strong&gt;Case 2: Deletion on Black Node with Red Node Compensation&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 2: Deletion on Black Node with Red Node Compensation</strong></p>
+</li>
+<li>
+<p>情境三：刪除節點為黑色需要進行維護。刪除黑節點後，如果遞補上來的節點為黑色時，需要視情況補足路徑上缺失的一個黑色，會以遞補節點作為當前節點開始進行維護：</p>
+<p>兄弟節點若是紅色，則將兄弟節點塗黑、父節點塗紅、再以父節點為基準左旋 (因為節點 C 的左邊路徑會少一個黑色，直覺會是透過左旋把黑色補起來)。但是可以發現現在的紅黑樹還是違反規則 5，雖然無法完全解決問題，但是遞補節點的兄弟節點改變了，可以新情境再下一輪進行對應的修正。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*KmiJomY76b_nB1HrbTmWng.png" alt="&lt;strong&gt;Case 3: Deletion on Black Node with Black Node Compensation and Red Sibling Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 3: Deletion on Black Node with Black Node Compensation and Red Sibling Node</strong></p>
+</li>
+<li>
+<p>情境四：刪除節點為黑色需要進行維護。刪除黑節點後，如果遞補上來的節點為黑色時，需要視情況補足路徑上缺失的一個黑色，會以遞補節點作為當前節點開始進行維護：</p>
+<p>兄節點若是黑色，且兄節點之左節點與右節點同為黑色的時候，則將兄節點塗紅。這時若父節點為紅色則結束修正後將父節點塗黑即可，但是如果父節點為黑色，則需要再從父節點開始進行修正 (因為也要照顧到父節點的兄弟子樹，看看是否也滿足規則 5)。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*72T1y5Ja_Z9q0yHbQJrmhA.png" alt="&lt;strong&gt;Case 4: Deletion on Black Node with Black Node Compensation and Black Sibling Node with its Two Black Child Nodes&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 4: Deletion on Black Node with Black Node Compensation and Black Sibling Node with its Two Black Child Nodes</strong></p>
+</li>
+<li>
+<p>情境五：刪除節點為黑色需要進行維護。刪除黑節點後，如果遞補上來的節點為黑色時，需要視情況補足路徑上缺失的一個黑色，會以遞補節點作為當前節點開始進行維護：</p>
+<p>兄節點若是黑色，且兄節點之左節點為紅色、右節點為黑色的時候，則將兄節點塗紅、兄節點之左節點塗黑，再以兄節點為基準右旋，接著再進行下次的修正 (若採用左旋會變成相同情境，所以只好右旋，才可能跳離循環)。</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*v5dKDPkIzTn1R5jZ0QDhgw.png" alt="&lt;strong&gt;Case 5: Deletion on Black Node with Black Node Compensation and Black Sibling Node with its Red Left Child Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 5: Deletion on Black Node with Black Node Compensation and Black Sibling Node with its Red Left Child Node</strong></p>
+</li>
+<li>
+<p>情境六：刪除節點為黑色需要進行維護。刪除黑節點後，如果遞補上來的節點為黑色時，需要視情況補足路徑上缺失的一個黑色，會以遞補節點作為當前節點開始進行維護：</p>
+<p>兄節點若是黑色，且兄節點之右節點為紅色的時候，則將兄節點塗成與父節點相同的顏色、父節點塗黑、兄節點的右節點塗黑，再以父節點為基準左旋即可。(透過左旋與塗色操作將右邊的黑色往左調整、並將右邊紅點塗黑補足缺失，希望符合規則 5 來讓每條路徑上黑色節點的數量一致)</p>
+<p>
+  <img src="https://miro.medium.com/max/1400/1*toAA3FnLg0NIwbcRrvZa3w.png" alt="&lt;strong&gt;Case 6: Deletion on Black Node with Black Node Compensation and Black Sibling Node with its Red Right Child Node&lt;/strong&gt;">
+
+</p>
+<p><strong>Case 6: Deletion on Black Node with Black Node Compensation and Black Sibling Node with its Red Right Child Node</strong></p>
+</li>
+</ul>
+<h3 id="結語">結語</h3>
+<p>紅黑樹謹遵單單五條規則，前人總結了各種情況後，列出對應的處理方式。事後理解情境的對應處理方式雖然有跡可循，但是窺探其中奧秘卻也令人懾服，很難想像這項演算法從無到有所付出的龐大心力與挫折！</p>
+<h3 id="reference">Reference</h3>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Red-black tree - Wikipedia</a></li>
+<li><a href="https://www.796t.com/content/1546725999.html">資料結構與演算法：紅黑樹（Red Black Tree）</a></li>
+<li><a href="http://alrightchiu.github.io/SecondRound/red-black-tree-insertxin-zeng-zi-liao-yu-fixupxiu-zheng.html">Red Black Tree: Insert(新增資料)與Fixup(修正)</a></li>
+<li><a href="http://alrightchiu.github.io/SecondRound/red-black-tree-deleteshan-chu-zi-liao-yu-fixupxiu-zheng.html">Red Black Tree: Delete(刪除資料)與Fixup(修正)</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2017/10/01/come_to_use_javafx_for_easily_writing_java_gui/' data-toggle="tooltip" data-placement="top" title="快來使用JavaFX輕鬆撰寫Java GUI">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href='/blogg/2021/08/16/note_of_hugo_for_me/' data-toggle="tooltip" data-placement="top" title="給自己的Hugo筆記">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "imprld01-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>
