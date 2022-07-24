@@ -6,7 +6,25 @@
     <description>Recent content on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>常用的Git筆記</title>
+      <link>https://imprld01.github.io/blogg/2022/07/23/note_of_commonly_used_git/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/23/note_of_commonly_used_git/</guid>
+      <description>初始設定 使用者設定 git config --global user.name &amp;#34;username&amp;#34; git config --global user.email &amp;#34;username@imprld01.com&amp;#34; #linux/macos git config --global core.autocrlf input #windows git config --global core.autocrlf true git config --global core.filemode false #optimal git config --global --add core.compression -1 git config --global color.ui true git config --global core.editor vim git config --global ssh.variant ssh git config --global log.decorate short git config --global alias.last &amp;#39;log -1 HEAD&amp;#39;</description>
+    </item>
+    
+    <item>
+      <title>進階使用CMake編譯程式碼</title>
+      <link>https://imprld01.github.io/blogg/2022/07/23/note_of_using_cmake_for_compilation_in_advance/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/23/note_of_using_cmake_for_compilation_in_advance/</guid>
+      <description>一則故事 寫程式一般透過gcc或g++等編譯器 (Compiler)，將程式碼 (Code) 轉為可執行檔 (Program) 隨著系統越加龐大，程式碼檔案數量也隨之增加，程式碼</description>
+    </item>
+    
     <item>
       <title>Ne10 的交叉編譯筆記</title>
       <link>https://imprld01.github.io/blogg/2022/07/08/note_of_cross_compilation_on_ne10/</link>

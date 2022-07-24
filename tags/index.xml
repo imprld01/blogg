@@ -6,7 +6,142 @@
     <description>Recent content in Tags on 御風翱翔 知識漫遊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Code</title>
+      <link>https://imprld01.github.io/blogg/tags/code/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/code/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Control</title>
+      <link>https://imprld01.github.io/blogg/tags/control/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/control/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Git</title>
+      <link>https://imprld01.github.io/blogg/tags/git/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Github</title>
+      <link>https://imprld01.github.io/blogg/tags/github/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software</title>
+      <link>https://imprld01.github.io/blogg/tags/software/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/software/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software Engineer</title>
+      <link>https://imprld01.github.io/blogg/tags/software-engineer/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/software-engineer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Version</title>
+      <link>https://imprld01.github.io/blogg/tags/version/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/version/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Version Control</title>
+      <link>https://imprld01.github.io/blogg/tags/version-control/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/version-control/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CMake</title>
+      <link>https://imprld01.github.io/blogg/tags/cmake/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/cmake/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Compilation</title>
+      <link>https://imprld01.github.io/blogg/tags/compilation/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/compilation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Compiler</title>
+      <link>https://imprld01.github.io/blogg/tags/compiler/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/compiler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cross</title>
+      <link>https://imprld01.github.io/blogg/tags/cross/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/cross/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cross Compilsation</title>
+      <link>https://imprld01.github.io/blogg/tags/cross-compilsation/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/cross-compilsation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Make</title>
+      <link>https://imprld01.github.io/blogg/tags/make/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/make/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Makefile</title>
+      <link>https://imprld01.github.io/blogg/tags/makefile/</link>
+      <pubDate>Sat, 23 Jul 2022 21:00:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/tags/makefile/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ARM</title>
       <link>https://imprld01.github.io/blogg/tags/arm/</link>
@@ -17,47 +152,11 @@
     </item>
     
     <item>
-      <title>Compilation</title>
-      <link>https://imprld01.github.io/blogg/tags/compilation/</link>
-      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/compilation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Compile</title>
       <link>https://imprld01.github.io/blogg/tags/compile/</link>
       <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
       
       <guid>https://imprld01.github.io/blogg/tags/compile/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Compiler</title>
-      <link>https://imprld01.github.io/blogg/tags/compiler/</link>
-      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/compiler/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cross</title>
-      <link>https://imprld01.github.io/blogg/tags/cross/</link>
-      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/cross/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cross Compilsation</title>
-      <link>https://imprld01.github.io/blogg/tags/cross-compilsation/</link>
-      <pubDate>Fri, 08 Jul 2022 21:30:00 +0000</pubDate>
-      
-      <guid>https://imprld01.github.io/blogg/tags/cross-compilsation/</guid>
       <description></description>
     </item>
     

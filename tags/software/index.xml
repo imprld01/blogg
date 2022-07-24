@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Software on 御風翱翔 知識漫遊</title>
+    <link>https://imprld01.github.io/blogg/tags/software/</link>
+    <description>Recent content in Software on 御風翱翔 知識漫遊</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 23 Jul 2022 21:30:00 +0000</lastBuildDate><atom:link href="https://imprld01.github.io/blogg/tags/software/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>常用的Git筆記</title>
+      <link>https://imprld01.github.io/blogg/2022/07/23/note_of_commonly_used_git/</link>
+      <pubDate>Sat, 23 Jul 2022 21:30:00 +0000</pubDate>
+      
+      <guid>https://imprld01.github.io/blogg/2022/07/23/note_of_commonly_used_git/</guid>
+      <description>初始設定 使用者設定 git config --global user.name &amp;#34;username&amp;#34; git config --global user.email &amp;#34;username@imprld01.com&amp;#34; #linux/macos git config --global core.autocrlf input #windows git config --global core.autocrlf true git config --global core.filemode false #optimal git config --global --add core.compression -1 git config --global color.ui true git config --global core.editor vim git config --global ssh.variant ssh git config --global log.decorate short git config --global alias.last &amp;#39;log -1 HEAD&amp;#39;</description>
+    </item>
+    
+  </channel>
+</rss>

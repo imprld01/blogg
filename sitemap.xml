@@ -2,25 +2,76 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://imprld01.github.io/blogg/categories/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/code/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/control/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/git/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/github/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/post/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/software/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/software-engineer/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/version/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/version-control/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/07/23/note_of_commonly_used_git/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/</loc>
+    <lastmod>2022-07-23T21:30:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/cmake/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/compilation/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/compiler/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/cross/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/cross-compilsation/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/make/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/tags/makefile/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://imprld01.github.io/blogg/2022/07/23/note_of_using_cmake_for_compilation_in_advance/</loc>
+    <lastmod>2022-07-23T21:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://imprld01.github.io/blogg/tags/arm/</loc>
     <lastmod>2022-07-08T21:30:00+00:00</lastmod>
   </url><url>
-    <loc>https://imprld01.github.io/blogg/categories/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/compilation/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
     <loc>https://imprld01.github.io/blogg/tags/compile/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/compiler/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/cross/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/cross-compilsation/</loc>
     <lastmod>2022-07-08T21:30:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/dft/</loc>
@@ -44,9 +95,6 @@
     <loc>https://imprld01.github.io/blogg/2022/07/08/note_of_cross_compilation_on_ne10/</loc>
     <lastmod>2022-07-08T21:30:00+00:00</lastmod>
   </url><url>
-    <loc>https://imprld01.github.io/blogg/post/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
     <loc>https://imprld01.github.io/blogg/tags/signal/</loc>
     <lastmod>2022-07-08T21:30:00+00:00</lastmod>
   </url><url>
@@ -54,15 +102,6 @@
     <lastmod>2022-07-08T21:30:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/stft/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/tags/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/categories/tech/</loc>
-    <lastmod>2022-07-08T21:30:00+00:00</lastmod>
-  </url><url>
-    <loc>https://imprld01.github.io/blogg/</loc>
     <lastmod>2022-07-08T21:30:00+00:00</lastmod>
   </url><url>
     <loc>https://imprld01.github.io/blogg/tags/android/</loc>

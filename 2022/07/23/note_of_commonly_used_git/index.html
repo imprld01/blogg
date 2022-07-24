@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="御風翱翔 知識漫遊">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg">
+    <meta property="twitter:image" content="https://imprld01.github.io/blogg//img/home-bg-2.jpg" />
+    
+
+    
+    <meta name="title" content="常用的Git筆記" />
+    <meta property="og:title" content="常用的Git筆記" />
+    <meta property="twitter:title" content="常用的Git筆記" />
+    
+
+    
+    <meta name="description" content="在使用者的家目錄下能找到.gitconfig，裡面記錄剛剛的使用者設定跟其他偏好設定。在Git專案下可以找到.git，裡面有一個檔案config，裡面記錄著遠端儲存庫、分支等訊息">
+    <meta property="og:description" content="在使用者的家目錄下能找到.gitconfig，裡面記錄剛剛的使用者設定跟其他偏好設定。在Git專案下可以找到.git，裡面有一個檔案config，裡面記錄著遠端儲存庫、分支等訊息" />
+    <meta property="twitter:description" content="在使用者的家目錄下能找到.gitconfig，裡面記錄剛剛的使用者設定跟其他偏好設定。在Git專案下可以找到.git，裡面有一個檔案config，裡面記錄著遠端儲存庫、分支等訊息" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="blog, knowledge">
+    <link rel="shortcut icon" href="/blogg/img/o.ico">
+
+    <title>常用的Git筆記 – 御風翱翔 知識漫遊 Wandering through Knowledge</title>
+
+    <link rel="canonical" href="/blogg/2022/07/23/note_of_commonly_used_git/">
+
+    <link rel="stylesheet" href="/blogg/css/iDisqus.min.css"/>
+
+    
+    <link rel="stylesheet" href="/blogg/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/blogg/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/blogg/js/jquery.min.js"></script>
+
+    
+    <script src="/blogg/js/bootstrap.min.js"></script>
+
+    
+    <script src="/blogg/js/hux-blog.min.js"></script>
+
+    
+    
+    
+    <script data-ad-client="ca-pub-6015636098022992" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href='/blogg/'>御風翱翔 知識漫遊</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href='/blogg/'>Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href='/blogg/categories/tech'>tech</a>
+                        </li>
+                        
+                    
+                    
+					
+                        <li><a href='/blogg/top/about/'>ABOUT</a></li>
+                    
+
+                    
+					<li>
+                        <a href='/blogg/search'>SEARCH <img src='/blogg/img/search.png' height="15" style="cursor: pointer;" alt="Search"></a>
+					</li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('https://cdn.pixabay.com/photo/2020/05/06/20/57/hourglass-5139189_960_720.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href='/blogg/tags/git' title="Git">
+                            Git
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/version' title="Version">
+                            Version
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/control' title="Control">
+                            Control
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/version-control' title="Version Control">
+                            Version Control
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/github' title="Github">
+                            Github
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/code' title="Code">
+                            Code
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/software' title="Software">
+                            Software
+                        </a>
+                        
+                        <a class="tag" href='/blogg/tags/software-engineer' title="Software Engineer">
+                            Software Engineer
+                        </a>
+                        
+                    </div>
+                    <h1>常用的Git筆記</h1>
+                    <h2 class="subheading">Note of Commonly Used Git</h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            imprld01
+                         
+                        on 
+                        Saturday, July 23, 2022
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <hr>
+                <header>
+                    <h3>目錄</h3>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#初始設定">初始設定</a></li>
+    <li><a href="#常用指令">常用指令</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+                <hr>
+                
+                <h3 id="初始設定">初始設定</h3>
+<ol>
+<li>
+<p>使用者設定</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git config --global user.name <span style="color:#f1fa8c">&#34;username&#34;</span>
+git config --global user.email <span style="color:#f1fa8c">&#34;username@imprld01.com&#34;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#linux/macos</span>
+git config --global core.autocrlf input
+
+<span style="color:#6272a4">#windows</span>
+git config --global core.autocrlf <span style="color:#8be9fd;font-style:italic">true</span>
+git config --global core.filemode <span style="color:#8be9fd;font-style:italic">false</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#optimal</span>
+git config --global --add core.compression -1
+
+git config --global color.ui <span style="color:#8be9fd;font-style:italic">true</span>
+git config --global core.editor vim
+git config --global ssh.variant ssh
+git config --global log.decorate short
+git config --global alias.last <span style="color:#f1fa8c">&#39;log -1 HEAD&#39;</span>
+git config --global alias.visual <span style="color:#f1fa8c">&#39;!gitk --all&#39;</span>
+git config --global alias.unstage <span style="color:#f1fa8c">&#39;reset HEAD --&#39;</span>
+git config --global commit.template ~/git-template
+</code></pre></div></li>
+<li>
+<p>Git設定檔位置</p>
+<ul>
+<li>在使用者的家目錄下能找到<code>.gitconfig</code>，裡面記錄剛剛的使用者設定跟其他偏好設定</li>
+<li>在Git專案下可以找到<code>.git</code>，裡面有一個檔案<code>config</code>，裡面記錄著遠端儲存庫、分支等訊息</li>
+</ul>
+</li>
+<li>
+<p>符號含意</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">HEAD       <span style="color:#6272a4"># current position</span>
+HEAD^^     <span style="color:#6272a4"># previous and previous</span>
+HEAD~2     <span style="color:#6272a4"># previous and previous </span>
+HEAD@<span style="color:#ff79c6">{</span>2<span style="color:#ff79c6">}</span>   <span style="color:#6272a4"># previous and previous</span>
+ORIG_HEAD  <span style="color:#6272a4"># previous HEAD before reset</span>
+FETCH_HEAD <span style="color:#6272a4"># position fetched from remote</span>
+</code></pre></div></li>
+</ol>
+<h3 id="常用指令">常用指令</h3>
+<ol>
+<li>
+<p>使用下面指令開始新的Git專案、新增修改、提交版本：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git init
+git add .
+git commit
+</code></pre></div></li>
+<li>
+<p>可以使用下面指令取代<code>git commit</code>，直接附上簡短的commit message：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git commit -m <span style="color:#f1fa8c">&#34;one line message here&#34;</span>
+</code></pre></div></li>
+<li>
+<p>可以使用下面指令結合<code>git add .</code>跟<code>git commit</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git commit -a
+</code></pre></div></li>
+<li>
+<p>新增變更後，或者想更新commit message，可以使用其中一條指令更新最近一次的commit：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git commit --amend
+</code></pre></div></li>
+<li>
+<p>可以使用其中一條指令顯示之前的commit message：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git show
+git show a1b2c3
+git show a1b2c3:path/file.py
+</code></pre></div></li>
+<li>
+<p>可以使用其中一條指令顯示commit的歷史：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git log
+git log -g
+git log --all
+git log --graph
+git log --oneline
+git log --decorate <span style="color:#6272a4"># show tag</span>
+
+git reflog
+
+<span style="color:#6272a4"># install gitk for ui interface</span>
+gitk -a
+gitk --all
+</code></pre></div></li>
+<li>
+<p>可以使用以下指令取消版本控制：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git rm --cached file2.py
+</code></pre></div></li>
+<li>
+<p>清除沒有進行版本控制的檔案：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4"># exclude ignored files</span>
+git clean -fd
+git clean -nd <span style="color:#6272a4"># dry run</span>
+
+<span style="color:#6272a4"># include ignored files</span>
+git clean -fdx
+git clean -ndx <span style="color:#6272a4"># dry run</span>
+</code></pre></div></li>
+<li>
+<p>把之前的commit拉到目前版本上作為新commit：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git revert c1b2a3
+</code></pre></div></li>
+<li>
+<p>重設置特定commit版本，重設前可以先用<code>git reflog</code>確認版本跟<code>commit ID</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git reset <span style="color:#6272a4"># reset to HEAD</span>
+git reset --hard <span style="color:#6272a4"># reset to HEAD</span>
+
+git reset c3b2a1
+git reset --hard c3b2a1 <span style="color:#6272a4"># move to c3b2a1, and original changes </span>
+git reset --soft c3b2a1 <span style="color:#6272a4"># move to c3b2a1, and original changes to be commited</span>
+</code></pre></div></li>
+<li>
+<p>放棄已經<code>git add</code>的修改：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git checkout .
+git checkout -- .
+git checkout -- file3.py
+</code></pre></div></li>
+<li>
+<p>取得現有的遠端儲存庫Git專案：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/projectNe10/Ne10
+</code></pre></div></li>
+<li>
+<p>使用下面指令對branch基礎操作：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git branch my_new_branch a3b2c1
+
+git branch -d that_branch
+git branch -m old_branch_name new_branch_name
+
+git checkout -b a_new_branch
+git checkout -b a_new_branch c5b6a7
+
+git checkout a5b6c7 -- file5.py
+git checkout old_branch file6.py
+
+git blame -- file7.py <span style="color:#6272a4"># show that who changes file7.py line by line</span>
+</code></pre></div></li>
+<li>
+<p>創建新的commit來合併其他branch或舊commit：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git merge a8b9c0
+git merge other_branch
+
+git merge --ff other_branch    <span style="color:#6272a4"># fast-forward (linear-tree effect)</span>
+git merge --no-ff other_branch <span style="color:#6272a4"># no fast-forward</span>
+
+git cherry-pick c8b9a0 --no-commit
+</code></pre></div></li>
+<li>
+<p>操作遠端儲存庫：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git remote remove origin
+git remote add origin URL
+git remote rename origin origin2
+
+git push origin test:master
+git push origin test:refs/heads/master
+git push origin test:refs/for/master
+git push origin test:refs/for/refs/heads/master
+
+git pull
+git fetch -p origin <span style="color:#6272a4"># -p to remove unavailabe remote branch</span>
+</code></pre></div></li>
+<li>
+<p>透過下面指令一次操作多個commit：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git review
+git rebase origin/master
+
+git rebase -i HEAD~4 <span style="color:#6272a4">#可用來將多個commit重新整理過，一般會在push上Gerrit前進行</span>
+git rebase -i HEAD~3 master --onto dev_branch <span style="color:#6272a4">#可用來將多個commit移至新的branch上</span>
+</code></pre></div></li>
+<li>
+<p>使用下面指令來靜態標記commit：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#6272a4">#Tag: read-only commit pointer</span>
+
+git tag
+git tag -n
+git tag -d tag_v0
+
+git tag tag_v0
+git tag -f tag_v0
+git tag tag_v0 d1e2f3    <span style="color:#6272a4"># just light-weight</span>
+
+git tag -a tag_v1 d3e2f1 <span style="color:#6272a4"># annotated many information</span>
+git tag -am <span style="color:#f1fa8c">&#34;message for this tag&#34;</span> tag_v1 d3e2f1
+
+git show tag_v0
+
+git fetch --tags
+
+git push --tags
+git push -f --tags
+git push origin tag_v2
+git push -f origin tag_v2
+
+git push origin :refs/tags/tag_v2 <span style="color:#6272a4"># delete remote tag</span>
+
+git checkout -b new_branch_v2 tag_v2
+</code></pre></div></li>
+<li>
+<p>使用下面指令補充commit message而不直接修改commit message：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git notes add f1e2d3
+git notes add -m <span style="color:#f1fa8c">&#34;messages in this note&#34;</span> f1e2d3
+git notes remove f1e2d3
+
+git notes show f1e2d3
+
+git push origin <span style="color:#f1fa8c">&#34;refs/notes/*&#34;</span>
+git push origin refs/notes/commits
+
+git fetch origin <span style="color:#f1fa8c">&#34;refs/notes/*:refs/notes/*&#34;</span>
+git fetch origin refs/notes/commits:refs/notes/commits
+</code></pre></div></li>
+</ol>
+<h3 id="reference">Reference</h3>
+<ol>
+<li><a href="https://blog.csdn.net/taiyangdao/article/details/78398383">Git对库文件权限的管理与filemode配置详解_易生一世的博客-CSDN博客</a></li>
+<li><a href="https://blog.csdn.net/FTDD_HW/article/details/79259669">GIT常见问题记录_hjwzyy的博客-CSDN博客</a></li>
+<li><a href="https://git-scm.com/book/zh-tw/v2/Git-%E5%9F%BA%E7%A4%8E-Git-Aliases">Git - Git Aliases</a></li>
+<li><a href="https://roykwokcode.medium.com/%E8%AE%93%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A2%BC%E5%9B%9E%E5%88%B0%E9%81%8E%E5%8E%BB-git-reset-%E8%88%87-git-revert-%E7%9A%84%E7%94%A8%E8%99%95-6ba4b7545690">Git: 讓你的代碼回到過去，git reset 與 git revert 的用處</a></li>
+<li><a href="https://backlog.com/git-tutorial/tw/stepup/stepup7_3.html">3. Reset【教學3 改寫提交】 | 連猴子都能懂的Git入門指南 | 貝格樂（Backlog）</a></li>
+<li><a href="https://gitbook.tw/chapters/using-git/restore-hard-reset-commit">【狀況題】不小心使用 hard 模式 Reset 了某個 Commit，救得回來嗎？ - 為你自己學 Git | 高見龍</a></li>
+<li><a href="https://blog.csdn.net/weixin_44137575/article/details/108142088">git clean 的用法详解_一定要学_一定要慎用_不头秃的码农的博客-CSDN博客_gitclean</a></li>
+<li><a href="https://cythilya.github.io/2018/05/30/git-cherry-pick/">Git: Cherry-pick - 選擇某個分支的某些提交記錄 | Summer。桑莫。夏天</a></li>
+<li><a href="https://backlog.com/git-tutorial/tw/stepup/stepup7_4.html">4. Cherry-pick【教學3 改寫提交】 | 連猴子都能懂的Git入門指南 | 貝格樂（Backlog）</a></li>
+<li><a href="https://gitbook.tw/chapters/faq/cherry-pick">【狀況題】如果你只想要某個分支的某幾個 Commit？ - 為你自己學 Git | 高見龍</a></li>
+<li><a href="https://git-tutorial.readthedocs.io/zh/latest/tagging.html">Git 上標籤(Tagging) - Practical guide for git users 0.1 文档</a></li>
+<li><a href="https://git-scm.com/docs/git-notes/zh_HANS-CN">Git - git-notes Documentation</a></li>
+<li><a href="https://caloskao.org/git-tag-operations/">[Git] tag 操作</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href='/blogg/2022/07/23/note_of_using_cmake_for_compilation_in_advance/' data-toggle="tooltip" data-placement="top" title="進階使用CMake編譯程式碼">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "imprld01-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            </div>
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+					
+                    
+                    <li>
+                        <a href="mailto:swb2319%28at%29gmail%28dot%29com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+
+                    
+                    
+                    
+
+                    
+
+					
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/bo-wn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    <li>
+                        <a target="_blank" href="https://medium.com/@imprld01">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-medium fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+					
+                    
+                    
+                    
+                    
+					
+					
+					
+                </ul>
+				<p class="copyright text-muted">
+					
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a>
+                    <br>
+					Customized by <a href="https://github.com/imprld01" target="_blank">imprld01</a> @ 2021/07/01
+					<br>
+					2022 &copy; All Articles Maintained by <a href="https://github.com/imprld01" target="_blank">imprld01</a>
+                    <br>
+					Powered by CC0 Image on <a href="https://pixabay.com/zh/photos/mountains-alp-alpine-landscape-5290992/" target="_blank">pixabay.com</a> by <a href="https://pixabay.com/zh/users/suju-foto-165106/" target="_blank">suju-foto</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+</body>
+</html>
